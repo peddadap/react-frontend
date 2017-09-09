@@ -52,7 +52,6 @@ export default class NewTicket extends Component {
       body: formData
     }).then(function(result){})
     this.setState({ isLoading: false });
-    this.store.dispatch({tab:1});
    }
 
   render() {

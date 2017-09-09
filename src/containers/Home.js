@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import {createStore} from 'redux';
 import { Link } from 'react-router-dom'
 import { PageHeader, ListGroup,ListGroupItem,Button,Nav,NavItem,Navbar,Tabs,Tab} from "react-bootstrap";
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
@@ -65,14 +64,14 @@ export default class Home extends Component {
   }
  
   render1(){
-    let store = createStore(this.selectTab)  
+   
     return(
      <Tabs activeKey={this.state.key} onSelect={this.selectTab} id="controlled-tab-example" bsStyle="pills">
         <Tab eventKey={1} title="My Tickets">
           <MyTickets {...this.props}/> 
          </Tab>
        <Tab eventKey={2} title="Create Ticket">
-          <NewTicket {...this.props} store = {this.store}/>
+          <NewTicket {...this.props}/>
         </Tab>
         <Tab eventKey={3} title="Edit Ticket" >Edit Ticket</Tab>
       </Tabs>
