@@ -4,6 +4,7 @@ import { Tabs,Tab} from "react-bootstrap";
 import "./Home.css";
 import NewTicket from './NewTicket';
 import MyTickets from './MyTickets';
+import Edit from './Edit';
 
 export default class Home extends Component {
   constructor(props) {
@@ -72,7 +73,13 @@ export default class Home extends Component {
        <Tab eventKey = {2} title="Create Ticket" >
           <NewTicket  move2Tab = {(tab)=>{this.selectTab(tab)}} />
         </Tab>
+<<<<<<< HEAD
         <Tab eventKey={3}  title="Edit Ticket" >Edit Ticket</Tab>
+=======
+        <Tab eventKey={3} title="Edit Ticket" >
+          <Edit  {...this.props}/>
+        </Tab>
+>>>>>>> 07e496015fac1b502c6aa6844d78e612c3536f31
       </Tabs>
     )
   }
