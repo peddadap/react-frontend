@@ -5,6 +5,7 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import "./Home.css";
 import NewTicket from './NewTicket';
 import MyTickets from './MyTickets';
+import Edit from './Edit';
 
 export default class Home extends Component {
   constructor(props) {
@@ -73,7 +74,9 @@ export default class Home extends Component {
        <Tab eventKey={2} title="Create Ticket">
           <NewTicket {...this.props}/>
         </Tab>
-        <Tab eventKey={3} title="Edit Ticket" >Edit Ticket</Tab>
+        <Tab eventKey={3} title="Edit Ticket" >
+          <Edit  {...this.props}/>
+        </Tab>
       </Tabs>
     )
   }

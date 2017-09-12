@@ -6,6 +6,7 @@ import Login from "./containers/Login";
 import AppliedRoute from "./components/AppliedRoute";
 import NewTicket from "./containers/NewTicket";
 import Ticket from "./containers/Ticket";
+import Edit from "./containers/Edit";
 
 export default ({ childProps }) =>
 <Switch>
