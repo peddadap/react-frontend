@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Link } from 'react-router-dom'
-import { PageHeader, ListGroup,ListGroupItem,Button,Nav,NavItem,Navbar,Tabs,Tab} from "react-bootstrap";
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import "./Home.css";
 
@@ -15,17 +14,7 @@ export default class MyTickets extends Component {
       tickets: []
     };
   }
-  getInitialState() {
-    return {
-      key: 1
-    };
-  }
-   
-  handleSelect(key) {
-    /*alert('selected ' + key);*/
-    this.setState({key});
-  }
-
+  
   async componentDidMount() {
     if (!this.props.isAuthenticated) {
       return;
@@ -63,9 +52,11 @@ export default class MyTickets extends Component {
   
   render(tickets){
 
+    console.log(">>>>>My tickes rendered");
+
     return(
       <BootstrapTable data={ tickets } striped={true} hover={true} >
-      <TableHeaderColumn dataField='id' isKey='true' headerAlign='left' dataAlign='left' dataFormat={ this.colFormatter }>Ticket ID</TableHeaderColumn>
+      <TableHeaderColumn dataField='id' isKey={true} headerAlign='left' dataAlign='left' dataFormat={ this.colFormatter }>Ticket ID</TableHeaderColumn>
       <TableHeaderColumn dataField='type' headerAlign='left' dataAlign='left'>Ticket Type</TableHeaderColumn>
       <TableHeaderColumn dataField='status' headerAlign='left' dataAlign='left'>Status</TableHeaderColumn>
       <TableHeaderColumn dataField='created_date' headerAlign='left' dataAlign='left' dataFormat={this.dateFormatter}>Created Date</TableHeaderColumn>

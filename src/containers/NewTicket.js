@@ -1,4 +1,3 @@
-import Dropzone from 'react-dropzone'
 import React, { Component } from "react";
 import { FormGroup, FormControl, ControlLabel} from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
@@ -18,7 +17,8 @@ export default class NewTicket extends Component {
       ticketType:"Orginial Issuance",
      }
   }
-  
+    
+ 
   validateForm() {
     return true;
     //return this.state.content.length > 0;
@@ -52,11 +52,15 @@ export default class NewTicket extends Component {
       body: formData
     }).then(function(result){})
     this.setState({ isLoading: false });
+    //this.props.move2Tab(1);
+    alert("New Order Created")
+
    }
 
   render() {
+    console.log(">>>>>>>>>>>>.. New Ticket Rendered");
     return (
-      <div className="NewNote">
+  
         <form  onSubmit={this.handleSubmit}>
           <FormGroup controlId="ticketType">
             <ControlLabel>Ticket Type</ControlLabel>
@@ -104,7 +108,6 @@ export default class NewTicket extends Component {
             loadingText="Creating…"
           />
         </form>
-      </div>
     );
   }
 }

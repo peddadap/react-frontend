@@ -46,7 +46,7 @@ export default class Login extends Component {
      });
   }
   render() {
-    console.log('I was triggered during render')
+    console.log('>>> Login  render() called')
     return (
       <div className="Login">
         <form onSubmit={this.handleSubmit}>

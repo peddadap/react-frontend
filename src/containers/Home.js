@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Link } from 'react-router-dom'
-import { PageHeader, ListGroup,ListGroupItem,Button,Nav,NavItem,Navbar,Tabs,Tab} from "react-bootstrap";
-import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import { Tabs,Tab} from "react-bootstrap";
 import "./Home.css";
 import NewTicket from './NewTicket';
 import MyTickets from './MyTickets';
@@ -14,21 +13,21 @@ export default class Home extends Component {
       
       isLoading: true,
       tickets: [],
-      //key:0
-    };
+      };
     
   }
 
   getInitialState() {
-    this.setState({key:1});
+    
     return {
-      key: this.key
+      key: 1
     };
   }
   
   selectTab(tab) {
-   // alert('selected ' + key);
-    this.setState({key:tab});
+    //alert('selected #' + tab);
+   //console.log('>>>> Tab Selected' + this.state.key);
+   this.setState({key:tab});
   }
 
   
@@ -63,17 +62,17 @@ export default class Home extends Component {
     return  cdate;
   }
  
-  render1(){
-   
+  renderTabs(){
+    console.log(">>>> Rendering all Tabs");
     return(
-     <Tabs activeKey={this.state.key} onSelect={this.selectTab} id="controlled-tab-example" bsStyle="pills">
-        <Tab eventKey={1} title="My Tickets">
-          <MyTickets {...this.props}/> 
+     <Tabs activeKey = {this.state.key} onSelect={this.selectTab} id = "Tab Container" animation = {true} >
+        <Tab eventKey={1}  title="My Tickets" >
+          <MyTickets /> 
          </Tab>
-       <Tab eventKey={2} title="Create Ticket">
-          <NewTicket {...this.props}/>
+       <Tab eventKey = {2} title="Create Ticket" >
+          <NewTicket  move2Tab = {(tab)=>{this.selectTab(tab)}} />
         </Tab>
-        <Tab eventKey={3} title="Edit Ticket" >Edit Ticket</Tab>
+        <Tab eventKey={3}  title="Edit Ticket" >Edit Ticket</Tab>
       </Tabs>
     )
   }
@@ -91,7 +90,8 @@ export default class Home extends Component {
     );
   }
 
-  renderNotes() {
+ /* renderNotes() {
+    console.log(" Home rendered notes")
     return (
       <div className="tickets">
         <PageHeader>Your tickets</PageHeader>
@@ -100,12 +100,13 @@ export default class Home extends Component {
         </ListGroup>
       </div>
     );
-  }
+  }*/
 
   render() {
+    console.log(">>> Home component render() method called");
     return (
       <div className="Home">
-        {this.props.isAuthenticated ? this.render1() : this.renderLander()}
+        {this.props.isAuthenticated ? this.renderTabs() : this.renderLander()}
       </div>
     );
   }

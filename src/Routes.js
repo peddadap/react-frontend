@@ -4,8 +4,6 @@ import Home from "./containers/Home.js";
 import NotFound from "./containers/NotFound";
 import Login from "./containers/Login";
 import AppliedRoute from "./components/AppliedRoute";
-import NewTicket from "./containers/NewTicket";
-import Ticket from "./containers/Ticket";
 
 export default ({ childProps }) =>
 <Switch>
