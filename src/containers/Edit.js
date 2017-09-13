@@ -25,11 +25,17 @@ const cellEditProp = {
 
 export default class Edit extends Component {
   render(tickets) {
+    const pairs=[];
+    Object.keys(jsonData[0]).forEach(function(key) {
+      pairs.push(key);
+    });
+    pairs.splice(0, 1);
     return (
 		  <BootstrapTable data={jsonData} cellEdit={ cellEditProp } pagination>
-			  <TableHeaderColumn isKey dataField='id'>Product ID</TableHeaderColumn>
-			  <TableHeaderColumn dataField='name'>Product Name</TableHeaderColumn>
-			  <TableHeaderColumn dataField='price'>Product Price</TableHeaderColumn>
+        <TableHeaderColumn isKey dataField='id'>ID</TableHeaderColumn>
+        {pairs.map(pairs => 
+            <TableHeaderColumn dataField={pairs}>{pairs}</TableHeaderColumn>
+        )}
 		  </BootstrapTable>
     );
   }
