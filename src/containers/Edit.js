@@ -4,6 +4,7 @@ import { PageHeader, ListGroup,ListGroupItem,Button,Nav,NavItem,Navbar,Tabs,Tab}
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import "./Home.css";
 import jsonData from "../data.json";
+import Config from "./ux.json";
 
 function onAfterSaveCell(row, cellName, cellValue) {
   alert(`Save cell ${cellName} with value ${cellValue}`);
@@ -25,18 +26,13 @@ const cellEditProp = {
 
 export default class Edit extends Component {
   render(tickets) {
-    const pairs=[];
-    Object.keys(jsonData[0]).forEach(function(key) {
-      pairs.push(key);
-    });
-    pairs.splice(0, 1);
     return (
-		  <BootstrapTable data={jsonData} cellEdit={ cellEditProp } pagination>
+		  <BootstrapTable data={jsonData} cellEdit={ cellEditProp } pagination >
         <TableHeaderColumn isKey dataField='id'>ID</TableHeaderColumn>
-        {pairs.map(pairs => 
-            <TableHeaderColumn dataField={pairs}>{pairs}</TableHeaderColumn>
-        )}
-		  </BootstrapTable>
+        {
+          Object.keys(Config.oi).map((k, index) => <TableHeaderColumn width = {"150"} dataField={k}>{k}</TableHeaderColumn>)
+        }
+  	  </BootstrapTable>
     );
   }
 }

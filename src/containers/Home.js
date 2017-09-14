@@ -9,7 +9,6 @@ import Edit from './Edit';
 export default class Home extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       
       isLoading: true,
@@ -29,6 +28,7 @@ export default class Home extends Component {
     //alert('selected #' + tab);
    //console.log('>>>> Tab Selected' + this.state.key);
    this.setState({key:tab});
+   //this.forceUpdate();
   }
 
   
@@ -73,13 +73,10 @@ export default class Home extends Component {
        <Tab eventKey = {2} title="Create Ticket" >
           <NewTicket  move2Tab = {(tab)=>{this.selectTab(tab)}} />
         </Tab>
-<<<<<<< HEAD
-        <Tab eventKey={3}  title="Edit Ticket" >Edit Ticket</Tab>
-=======
         <Tab eventKey={3} title="Edit Ticket" >
           <Edit  {...this.props}/>
         </Tab>
->>>>>>> 07e496015fac1b502c6aa6844d78e612c3536f31
+
       </Tabs>
     )
   }

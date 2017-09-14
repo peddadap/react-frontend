@@ -52,8 +52,8 @@ export default class NewTicket extends Component {
       body: formData
     }).then(function(result){})
     this.setState({ isLoading: false });
-    //this.props.move2Tab(1);
-    alert("New Order Created")
+    this.props.move2Tab(1);
+    //alert("New Order Created")
 
    }
 
@@ -66,7 +66,9 @@ export default class NewTicket extends Component {
             <ControlLabel>Ticket Type</ControlLabel>
             <FormControl componentClass="select" placeholder="select"  onChange={this.handleChange}>
               <option value="Original">Original Issuance</option>
-              <option value="Surrender">Surrender</option>
+              <option value="Grants">Grants</option>
+              <option value="Vestings">Vestings</option>
+              <option value="Terminations">Terminations</option>
           </FormControl>
           </FormGroup>
           <FormGroup controlId="priority">
@@ -94,7 +96,7 @@ export default class NewTicket extends Component {
             <FormControl onChange={this.handleChange} type="text" />
           </FormGroup>
           <FormGroup controlId="file">
-            <ControlLabel>attachment</ControlLabel>
+            <ControlLabel>Attachment</ControlLabel>
             <FormControl onChange={this.handleFileChange} type="file" />
           </FormGroup>
           <LoaderButton

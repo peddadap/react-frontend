@@ -57,10 +57,12 @@ export default class MyTickets extends Component {
     return(
       <BootstrapTable data={ tickets } striped={true} hover={true} >
       <TableHeaderColumn dataField='id' isKey={true} headerAlign='left' dataAlign='left' dataFormat={ this.colFormatter }>Ticket ID</TableHeaderColumn>
+      <TableHeaderColumn dataField='company_no' headerAlign='left' dataAlign='left'>Company No</TableHeaderColumn>
       <TableHeaderColumn dataField='type' headerAlign='left' dataAlign='left'>Ticket Type</TableHeaderColumn>
-      <TableHeaderColumn dataField='status' headerAlign='left' dataAlign='left'>Status</TableHeaderColumn>
+      <TableHeaderColumn dataField='priority' headerAlign='left' dataAlign='left'>Priority</TableHeaderColumn>
       <TableHeaderColumn dataField='created_date' headerAlign='left' dataAlign='left' dataFormat={this.dateFormatter}>Created Date</TableHeaderColumn>
       <TableHeaderColumn dataField='submitted_date' headerAlign='left' dataAlign='left' dataFormat={this.dateFormatter}>Submitted Date</TableHeaderColumn>
+      <TableHeaderColumn dataField='status' headerAlign='left' dataAlign='left'>Status</TableHeaderColumn>
       </BootstrapTable>
     )
   }
