@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { PageHeader, ListGroup,ListGroupItem,Button,Nav,NavItem,Navbar,Tabs,Tab} from "react-bootstrap";
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import "./Home.css";
-import jsonData from "../data.json";
+//import jsonData from "../data.json";
 import Config from "./ux.json";
 
 function onAfterSaveCell(row, cellName, cellValue) {
@@ -69,5 +69,5 @@ export default class Edit extends Component {
     });
     return(<BootstrapTable data={this.state.transactions} cellEdit={ cellEditProp } pagination >{rows}</BootstrapTable>);
   }
-   
+
 }
