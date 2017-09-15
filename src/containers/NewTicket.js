@@ -58,7 +58,7 @@ export default class NewTicket extends Component {
    }
 
   render() {
-    console.log(">>>>>>>>>>>>.. New Ticket Rendered");
+    //console.log(">>>>>>>>>>>>.. New Ticket Rendered");
     return (
   
         <form  onSubmit={this.handleSubmit}>

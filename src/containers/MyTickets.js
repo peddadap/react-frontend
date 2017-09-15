@@ -16,14 +16,16 @@ export default class MyTickets extends Component {
   }
   
   async componentDidMount() {
-    if (!this.props.isAuthenticated) {
+   /* if (!this.props.isAuthenticated) {
       return;
-    }
+    }*/
   
     try {
       fetch('/tickets')
       .then(res => res.json())
-      .then(tickets => this.setState({ tickets }));
+      .then(tickets => {
+        this.setState({ tickets });
+      })
     } catch (e) {
       alert(e);
     }
@@ -39,11 +41,6 @@ export default class MyTickets extends Component {
     )
   }
 
-  handleSelect()
-  {
-    return true;
-  }
-
   dateFormatter(cell, row){
    
    var cdate = (new Date(cell)).toISOString().split('T')[0]
@@ -52,11 +49,9 @@ export default class MyTickets extends Component {
   
   render(tickets){
 
-    console.log(">>>>>My tickes rendered");
-
     return(
-      <BootstrapTable data={ tickets } striped={true} hover={true} >
-      <TableHeaderColumn dataField='id' isKey={true} headerAlign='left' dataAlign='left' dataFormat={ this.colFormatter }>Ticket ID</TableHeaderColumn>
+      <BootstrapTable data={this.state.tickets } striped={true} hover={true} pagination>
+      <TableHeaderColumn dataField='id' isKey headerAlign='left' dataAlign='left' dataFormat={ this.colFormatter }>Ticket ID</TableHeaderColumn>
       <TableHeaderColumn dataField='company_no' headerAlign='left' dataAlign='left'>Company No</TableHeaderColumn>
       <TableHeaderColumn dataField='type' headerAlign='left' dataAlign='left'>Ticket Type</TableHeaderColumn>
       <TableHeaderColumn dataField='priority' headerAlign='left' dataAlign='left'>Priority</TableHeaderColumn>
@@ -67,9 +62,5 @@ export default class MyTickets extends Component {
     )
   }
 
-  handleNoteClick = event => {
-    event.preventDefault();
-    this.props.history.push(event.currentTarget.getAttribute("href"));
-  }
-
+  
  }

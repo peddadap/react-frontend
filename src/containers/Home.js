@@ -12,7 +12,7 @@ export default class Home extends Component {
     this.state = {
       
       isLoading: true,
-      tickets: [],
+      //tickets: [],
       };
     
   }
@@ -33,7 +33,7 @@ export default class Home extends Component {
 
   
 
-  async componentDidMount() {
+  /*async componentDidMount() {
     if (!this.props.isAuthenticated) {
       return;
     }
@@ -47,7 +47,7 @@ export default class Home extends Component {
     }
   
     this.setState({ isLoading: false });
-  }
+  }*/
  
   colFormatter = (cell, row) => {
     return (
@@ -64,7 +64,7 @@ export default class Home extends Component {
   }
  
   renderTabs(){
-    console.log(">>>> Rendering all Tabs");
+    //console.log(">>>> Rendering all Tabs");
     return(
      <Tabs activeKey = {this.state.key} onSelect={this.selectTab} id = "Tab Container" animation = {true} >
         <Tab eventKey={1}  title="My Tickets" >
@@ -107,7 +107,7 @@ export default class Home extends Component {
   }*/
 
   render() {
-    console.log(">>> Home component render() method called");
+    //console.log(">>> Home component render() method called");
     return (
       <div className="Home">
         {this.props.isAuthenticated ? this.renderTabs() : this.renderLander()}

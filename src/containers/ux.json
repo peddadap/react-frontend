@@ -1,6 +1,6 @@
 {
    "oi":{ 
-       "AccountNumber": {},
+       "AccountNumber": {"isKey":true},
         "Name1": {},
         "Name2": {},
         "AddressAndCity": {},
