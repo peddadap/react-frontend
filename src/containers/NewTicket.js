@@ -42,6 +42,22 @@ export default class NewTicket extends Component {
       alert("Please pick a file smaller than 1MB");
       return;
     }
+    if(this.state.parentCo && this.state.parentCo === '') {
+      alert("Please enter a value for Parent Company No #");
+      return;
+    }
+    if(this.state.childCo && this.state.childCo === '') {
+      alert("Please enter a value for Child Company No #");
+      return;
+    }
+    if(this.state.controlAcct && this.state.controlAcct === '') {
+      alert("Please enter a value for Control Account No #");
+      return;
+    }
+    if(this.state.TreasuryAcct && this.state.TreasuryAcct === '') {
+      alert("Please enter a value for Treasury Account No #");
+      return;
+    }
     this.setState({ isLoading: true });
     var formData = new FormData();
     formData.append('file',this.state.file);
@@ -83,7 +99,7 @@ export default class NewTicket extends Component {
             <ControlLabel>Parent Company No #</ControlLabel>
             <FormControl onChange={this.handleChange} type="text" />
           </FormGroup>
-          <FormGroup controlId="clildCo">
+          <FormGroup controlId="childCo">
             <ControlLabel>Child Company No #</ControlLabel>
             <FormControl onChange={this.handleChange} type="text" />
           </FormGroup>

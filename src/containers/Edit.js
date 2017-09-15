@@ -43,7 +43,7 @@ export default class Edit extends Component {
      }*/
    
      try {
-       fetch('/grants')
+       fetch('/issuances')
        .then(res => res.json())
        .then(transactions => {
          this.setState({ transactions });
