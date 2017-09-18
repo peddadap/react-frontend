@@ -33,7 +33,7 @@ export default class Edit extends Component {
 
     this.state = {
       isLoading: true,
-      transactions: []
+      ticketData: []
      }
   }
 
@@ -45,8 +45,8 @@ export default class Edit extends Component {
      try {
        fetch('/issuances')
        .then(res => res.json())
-       .then(transactions => {
-         this.setState({ transactions });
+       .then(ticketData => {
+         this.setState({ ticketData });
        })
      } catch (e) {
        alert(e);
@@ -56,6 +56,7 @@ export default class Edit extends Component {
    }
   
   render(tickets) {
+    console.log('>>>Here I am '+ this.props.tickets());
     var rows = [];
     let uxConfig = Config.oi;
     Object.keys(uxConfig).map((k, index) =>
@@ -67,7 +68,7 @@ export default class Edit extends Component {
         rows.push(<TableHeaderColumn width = {"150"} dataField={k}>{k}</TableHeaderColumn>);
        }
     });
-    return(<BootstrapTable data={this.state.transactions} cellEdit={ cellEditProp } pagination >{rows}</BootstrapTable>);
+    return(<BootstrapTable data={this.state.ticketData} cellEdit={ cellEditProp } pagination >{rows}</BootstrapTable>);
   }
 
 }

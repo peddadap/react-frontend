@@ -10,7 +10,6 @@ export default class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      
       isLoading: true,
       //tickets: [],
       };
@@ -25,9 +24,13 @@ export default class Home extends Component {
   }
   
   selectTab(tab) {
-    //alert('selected #' + tab);
+   //alert('selected #' + tab);
    //console.log('>>>> Tab Selected' + this.state.key);
-   this.setState({key:tab});
+   this.setState({
+    key: tab
+   }, function(){
+     console.log(this.state.key);
+   });
    //this.forceUpdate();
   }
 
@@ -64,7 +67,11 @@ export default class Home extends Component {
   }
  
   renderTabs(){
-    //console.log(">>>> Rendering all Tabs");
+    console.log(">>>> Rendering all Tabs");
+    if( this.props.match.params.id ) {
+      this.state.key = 3;
+      //alert('I am coming here as it has ID');
+    }
     return(
      <Tabs activeKey = {this.state.key} onSelect={this.selectTab} id = "Tab Container" animation = {true} >
         <Tab eventKey={1}  title="My Tickets" >
@@ -74,7 +81,7 @@ export default class Home extends Component {
           <NewTicket  move2Tab = {(tab)=>{this.selectTab(tab)}} />
         </Tab>
         <Tab eventKey={3} title="Edit Ticket" >
-          <Edit  {...this.props}/>
+          <Edit tickets = {()=> {return this.props.match.params.id}}/>
         </Tab>
 
       </Tabs>
