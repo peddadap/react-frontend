@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 import { PageHeader, ListGroup,ListGroupItem,Button,Nav,NavItem,Navbar,Tabs,Tab} from "react-bootstrap";
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import "./Home.css";
-//import jsonData from "../data.json";
 import Config from "./ux.json";
+import config_parent from "../config";
 
 function onAfterSaveCell(row, cellName, cellValue) {
   alert(`Save cell ${cellName} with value ${cellValue}`);
@@ -24,7 +24,6 @@ const cellEditProp = {
 };  
 
 export default class Edit extends Component {
-
   constructor(props) {
     super(props);
     console.log('New Ticket Has Access to Props');
@@ -33,15 +32,25 @@ export default class Edit extends Component {
 
     this.state = {
       isLoading: true,
-      ticketData: []
+      ticketData: [],
+      ticketMetaData: []
      }
   }
 
-  async componentDidMount() {
+   async componentDidMount() {
     /* if (!this.props.isAuthenticated) {
        return;
      }*/
-   
+     try {
+      fetch('/ticket_meta?id='+config_parent.TICKET_NO)
+      .then(res => res.json())
+      .then(ticketMetaData => {
+        this.setState({ ticketMetaData });
+        console.log('>>>>>>>>>>>>>>>>>>>.'+this.state.ticketMetaData);
+      })
+    } catch (e) {
+      alert(e);
+    }
      try {
        fetch('/issuances')
        .then(res => res.json())
@@ -54,7 +63,7 @@ export default class Edit extends Component {
    
      this.setState({ isLoading: false });
    }
-  
+   
   render(tickets) {
     console.log('>>>Here I am '+ this.props.tickets());
     var rows = [];
@@ -68,7 +77,22 @@ export default class Edit extends Component {
         rows.push(<TableHeaderColumn width = {"150"} dataField={k}>{k}</TableHeaderColumn>);
        }
     });
-    return(<BootstrapTable data={this.state.ticketData} cellEdit={ cellEditProp } pagination >{rows}</BootstrapTable>);
+    return(
+      <div id="edit_data">
+        <BootstrapTable data={this.state.ticketMetaData}>
+          <TableHeaderColumn isKey width = {"150"} dataField='company_number'> Company number </TableHeaderColumn>
+          <TableHeaderColumn width = {"150"} dataField='child_company_number'> Child Company Number </TableHeaderColumn>
+          <TableHeaderColumn width = {"150"} dataField='control_account_number'> Control Account Number </TableHeaderColumn>
+        </BootstrapTable>
+        <BootstrapTable data={this.state.ticketMetaData}>
+          <TableHeaderColumn isKey width = {"150"} dataField='treasure_account_number'> Treasure Account Number </TableHeaderColumn>
+          <TableHeaderColumn width = {"150"} dataField='type'> Type </TableHeaderColumn>
+          <TableHeaderColumn width = {"150"} dataField='status'> Status </TableHeaderColumn>
+        </BootstrapTable>
+        <br/><br/>
+        <BootstrapTable data={this.state.ticketData} cellEdit={ cellEditProp } pagination >{rows}</BootstrapTable>
+      </div>
+    );
   }
 
 }

@@ -60,6 +60,11 @@ export default class NewTicket extends Component {
     }
     this.setState({ isLoading: true });
     var formData = new FormData();
+    formData.append('company_number', this.state.parentCo);
+    formData.append('child_company_number',this.state.childCo);
+    formData.append('control_account_number',this.state.controlAcct);
+    formData.append('treasure_account_number',this.state.TreasuryAcct);
+    formData.append('status','New');
     formData.append('file',this.state.file);
     formData.append('ticketType',this.state.ticketType);
     formData.append('priority',this.state.priority);

@@ -49,7 +49,7 @@ export default class MyTickets extends Component {
     return(
       <BootstrapTable data={this.state.tickets } striped={true} hover={true} pagination>
       <TableHeaderColumn dataField='id' isKey headerAlign='left' dataAlign='left' dataFormat={ this.colFormatter }>Ticket ID</TableHeaderColumn>
-      <TableHeaderColumn dataField='company_no' headerAlign='left' dataAlign='left'>Company No</TableHeaderColumn>
+      <TableHeaderColumn dataField='company_number' headerAlign='left' dataAlign='left'>Company No</TableHeaderColumn>
       <TableHeaderColumn dataField='type' headerAlign='left' dataAlign='left'>Ticket Type</TableHeaderColumn>
       <TableHeaderColumn dataField='priority' headerAlign='left' dataAlign='left'>Priority</TableHeaderColumn>
       <TableHeaderColumn dataField='created_date' headerAlign='left' dataAlign='left' dataFormat={this.dateFormatter}>Created Date</TableHeaderColumn>
