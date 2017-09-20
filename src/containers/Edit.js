@@ -97,23 +97,23 @@ export default class Edit extends Component {
     Object.keys(uxConfig).map((k, index) =>
     { 
       if(uxConfig[k]['isKey']){
-        rows.push(<TableHeaderColumn width = {"150"} dataField={k}  isKey >{k}</TableHeaderColumn>);
+        rows.push(<TableHeaderColumn width ="150px" dataField={k}  isKey >{k}</TableHeaderColumn>);
        }
        else{
-        rows.push(<TableHeaderColumn width = {"150"} dataField={k}>{k}</TableHeaderColumn>);
+        rows.push(<TableHeaderColumn width ="150px" dataField={k}>{k}</TableHeaderColumn>);
        }
     });
     return(
       <div id="edit_data">
         <BootstrapTable data={this.state.ticketMetaData}>
-          <TableHeaderColumn isKey width = {"150"} dataField='company_number'> Company number </TableHeaderColumn>
-          <TableHeaderColumn width = {"150"} dataField='child_company_number'> Child Company Number </TableHeaderColumn>
-          <TableHeaderColumn width = {"150"} dataField='control_account_number'> Control Account Number </TableHeaderColumn>
+          <TableHeaderColumn isKey width ="150px" dataField='company_number'> Company number </TableHeaderColumn>
+          <TableHeaderColumn width ="150px" dataField='child_company_number'> Child Company Number </TableHeaderColumn>
+          <TableHeaderColumn width ="150px" dataField='control_account_number'> Control Account Number </TableHeaderColumn>
         </BootstrapTable>
         <BootstrapTable data={this.state.ticketMetaData}>
-          <TableHeaderColumn isKey width = {"150"} dataField='treasure_account_number'> Treasure Account Number </TableHeaderColumn>
-          <TableHeaderColumn width = {"150"} dataField='type'> Type </TableHeaderColumn>
-          <TableHeaderColumn width = {"150"} dataField='status'> Status </TableHeaderColumn>
+          <TableHeaderColumn isKey width ="150px" dataField='treasure_account_number'> Treasure Account Number </TableHeaderColumn>
+          <TableHeaderColumn width ="150px" dataField='type'> Type </TableHeaderColumn>
+          <TableHeaderColumn width ="150px" dataField='status'> Status </TableHeaderColumn>
         </BootstrapTable>
         <br/><br/>
         <BootstrapTable data={this.state.ticketData} cellEdit={ cellEditProp } pagination >{rows}</BootstrapTable>
