@@ -21,7 +21,7 @@ const cellEditProp = {
   mode: 'click',
   blurToSave: true,
   afterSaveCell: onAfterSaveCell
-};  
+};
 
 export default class Edit extends Component {
   constructor(props) {
@@ -37,11 +37,37 @@ export default class Edit extends Component {
      }
   }
 
-   async componentDidMount() {
+  async componentWillReceiveProps() {
+    console.log('>>>>IN function componentWillReceiveProps');
+    if( this.props.tickets() ) {
+      try {
+        fetch('/ticket_meta?id='+ this.props.tickets())
+        .then(res => res.json())
+        .then(ticketMetaData => {
+          this.setState({ ticketMetaData });
+          console.log('>>>>>>>>>>>>>>>>>>>.'+this.state.ticketMetaData);
+        })
+      } catch (e) {
+        alert(e);
+      }
+      try {
+        fetch('/issuances')
+        .then(res => res.json())
+        .then(ticketData => {
+          this.setState({ ticketData });
+       })
+      } catch (e) {
+        alert(e);
+      }
+      this.setState({ isLoading: false });
+    }
+  }
+
+  async componentDidMount() {
     /* if (!this.props.isAuthenticated) {
        return;
      }*/
-     try {
+/*      try {
       fetch('/ticket_meta?id='+config_parent.TICKET_NO)
       .then(res => res.json())
       .then(ticketMetaData => {
@@ -60,12 +86,12 @@ export default class Edit extends Component {
      } catch (e) {
        alert(e);
      }
-   
+    */
      this.setState({ isLoading: false });
-   }
+  }
    
   render(tickets) {
-    console.log('>>>Here I am '+ this.props.tickets());
+    console.log('>>>Getting ticket Id: '+ this.props.tickets());
     var rows = [];
     let uxConfig = Config.oi;
     Object.keys(uxConfig).map((k, index) =>
@@ -94,5 +120,4 @@ export default class Edit extends Component {
       </div>
     );
   }
-
 }
