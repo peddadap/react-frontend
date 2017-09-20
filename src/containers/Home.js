@@ -67,20 +67,19 @@ export default class Home extends Component {
   }
  
   renderTabs(){
-    console.log(">>>> Rendering all Tabs");
     if( this.props.match.params.id ) {
       this.state.key = 3;
       //alert('I am coming here as it has ID');
     }
     return(
      <Tabs activeKey = {this.state.key} onSelect={this.selectTab} id = "Tab Container" animation = {true} >
-        <Tab eventKey={1}  title="My Tickets" >
+        <Tab eventKey={1}  title="My Requests" >
           <MyTickets /> 
          </Tab>
-       <Tab eventKey = {2} title="Create Ticket" >
+       <Tab eventKey = {2} title="Create Request" >
           <NewTicket  move2Tab = {(tab)=>{this.selectTab(tab)}} />
         </Tab>
-        <Tab eventKey={3} title="Edit Ticket" >
+        <Tab eventKey={3} title="Edit Request" >
           <Edit tickets = {()=> {return this.props.match.params.id}}/>
         </Tab>
 
@@ -96,7 +95,7 @@ export default class Home extends Component {
   renderLander() {
     return (
       <div className="lander">
-        <p>A simple ticketing system</p>
+       
       </div>
     );
   }

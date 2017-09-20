@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from 'react-router-dom'
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import {Button} from 'react-bootstrap';
 import "./Home.css";
 
 export default class MyTickets extends Component {
@@ -9,6 +10,10 @@ export default class MyTickets extends Component {
     this.state = {
       isLoading: true,
       tickets: []
+    };
+    this.options = {
+      defaultSortName: 'id',  // default sort column name
+      defaultSortOrder: 'desc'  // default sort order
     };
   }
   
@@ -41,20 +46,55 @@ export default class MyTickets extends Component {
   dateFormatter(cell, row){
    
    var cdate = (new Date(cell)).toISOString().split('T')[0]
-    return  cdate;
+   if (cdate.indexOf("1970") >= 0){
+     return ' -- ';
+   }
+    else return  cdate;
   }
   
+  imageFormatter(cell, row){
+   // return (<img style={{width:50}} src=/>)
+   if (cell == 'created')
+    return (<Button  bsStyle="primary">Submit</Button>);
+   else
+    if(cell =='error')
+      return (<Button bsStyle="danger">Error</Button>);
+    else
+      return   (<Button bsStyle="success">Completed</Button>);
+  }
+
+  createCustomToolBar = props => {
+    return (
+      <div style={ { margin: '15px' } }>
+        { props.components.btnGroup }
+        <div className='col-xs-8 col-sm-4 col-md-4 col-lg-2'>
+          { props.components.searchPanel }
+        </div>
+      </div>
+    );
+  }
+
   render(tickets){
 
+    const selectRow = {
+      mode: 'checkbox',
+      showOnlySelected: true
+    };
+    const options = {
+      toolBar: this.createCustomToolBar,
+      defaultSortName: 'id',  // default sort column name
+      defaultSortOrder: 'desc'  // default sort order
+    };
+
     return(
-      <BootstrapTable data={this.state.tickets } striped={true} hover={true} pagination>
-      <TableHeaderColumn dataField='id' isKey headerAlign='left' dataAlign='left' dataFormat={ this.colFormatter }>Ticket ID</TableHeaderColumn>
-      <TableHeaderColumn dataField='company_no' headerAlign='left' dataAlign='left'>Company No</TableHeaderColumn>
-      <TableHeaderColumn dataField='type' headerAlign='left' dataAlign='left'>Ticket Type</TableHeaderColumn>
-      <TableHeaderColumn dataField='priority' headerAlign='left' dataAlign='left'>Priority</TableHeaderColumn>
-      <TableHeaderColumn dataField='created_date' headerAlign='left' dataAlign='left' dataFormat={this.dateFormatter}>Created Date</TableHeaderColumn>
-      <TableHeaderColumn dataField='submitted_date' headerAlign='left' dataAlign='left' dataFormat={this.dateFormatter}>Submitted Date</TableHeaderColumn>
-      <TableHeaderColumn dataField='status' headerAlign='left' dataAlign='left'>Status</TableHeaderColumn>
+      <BootstrapTable data={this.state.tickets } striped={true} hover={true} pagination options = {options } selectRow={ selectRow }  exportCSV search>
+      <TableHeaderColumn dataField='id' isKey headerAlign='left' dataAlign='left' dataFormat={ this.colFormatter } dataSort>Request ID</TableHeaderColumn>
+      <TableHeaderColumn dataField='companyno' headerAlign='left' dataAlign='left' dataSort>Company No </TableHeaderColumn>
+      <TableHeaderColumn dataField='type' headerAlign='left' dataAlign='left' dataSort>Ticket Type</TableHeaderColumn>
+      <TableHeaderColumn dataField='priority' headerAlign='left' dataAlign='left' dataSort>Priority</TableHeaderColumn>
+      <TableHeaderColumn dataField='created_date' headerAlign='left' dataAlign='left' dataFormat={this.dateFormatter} dataSort>Created Date</TableHeaderColumn>
+      <TableHeaderColumn dataField='submitted_date' headerAlign='left' dataAlign='left' dataFormat={this.dateFormatter} dataSort>Submitted Date</TableHeaderColumn>
+      <TableHeaderColumn dataField='status' headerAlign='left' dataAlign='left' dataFormat={this.imageFormatter} dataSort ></TableHeaderColumn>
       </BootstrapTable>
     )
   }

@@ -35,7 +35,7 @@ class App extends Component {
         <Navbar fluid collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
-              <Link to="/">Ticketing System</Link>
+              <Link to="/">Request Management System</Link>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>

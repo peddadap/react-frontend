@@ -54,21 +54,54 @@ export default class Edit extends Component {
    
      this.setState({ isLoading: false });
    }
+
+   createCustomModalHeader(onClose, onSave) {
+    const headerStyle = {
+      fontWeight: 'bold',
+      fontSize: 'large',
+      textAlign: 'center',
+      backgroundColor: '#eeeeee'
+    };
+    return (
+      <div className='modal-header' style={ headerStyle }>
+        <h3>That is my custom header</h3>
+        <button className='btn btn-info' onClick={ onClose }>Close it!</button>
+      </div>
+    );
+  }
+
+ /* customConfirm(next, dropRowKeys) {
+    const dropRowKeysStr = dropRowKeys.join(',');
+    if (confirm(`(It's a custom confirm)Are you sure you want to delete ${dropRowKeysStr}?`)) {
+      // If the confirmation is true, call the function that
+      // continues the deletion of the record.
+      next();
+    }
+  }*/
   
   render(tickets) {
     console.log('>>>Here I am '+ this.props.tickets());
     var rows = [];
     let uxConfig = Config.oi;
+    let options = {
+      insertModalHeader: this.createCustomModalHeader,
+      //handleConfirmDeleteRow: this.customConfirm
+    };
+    const selectRowProp = {
+      mode: 'checkbox',
+      showOnlySelected: true,
+     // onSelectAll: this.onSelectAll
+    };
     Object.keys(uxConfig).map((k, index) =>
     { 
       if(uxConfig[k]['isKey']){
-        rows.push(<TableHeaderColumn width = {"150"} dataField={k}  isKey >{k}</TableHeaderColumn>);
+        rows.push(<TableHeaderColumn width = {"120"} dataField={k}  isKey >{k}</TableHeaderColumn>);
        }
        else{
-        rows.push(<TableHeaderColumn width = {"150"} dataField={k}>{k}</TableHeaderColumn>);
+        rows.push(<TableHeaderColumn width = {"120"} dataField={k}>{k}</TableHeaderColumn>);
        }
     });
-    return(<BootstrapTable data={this.state.ticketData} cellEdit={ cellEditProp } pagination >{rows}</BootstrapTable>);
+    return(<BootstrapTable data={this.state.ticketData} cellEdit={ cellEditProp } insertRow={ true } pagination  options={ options } selectRow={ selectRowProp }  deleteRow={ true }  multiColumnSearch={ true } >{rows}</BootstrapTable>);
   }
 
 }
