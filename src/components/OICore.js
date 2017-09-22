@@ -23,6 +23,7 @@ export default class OICore extends Component {
   }
 
   render(){
+ 
    return(
           <div>
           <FormGroup controlId="ticketType">

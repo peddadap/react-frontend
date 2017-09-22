@@ -7,6 +7,7 @@ import { Form,FormGroup, FormControl, ControlLabel} from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import OICore from "../components/OICore";
 import Attachments from "../components/Example";
+import Email from "../components/Email";
 
 //import jsonData from "../data.json";
 import Config from "./ux.json";
@@ -62,12 +63,15 @@ export default class NewTicket extends Component {
       afterSaveCell: this.onAfterSaveCell
     }; 
     return(
-      <form  onSubmit={this.handleSubmit}>
+      <Form inline  onSubmit={this.handleSubmit}>
       <br/>
       <OICore></OICore>
-      <br/>
-      <h1> Attachments </h1>
+      <hr/>
+      <Email/>
+      <ControlLabel>Attachments</ControlLabel>
       <Attachments/>
+      <br/>
+      <br/>
       <LoaderButton
         block
         bsStyle="primary"
@@ -78,7 +82,7 @@ export default class NewTicket extends Component {
         text="Create"
         loadingText="Creating…"
       />
-    </form>
+    </Form>
     );
   }
 }

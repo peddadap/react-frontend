@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import DropzoneComponent from 'react-dropzone-component';
+var ReactDOMServer = require('react-dom/server');
 
 export default class Example extends React.Component {
     constructor(props) {
@@ -11,7 +12,19 @@ export default class Example extends React.Component {
         this.djsConfig = {
             addRemoveLinks: true,
             acceptedFiles: "image/jpeg,image/png,image/gif",
-            autoProcessQueue: false
+            autoProcessQueue: false,
+            previewTemplate: ReactDOMServer.renderToStaticMarkup(
+                <div className="dz-preview dz-file-preview">
+                  <div className="dz-details">
+                    <div className="dz-filename"><span data-dz-name="true"></span></div>
+                    <img data-dz-thumbnail="true" />
+                  </div>
+                  <div className="dz-progress"><span className="dz-upload" data-dz-uploadprogress="true"></span></div>
+                  <div className="dz-success-mark"><span>✔</span></div>
+                  <div className="dz-error-mark"><span>✘</span></div>
+                  <div className="dz-error-message"><span data-dz-errormessage="true"></span></div>
+                </div>
+              )
         };
 
         this.componentConfig = {
@@ -40,12 +53,17 @@ export default class Example extends React.Component {
             init: dz => this.dropzone = dz,
             addedfile: this.handleFileAdded.bind(this)
         }
+        const  style = {
+             'border': 'dotted 2px black;'
+        } 
 
         return (
-            <div>
-                <DropzoneComponent config={config} eventHandlers={eventHandlers} djsConfig={djsConfig} />
-                <button onClick={this.handlePost.bind(this)}>Upload</button>
-            </div>
+           <section>
+            < div className="dropzone">
+                    <br/>
+                    <DropzoneComponent config={config} eventHandlers={eventHandlers} djsConfig={djsConfig} />
+                </div>
+            </section>
         );
     }
 }
