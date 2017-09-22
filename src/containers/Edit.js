@@ -3,25 +3,11 @@ import { Link } from 'react-router-dom'
 import { PageHeader, ListGroup,ListGroupItem,Button,Nav,NavItem,Navbar,Tabs,Tab} from "react-bootstrap";
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import "./Home.css";
+import { Form,FormGroup, FormControl, ControlLabel} from "react-bootstrap";
+import LoaderButton from "../components/LoaderButton";
+import OICore from "../components/OICore";
 //import jsonData from "../data.json";
 import Config from "./ux.json";
-
-function onAfterSaveCell(row, cellName, cellValue) {
-  alert(`Save cell ${cellName} with value ${cellValue}`);
-
-  let rowStr = '';
-  for (const prop in row) {
-    rowStr += prop + ': ' + row[prop] + '\n';
-  }
-
-  alert('The whole row :\n' + rowStr);
-}
-
-const cellEditProp = {
-  mode: 'click',
-  blurToSave: true,
-  afterSaveCell: onAfterSaveCell
-};  
 
 export default class Edit extends Component {
 
@@ -37,6 +23,17 @@ export default class Edit extends Component {
      }
   }
 
+  onAfterSaveCell(row, cellName, cellValue) {
+    alert(`Save cell ${cellName} with value ${cellValue}`);
+  
+    let rowStr = '';
+    for (const prop in row) {
+      rowStr += prop + ': ' + row[prop] + '\n';
+    }
+  
+    alert('The whole row :\n' + rowStr);
+  }
+  
   async componentDidMount() {
     /* if (!this.props.isAuthenticated) {
        return;
@@ -70,17 +67,11 @@ export default class Edit extends Component {
     );
   }
 
- /* customConfirm(next, dropRowKeys) {
-    const dropRowKeysStr = dropRowKeys.join(',');
-    if (confirm(`(It's a custom confirm)Are you sure you want to delete ${dropRowKeysStr}?`)) {
-      // If the confirmation is true, call the function that
-      // continues the deletion of the record.
-      next();
-    }
-  }*/
-  
+  validateForm(){
+    
+  }
+
   render(tickets) {
-    console.log('>>>Here I am '+ this.props.tickets());
     var rows = [];
     let uxConfig = Config.oi;
     let options = {
@@ -92,6 +83,11 @@ export default class Edit extends Component {
       showOnlySelected: true,
      // onSelectAll: this.onSelectAll
     };
+    const  cellEditProp = {
+      mode: 'click',
+      blurToSave: true,
+      afterSaveCell: this.onAfterSaveCell
+    }; 
     Object.keys(uxConfig).map((k, index) =>
     { 
       if(uxConfig[k]['isKey']){
@@ -101,7 +97,31 @@ export default class Edit extends Component {
         rows.push(<TableHeaderColumn width = {"120"} dataField={k}>{k}</TableHeaderColumn>);
        }
     });
-    return(<BootstrapTable data={this.state.ticketData} cellEdit={ cellEditProp } insertRow={ true } pagination  options={ options } selectRow={ selectRowProp }  deleteRow={ true }  multiColumnSearch={ true } >{rows}</BootstrapTable>);
+    return(
+      <form  onSubmit={this.handleSubmit}>
+      <br/>
+      <OICore></OICore>
+      <br/>
+      <h1> Attachments </h1>
+      <BootstrapTable data={this.state.ticketData} cellEdit={ cellEditProp } insertRow={ true } options={ options } selectRow={ selectRowProp }  deleteRow={ true }  multiColumnSearch={ true } >
+      <TableHeaderColumn dataField='ID' isKey headerAlign='left' dataAlign='left' dataFormat={ this.colFormatter } dataSort>AttachmentID</TableHeaderColumn>
+      <TableHeaderColumn dataField='FileName' headerAlign='left' dataAlign='left' dataSort>FileName </TableHeaderColumn>
+      <TableHeaderColumn dataField='Type' headerAlign='left' dataAlign='left' dataSort>FileType</TableHeaderColumn>
+      <TableHeaderColumn dataField='UploadedDate' headerAlign='left' dataAlign='left' dataSort>UploadDate</TableHeaderColumn>
+      <TableHeaderColumn dataField='Comments' headerAlign='left' dataAlign='left' dataFormat={this.dateFormatter} dataSort>Comments</TableHeaderColumn>
+      </BootstrapTable>
+      <BootstrapTable data={this.state.ticketData} cellEdit={ cellEditProp } insertRow={ true } pagination  options={ options } selectRow={ selectRowProp }  deleteRow={ true }  multiColumnSearch={ true } >{rows}</BootstrapTable>
+      <LoaderButton
+        block
+        bsStyle="primary"
+        bsSize="large"
+        disabled={!this.validateForm()}
+        type="submit"
+        isLoading={this.state.isLoading}
+        text="Create"
+        loadingText="Creating…"
+      />
+    </form>
+    );
   }
-
 }

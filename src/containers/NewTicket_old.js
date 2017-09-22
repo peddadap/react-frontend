@@ -1,4 +1,3 @@
-import Dropzone from 'react-dropzone'
 import React, { Component } from "react";
 import { FormGroup, FormControl, ControlLabel} from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
@@ -8,23 +7,18 @@ import "./NewTicket.css";
 export default class NewTicket extends Component {
   constructor(props) {
     super(props);
-
+    console.log('New Ticket Has Access to Props');
+    console.log(props);
     //this.file = null;
 
-    this.state = { files: [] }
+    this.state = {
+
+      priority:"Low",
+      ticketType:"Orginial Issuance",
+     }
   }
-
-  onDrop(files) {
-    this.setState({
-      files
-    });
-  }
-
-  createTicket(){
-
-
-  }
-
+    
+ 
   validateForm() {
     return true;
     //return this.state.content.length > 0;
@@ -40,49 +34,72 @@ export default class NewTicket extends Component {
     this.setState({
       [event.target.id]: event.target.files[0]
     });
-   
   }
 
   handleSubmit = async event => {
     event.preventDefault();
-
-   /* if (this.file && this.file.size > config.MAX_ATTACHMENT_SIZE) {
-      alert("Please pick a file smaller than 5MB");
+    if (this.file && this.file.size > config.MAX_ATTACHMENT_SIZE) {
+      alert("Please pick a file smaller than 1MB");
       return;
-    }*/
-
-    //this.setState({ isLoading: true });
-
-    var myForm = document.getElementById('myForm');
+    }
+    if(this.state.parentCo && this.state.parentCo === '') {
+      alert("Please enter a value for Parent Company No #");
+      return;
+    }
+    if(this.state.childCo && this.state.childCo === '') {
+      alert("Please enter a value for Child Company No #");
+      return;
+    }
+    if(this.state.controlAcct && this.state.controlAcct === '') {
+      alert("Please enter a value for Control Account No #");
+      return;
+    }
+    if(this.state.TreasuryAcct && this.state.TreasuryAcct === '') {
+      alert("Please enter a value for Treasury Account No #");
+      return;
+    }
+    this.setState({ isLoading: true });
     var formData = new FormData();
-    formData.append('files',this.state.files);
+    formData.append('file',this.state.file);
+    formData.append('ticketType',this.state.ticketType);
+    formData.append('priority',this.state.priority);
     await fetch('/ticket/new/', {
       method: 'POST',
       body: formData
-    }).then(function(result){console.log('result of ticket:'+result)})
-    this.props.history.push("/");
-  }
+    }).then(function(result){})
+    this.setState({ isLoading: false });
+    this.props.move2Tab(1);
+    //alert("New Order Created")
+
+   }
 
   render() {
+    //console.log(">>>>>>>>>>>>.. New Ticket Rendered");
     return (
-      <div className="NewNote">
-        <form  id = 'myForm' onSubmit={this.handleSubmit} encType='multipart/form-data'>
+  
+        <form  onSubmit={this.handleSubmit}>
           <FormGroup controlId="ticketType">
             <ControlLabel>Ticket Type</ControlLabel>
             <FormControl componentClass="select" placeholder="select"  onChange={this.handleChange}>
               <option value="Original">Original Issuance</option>
-              <option value="Surrender">Surrender</option>
+              <option value="Grants">Grants</option>
+              <option value="Vestings">Vestings</option>
+              <option value="Terminations">Terminations</option>
           </FormControl>
           </FormGroup>
           <FormGroup controlId="priority">
             <ControlLabel>Priority</ControlLabel>
-            <FormControl onChange={this.handleChange} type="text" />
-          </FormGroup>
+              <FormControl componentClass="select" placeholder="select"  onChange={this.handleChange}>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+            </FormControl>
+        </FormGroup>
           <FormGroup controlId="parentCo">
             <ControlLabel>Parent Company No #</ControlLabel>
             <FormControl onChange={this.handleChange} type="text" />
           </FormGroup>
-          <FormGroup controlId="clildCo">
+          <FormGroup controlId="childCo">
             <ControlLabel>Child Company No #</ControlLabel>
             <FormControl onChange={this.handleChange} type="text" />
           </FormGroup>
@@ -95,24 +112,9 @@ export default class NewTicket extends Component {
             <FormControl onChange={this.handleChange} type="text" />
           </FormGroup>
           <FormGroup controlId="file">
-            <ControlLabel>attachment</ControlLabel>
+            <ControlLabel>Attachment</ControlLabel>
             <FormControl onChange={this.handleFileChange} type="file" />
           </FormGroup>
-          <section>
-            <div className="dropzone">
-              <Dropzone onDrop={this.onDrop.bind(this)}>
-                <p>Try dropping some files here, or click to select files to upload.</p>
-              </Dropzone>
-            </div>
-            <aside>
-              <h2>Dropped files</h2>
-              <ul>
-                {
-                  this.state.files.map(f => <li key={f.name}>{f.name} - {f.size} bytes</li>)
-                }
-            </ul>
-            </aside>
-          </section>
           <LoaderButton
             block
             bsStyle="primary"
@@ -124,7 +126,6 @@ export default class NewTicket extends Component {
             loadingText="Creating…"
           />
         </form>
-      </div>
     );
   }
 }
