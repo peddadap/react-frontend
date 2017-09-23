@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from 'react-router-dom'
-import { FormGroup, FormControl, ControlLabel} from "react-bootstrap";
+import { FormGroup, FormControl, ControlLabel, Col} from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 //import jsonData from "../data.json";
 //import Config from "./ux.json";
@@ -27,22 +27,34 @@ export default class Email extends Component {
    return(
           <div>
           <FormGroup controlId="To">
-              <ControlLabel>TO:</ControlLabel>
-              <FormControl onChange={this.handleChange} type="text" />
+              <Col componentClass={ControlLabel} sm={3}>To:</Col>
+              <Col sm={6}>
+                <FormControl onChange={this.handleChange} type="text" />
+              </Col>
+              <Col smoffset={3}></Col>
           </FormGroup>
           <FormGroup controlId="CC">
-              <ControlLabel>CC:</ControlLabel>
-              <FormControl onChange={this.handleChange} type="text" />
+              <Col componentClass={ControlLabel} sm={3}>Copy:</Col>
+              <Col sm={6}>
+                <FormControl onChange={this.handleChange} type="text" />
+              </Col>
+              <Col smoffset={3}></Col>              
           </FormGroup>
           <FormGroup controlId="Subject">
-              <ControlLabel>Subject:</ControlLabel>
-              <FormControl onChange={this.handleChange} type="text" />
+              <Col componentClass={ControlLabel} sm={3}>Subject:</Col>
+              <Col sm={6}>
+                <FormControl onChange={this.handleChange} type="text" />
+              </Col>
+              <Col smoffset={3}></Col> 
           </FormGroup>
           <FormGroup controlId="Body">
-          <ControlLabel>Body</ControlLabel>
-          <FormControl componentClass="textarea" placeholder="textarea" />
-        </FormGroup>
-      </div>
+              <Col componentClass={ControlLabel} sm={3}>Body:</Col>
+              <Col sm={6}>
+                <FormControl componentClass="textarea" placeholder="textarea" bssize="large"/>
+              </Col>
+              <Col smoffset={3}></Col> 
+          </FormGroup>
+          </div>
      );
   }
 }

@@ -98,7 +98,7 @@ export default class Edit extends Component {
        }
     });
     return(
-      <form  onSubmit={this.handleSubmit}>
+      <Form horizontal onSubmit={this.handleSubmit}>
       <br/>
       <OICore></OICore>
       <br/>
@@ -121,7 +121,7 @@ export default class Edit extends Component {
         text="Create"
         loadingText="Creating…"
       />
-    </form>
+    </Form>
     );
   }
 }

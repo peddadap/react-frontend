@@ -6,7 +6,7 @@ import "./Home.css";
 import { Form,FormGroup, FormControl, ControlLabel} from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import OICore from "../components/OICore";
-import Attachments from "../components/Example";
+import Attachments from "../components/Attachments";
 import Email from "../components/Email";
 
 //import jsonData from "../data.json";
@@ -62,8 +62,9 @@ export default class NewTicket extends Component {
       blurToSave: true,
       afterSaveCell: this.onAfterSaveCell
     }; 
+
     return(
-      <Form inline  onSubmit={this.handleSubmit}>
+      <Form horizontal onSubmit={this.handleSubmit}>
       <br/>
       <OICore></OICore>
       <hr/>
