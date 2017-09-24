@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import { Link } from 'react-router-dom'
 import { FormGroup, FormControl, ControlLabel, Col} from "react-bootstrap";
-import LoaderButton from "../components/LoaderButton";
 
 export default class OICore extends Component {
 

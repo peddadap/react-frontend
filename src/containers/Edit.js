@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import { Link } from 'react-router-dom'
-import { PageHeader, ListGroup,ListGroupItem,Button,Nav,NavItem,Navbar,Tabs,Tab} from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import "./Home.css";
-import { Form,FormGroup, FormControl, ControlLabel} from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import OICore from "../components/OICore";
 //import jsonData from "../data.json";
@@ -88,8 +87,7 @@ export default class Edit extends Component {
       blurToSave: true,
       afterSaveCell: this.onAfterSaveCell
     }; 
-    Object.keys(uxConfig).map((k, index) =>
-    { 
+    Object.keys(uxConfig).map((k, index) => { 
       if(uxConfig[k]['isKey']){
         rows.push(<TableHeaderColumn width = {"120"} dataField={k}  isKey >{k}</TableHeaderColumn>);
        }
