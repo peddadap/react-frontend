@@ -88,13 +88,13 @@ export default class MyTickets extends Component {
 
     return(
       <BootstrapTable data={this.state.tickets } striped={true} hover={true} pagination options = {options } selectRow={ selectRow }  exportCSV search>
-      <TableHeaderColumn dataField='id' isKey headerAlign='left' dataAlign='left' dataFormat={ this.colFormatter } dataSort>Request ID</TableHeaderColumn>
-      <TableHeaderColumn dataField='companyno' headerAlign='left' dataAlign='left' dataSort>Company No </TableHeaderColumn>
-      <TableHeaderColumn dataField='type' headerAlign='left' dataAlign='left' dataSort>Ticket Type</TableHeaderColumn>
-      <TableHeaderColumn dataField='priority' headerAlign='left' dataAlign='left' dataSort>Priority</TableHeaderColumn>
-      <TableHeaderColumn dataField='created_date' headerAlign='left' dataAlign='left' dataFormat={this.dateFormatter} dataSort>Created Date</TableHeaderColumn>
-      <TableHeaderColumn dataField='submitted_date' headerAlign='left' dataAlign='left' dataFormat={this.dateFormatter} dataSort>Submitted Date</TableHeaderColumn>
-      <TableHeaderColumn dataField='status' headerAlign='left' dataAlign='left' dataFormat={this.imageFormatter} dataSort ></TableHeaderColumn>
+      <TableHeaderColumn dataField='ID' isKey headerAlign='left' dataAlign='left' dataFormat={ this.colFormatter } dataSort>Request ID</TableHeaderColumn>
+      <TableHeaderColumn dataField='ParentCompany' headerAlign='left' dataAlign='left' dataSort>Company No </TableHeaderColumn>
+      <TableHeaderColumn dataField='Type' headerAlign='left' dataAlign='left' dataSort>Ticket Type</TableHeaderColumn>
+      <TableHeaderColumn dataField='Priority' headerAlign='left' dataAlign='left' dataSort>Priority</TableHeaderColumn>
+      <TableHeaderColumn dataField='CreatedDate' headerAlign='left' dataAlign='left' dataFormat={this.dateFormatter} dataSort>Created Date</TableHeaderColumn>
+      <TableHeaderColumn dataField='SubmittedDate' headerAlign='left' dataAlign='left' dataFormat={this.dateFormatter} dataSort>Submitted Date</TableHeaderColumn>
+      <TableHeaderColumn dataField='Status' headerAlign='left' dataAlign='left' dataFormat={this.imageFormatter} dataSort >Status</TableHeaderColumn>
       </BootstrapTable>
     )
   }
