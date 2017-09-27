@@ -95,7 +95,7 @@ export default class Edit extends Component {
       <EditOICore></EditOICore>
       <hr/>
       <FormGroup controlId="ticketType">
-        <Col componentClass={ControlLabel} sm={3}>Ticket Type</Col>
+        <Col componentClass={ControlLabel} sm={3}>Attachment</Col>
         <Col sm={6}>
           <FormControl bsSize ="small" componentClass="select" placeholder="select" onChange={this.handleChange}>
             <option value="Excel1">Data-08-25-2017.xls</option>

@@ -4,8 +4,9 @@
 		"ParentCompany": "123456789", 
 		"Type": "Grants", 
 		"Priority": "Low", 
-		"CreatedDate": "10-10-2016T00:00:00.000Z", 
-		"SubmittedDate": "09-09-2017T00:00:00.000Z", 
+		"CreatedDate": "05-10-2016T00:00:00.000Z", 
+		"SubmittedDate": "10-09-2017T00:00:00.000Z", 
+		"UpdatedBy": "Aaron Finch",
 		"Status": "created"
 	},
 	{
@@ -15,6 +16,7 @@
 		"Priority": "Medium", 
 		"CreatedDate": "10-10-2016T00:00:00.000Z", 
 		"SubmittedDate": "09-09-2017T00:00:00.000Z", 
+		"UpdatedBy": "Breet Lee",	
 		"Status": "created"
 	},
 	{
@@ -22,8 +24,9 @@
 		"ParentCompany": "789123456", 
 		"Type": "Terminations", 
 		"Priority": "Medium", 
-		"CreatedDate": "10-10-2016T00:00:00.000Z", 
-		"SubmittedDate": "09-09-2017T00:00:00.000Z", 
+		"CreatedDate": "05-10-2016T00:00:00.000Z", 
+		"SubmittedDate": "10-09-2017T00:00:00.000Z",
+		"UpdatedBy": "Steve Waugh",	 
 		"Status": "completed"
 	},
 	{
@@ -31,8 +34,9 @@
 		"ParentCompany": "147258369", 
 		"Type": "Original", 
 		"Priority": "High", 
-		"CreatedDate": "10-10-2016T00:00:00.000Z", 
-		"SubmittedDate": "09-09-2017T00:00:00.000Z", 
+		"CreatedDate": "12-10-2016T00:00:00.000Z", 
+		"SubmittedDate": "10-09-2017T00:00:00.000Z",
+		"UpdatedBy": "Steve Waugh",	 
 		"Status": "created"
 	},
 	{
@@ -40,8 +44,9 @@
 		"ParentCompany": "258369147", 
 		"Type": "Vestings", 
 		"Priority": "Medium", 
-		"CreatedDate": "10-10-2016T00:00:00.000Z", 
-		"SubmittedDate": "09-09-2017T00:00:00.000Z", 
+		"CreatedDate": "05-10-2016T00:00:00.000Z", 
+		"SubmittedDate": "10-09-2017T00:00:00.000Z",
+		"UpdatedBy": "Jonty Rodes",		 
 		"Status": "completed"
 	},
 	{
@@ -50,7 +55,8 @@
 		"Type": "Terminations", 
 		"Priority": "Low", 
 		"CreatedDate": "10-10-2016T00:00:00.000Z", 
-		"SubmittedDate": "09-09-2017T00:00:00.000Z", 
+		"SubmittedDate": "10-09-2017T00:00:00.000Z", 
+		"UpdatedBy": "Chris Gayle",		
 		"Status": "created"
 	},
 	{
@@ -58,8 +64,9 @@
 		"ParentCompany": "321654987", 
 		"Type": "Original", 
 		"Priority": "Medium", 
-		"CreatedDate": "10-10-2016T00:00:00.000Z", 
+		"CreatedDate": "05-10-2016T00:00:00.000Z", 
 		"SubmittedDate": "09-09-2017T00:00:00.000Z", 
+		"UpdatedBy": "Breet Lee",
 		"Status": "error"
 	},
 	{
@@ -68,7 +75,8 @@
 		"Type": "Original", 
 		"Priority": "High", 
 		"CreatedDate": "10-10-2016T00:00:00.000Z", 
-		"SubmittedDate": "09-09-2017T00:00:00.000Z", 
+		"SubmittedDate": "10-09-2017T00:00:00.000Z", 
+		"UpdatedBy": "Aaron Finch",
 		"Status": "completed"
 	},
 	{
@@ -78,6 +86,7 @@
 		"Priority": "Low", 
 		"CreatedDate": "10-10-2016T00:00:00.000Z", 
 		"SubmittedDate": "09-09-2017T00:00:00.000Z", 
+		"UpdatedBy": "Steve Waugh",
 		"Status": "created"
 	},
 	{
@@ -87,6 +96,7 @@
 		"Priority": "High", 
 		"CreatedDate": "10-10-2016T00:00:00.000Z", 
 		"SubmittedDate": "09-09-2017T00:00:00.000Z", 
+		"UpdatedBy": "Aaron Finch",
 		"Status": "completed"
 	}
 ]

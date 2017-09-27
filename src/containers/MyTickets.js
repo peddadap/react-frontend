@@ -89,6 +89,7 @@ export default class MyTickets extends Component {
         <TableHeaderColumn dataField='Priority' headerAlign='left' dataAlign='left' dataSort>Priority</TableHeaderColumn>
         <TableHeaderColumn dataField='CreatedDate' headerAlign='left' dataAlign='left' dataFormat={this.dateFormatter} dataSort>Created Date</TableHeaderColumn>
         <TableHeaderColumn dataField='SubmittedDate' headerAlign='left' dataAlign='left' dataFormat={this.dateFormatter} dataSort>Submitted Date</TableHeaderColumn>
+        <TableHeaderColumn dataField='UpdatedBy' headerAlign='left' dataAlign='left' dataSort>Updated By</TableHeaderColumn>
         <TableHeaderColumn dataField='Status' headerAlign='left' dataAlign='left' dataFormat={this.imageFormatter} dataSort >Status</TableHeaderColumn>
       </BootstrapTable>
     )
