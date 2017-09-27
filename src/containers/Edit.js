@@ -65,11 +65,23 @@ export default class Edit extends Component {
     }
   }
 
+  createCustomToolBar = props => {
+    return (
+      <div style={ { margin: '15px', 'padding-right': '2cm' } }>
+        { props.components.btnGroup }
+        <div className='col-xs-8 col-sm-4 col-md-4 col-lg-2'>
+          { props.components.searchPanel }
+        </div>
+      </div>
+    );
+  }
+
   render(tickets) {
     var rows = [];
     let uxConfig = Config.oi;
     let options = {
       insertModalHeader: this.createCustomModalHeader,
+      toolBar: this.createCustomToolBar,
     };
     const selectRowProp = {
       mode: 'checkbox',
@@ -105,7 +117,7 @@ export default class Edit extends Component {
         <Col smoffset={3}></Col>
       </FormGroup>
       <hr/>
-      <BootstrapTable data={ this.state.ticketData } cellEdit={ cellEditProp } insertRow={ true } pagination  options={ options } selectRow={ selectRowProp }  deleteRow={ true }  multiColumnSearch={ true } >{rows}</BootstrapTable>
+      <BootstrapTable data={ this.state.ticketData } cellEdit={ cellEditProp } insertRow={ true } pagination  options={ options } selectRow={ selectRowProp }  deleteRow={ true }  multiColumnSearch={ true } search>{rows}</BootstrapTable>
       <LoaderButton
         block
         bsStyle="primary"
