@@ -9,49 +9,32 @@ import Edit from './Edit';
 export default class Home extends Component {
   constructor(props) {
     super(props);
+    this.selectTab = this.selectTab.bind(this);
+    var handleToUpdate  = this.handleToUpdate.bind(this);
     this.state = {
       isLoading: true,
-      //tickets: [],
-      };
-    
+    };  
   }
 
-  getInitialState() {
-    
+  handleToUpdate(tabindex){
+    alert('We pass argument from Child to Parent: ' + tabindex);
+    this.selectTab(tabindex);
+  }
+
+  getInitialState() {  
     return {
-      key: 1
+      activeTab: 1
     };
   }
   
   selectTab(tab) {
-   //alert('selected #' + tab);
-   //console.log('>>>> Tab Selected' + this.state.key);
-   this.setState({
-    key: tab
-   }, function(){
-     console.log(this.state.key);
-   });
-   //this.forceUpdate();
+    this.setState({
+      activeTab: tab
+    }, function(){
+      console.log(this.state.activeTab);
+    });
   }
 
-  
-
-  /*async componentDidMount() {
-    if (!this.props.isAuthenticated) {
-      return;
-    }
-  
-    try {
-      fetch('/tickets')
-      .then(res => res.json())
-      .then(tickets => this.setState({ tickets }));
-    } catch (e) {
-      alert(e);
-    }
-  
-    this.setState({ isLoading: false });
-  }*/
- 
   colFormatter = (cell, row) => {
     return (
       <Link to={"/ticket/"+cell}>
@@ -68,21 +51,19 @@ export default class Home extends Component {
  
   renderTabs(){
     if( this.props.match.params.id ) {
-      this.state.key = 3;
-      //alert('I am coming here as it has ID');
+      this.state.activeTab = 3;
     }
     return(
-     <Tabs activeKey = {this.state.key} onSelect={this.selectTab} id = "Tab Container" animation = {true} >
-        <Tab eventKey={1}  title="My Requests" >
-          <MyTickets /> 
-         </Tab>
-       <Tab eventKey = {2} title="Create Request" >
-          <NewTicket  move2Tab = {(tab)=>{this.selectTab(tab)}} />
+      <Tabs activeKey={this.state.activeTab} onSelect={this.selectTab} id="Tab Container" animation={true}>
+        <Tab eventKey={1}  title="My Requests">
+          <MyTickets handleToUpdate={this.handleToUpdate.bind(this)}/> 
         </Tab>
-        <Tab eventKey={3} title="Edit Request" >
-          <Edit tickets = {()=> {return this.props.match.params.id}}/>
+        <Tab eventKey={2} title="Create Request">
+          <NewTicket move2Tab={(tab)=>{this.selectTab(tab)}}/>
         </Tab>
-
+        <Tab eventKey={3} title="Edit Request">
+          <Edit tickets={()=> {return this.props.match.params.id}}/>
+        </Tab>
       </Tabs>
     )
   }
@@ -94,26 +75,12 @@ export default class Home extends Component {
 
   renderLander() {
     return (
-      <div className="lander">
-       
+      <div className="lander">   
       </div>
     );
   }
 
- /* renderNotes() {
-    console.log(" Home rendered notes")
-    return (
-      <div className="tickets">
-        <PageHeader>Your tickets</PageHeader>
-        <ListGroup>
-          {!this.state.isLoading && this.renderNotesList(this.state.tickets)}
-        </ListGroup>
-      </div>
-    );
-  }*/
-
   render() {
-    //console.log(">>> Home component render() method called");
     return (
       <div className="Home">
         {this.props.isAuthenticated ? this.renderTabs() : this.renderLander()}

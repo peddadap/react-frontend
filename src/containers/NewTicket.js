@@ -27,22 +27,21 @@ export default class NewTicket extends Component {
        return;
      }*/
    
-     try {
-       fetch('/issuances')
-       .then(res => res.json())
-       .then(ticketData => {
-         this.setState({ ticketData });
-       })
-     } catch (e) {
-       alert(e);
-     }
+    //  try {
+    //    fetch('/issuances')
+    //    .then(res => res.json())
+    //    .then(ticketData => {
+    //      this.setState({ ticketData });
+    //    })
+    //  } catch (e) {
+    //    alert(e);
+    //  }
    
      this.setState({ isLoading: false });
    }
 
   
   validateForm(){
-    
   }
 
   render(tickets) {
@@ -61,14 +60,14 @@ export default class NewTicket extends Component {
       mode: 'click',
       blurToSave: true,
       afterSaveCell: this.onAfterSaveCell
-    }; 
+    };
 
     return(
       <Form horizontal onSubmit={this.handleSubmit}>
       <br/>
-      <OICore></OICore>
-      <hr/>
       <Email/>
+      <hr/>
+      <OICore/>
       <hr/>
       <Attachments/>
       <hr/>
@@ -83,6 +82,8 @@ export default class NewTicket extends Component {
         text="Create"
         loadingText="Creating…"
       />
+      <br/>
+      <br/>
     </Form>
     );
   }

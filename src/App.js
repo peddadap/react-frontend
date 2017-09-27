@@ -9,7 +9,6 @@ import "./App.css";
 class App extends Component {
   constructor(props) {
     super(props);
-  
     this.state = {
       isAuthenticated: false
     };
@@ -24,8 +23,7 @@ class App extends Component {
     this.props.history.push("/login");
   }
  
-  render() {
-    
+  render(){
     const childProps = {
       isAuthenticated: this.state.isAuthenticated,
       userHasAuthenticated: this.userHasAuthenticated

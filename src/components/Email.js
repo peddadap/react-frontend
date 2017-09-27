@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { FormGroup, FormControl, ControlLabel, Col} from "react-bootstrap";
-//import jsonData from "../data.json";
-//import Config from "./ux.json";
+import "./Email.css";
 
 export default class Email extends Component {
 
@@ -20,8 +19,9 @@ export default class Email extends Component {
     });
   }
 
+
   render(){
- 
+
    return(
           <div>
           <FormGroup controlId="To">
@@ -48,7 +48,7 @@ export default class Email extends Component {
           <FormGroup controlId="Body">
               <Col componentClass={ControlLabel} sm={3}>Body:</Col>
               <Col sm={6}>
-                <FormControl componentClass="textarea" placeholder="textarea" bssize="large"/>
+                <FormControl componentClass="textarea" placeholder="textarea" bssize="large" bsClass="mytextClass"/>
               </Col>
               <Col smoffset={3}></Col> 
           </FormGroup>
