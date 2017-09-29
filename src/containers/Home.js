@@ -17,8 +17,8 @@ export default class Home extends Component {
   }
 
   handleToUpdate(tabindex){
-    alert('We pass argument from Child to Parent: ' + tabindex);
     this.selectTab(tabindex);
+    this.state.activeTab = tabindex;
   }
 
   getInitialState() {  
@@ -50,7 +50,7 @@ export default class Home extends Component {
   }
  
   renderTabs(){
-    if( this.props.match.params.id ) {
+    if( this.state.activeTab == 3 ) {
       this.state.activeTab = 3;
     }
     return(
