@@ -42,13 +42,16 @@ export default class MyTickets extends Component {
   }
   
   imageFormatter = (cell, row) => {
-   if (cell == 'created')
-    return (<Button  bsStyle="primary" bsSize="small">&nbsp;&nbsp;&nbsp;Submit&nbsp;&nbsp;&nbsp;</Button>);
-   else
-    if(cell == 'error')
-      return (<Button bsStyle="danger" bsSize="small" onClick={ () => this.props.handleToUpdate('3') }>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Error&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Button>);
+    if(cell == 'Error' )
+      return (<Button bsStyle="danger" bsSize="small" onClick={ () => this.props.handleToUpdate('3') } block>{ cell }</Button>);
     else
-      return   (<Button bsStyle="success" bsSize="small">Completed</Button>);
+      if(cell == 'Open Grayed' || cell == 'Open Solid' || cell == 'In-Progress')
+        return (<Button bsStyle="info" bsSize="small" block>{ cell }</Button>);
+      else
+        if(cell == 'Pending' || cell == 'Review' || cell == 'Hold' || cell == 'Done')
+          return (<Button bsStyle="warning" bsSize="small" block>{ cell }</Button>);
+        else 
+          return (<Button bsStyle="success" bsSize="small" block>{ cell }</Button>);
   }
 
   createCustomToolBar = props => {
@@ -90,7 +93,7 @@ export default class MyTickets extends Component {
         <TableHeaderColumn dataField='CreatedDate' headerAlign='left' dataAlign='left' dataFormat={this.dateFormatter} dataSort>Created Date</TableHeaderColumn>
         <TableHeaderColumn dataField='SubmittedDate' headerAlign='left' dataAlign='left' dataFormat={this.dateFormatter} dataSort>Submitted Date</TableHeaderColumn>
         <TableHeaderColumn dataField='UpdatedBy' headerAlign='left' dataAlign='left' dataSort>Updated By</TableHeaderColumn>
-        <TableHeaderColumn dataField='Status' headerAlign='left' dataAlign='left' dataFormat={this.imageFormatter} dataSort >Status</TableHeaderColumn>
+        <TableHeaderColumn dataField='Status' headerAlign='center' dataAlign='center' dataFormat={this.imageFormatter} dataSort >Status</TableHeaderColumn>
       </BootstrapTable>
     )
   }

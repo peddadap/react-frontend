@@ -17,3 +17,7 @@
   .Home .notes p {
     color: #666;
   }
+
+.Home .sizeButton button {
+  width: '10px';
+}
