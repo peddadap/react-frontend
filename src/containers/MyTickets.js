@@ -1,17 +1,24 @@
 import React, { Component } from "react";
 import { Link } from 'react-router-dom'
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-import {Button} from 'react-bootstrap';
+import {Button, Modal} from 'react-bootstrap';
 import "./Home.css";
 import jsonMyTicketData from "../myTickets.json";
+import StatusChange from "../components/StatusChange";
+import configStatus from "../components/StatusChangeConfig";
 
 export default class MyTickets extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: true,
-      tickets: []
+      tickets: [],
+      show: false,
+      cellvalue: '',
+      cellvalueTo: '',
+      rowid: 0,
     };
+
     this.options = {
       defaultSortName: 'ID',  // default sort column name
       defaultSortOrder: 'asc'  // default sort order
@@ -40,6 +47,17 @@ export default class MyTickets extends Component {
     var cdate = cell.split('T')[0];
     return cdate;
   }
+
+  updatetickets(row){
+    var cloneArrayone = JSON.parse(JSON.stringify(this.state)).tickets;
+    cloneArrayone[row].Status = this.state.cellvalueTo;
+    return cloneArrayone;
+  }
+
+  close() {
+    this.setState({ show: false});
+    return;
+  }
   
   imageFormatter = (cell, row) => {
     if(cell == 'Error' )
@@ -48,8 +66,36 @@ export default class MyTickets extends Component {
       if(cell == 'Open Grayed' || cell == 'Open Solid' || cell == 'In-Progress')
         return (<Button bsStyle="info" bsSize="small" block>{ cell }</Button>);
       else
-        if(cell == 'Pending' || cell == 'Review' || cell == 'Hold' || cell == 'Done')
-          return (<Button bsStyle="warning" bsSize="small" block>{ cell }</Button>);
+        if(cell == 'Pending' || cell == 'Review' || cell == 'Hold' || cell == 'Done') {
+          return (
+                  <div className="modal-container" id={row}>
+                    <Button
+                      bsStyle="warning"
+                      bsSize="small"
+                      onClick={() => this.setState({ show: true, cellvalue: cell, cellvalueTo: configStatus[cell], rowid: (row.ID - 1) })}
+                      block
+                    >
+                      { cell }
+                    </Button>
+                    <Modal
+                      show={ this.state.show }
+                      onHide={() => this.setState({ show: false})}
+                      container={this}
+                      aria-labelledby="contained-modal-title"
+                    >
+                      <Modal.Header closeButton>
+                        <Modal.Title id="contained-modal-title">Change Status</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        Change status form { this.state.cellvalue } to { this.state.cellvalueTo }
+                      </Modal.Body>
+                      <Modal.Footer>
+                        <Button onClick={() => this.setState({ show: false, tickets : this.updatetickets(this.state.rowid) })}>Save & Close</Button>
+                      </Modal.Footer>
+                    </Modal>
+                  </div>
+          );
+        }
         else 
           return (<Button bsStyle="success" bsSize="small" block>{ cell }</Button>);
   }
