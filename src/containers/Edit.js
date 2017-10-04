@@ -117,7 +117,7 @@ export default class Edit extends Component {
         <Col smoffset={3}></Col>
       </FormGroup>
       <hr/>
-      <BootstrapTable data={ this.state.ticketData } cellEdit={ cellEditProp } insertRow={ true } pagination  options={ options } selectRow={ selectRowProp }  deleteRow={ true }  multiColumnSearch={ true } search>{rows}</BootstrapTable>
+      <BootstrapTable data={ this.state.ticketData } cellEdit={ cellEditProp } pagination  options={ options } selectRow={ selectRowProp }  multiColumnSearch={ true } search>{rows}</BootstrapTable>
       <LoaderButton
         block
         bsStyle="primary"

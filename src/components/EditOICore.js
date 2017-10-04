@@ -1,19 +1,45 @@
 import React, { Component } from "react";
 import { FormGroup, FormControl, ControlLabel, Col} from "react-bootstrap";
 import jsonEditOICoreData from "../EditOICore.json";
+import DatePicker from "react-bootstrap-date-picker";
 
 export default class EditOICore extends Component {
 
   constructor(props) {
     super(props);
+    var value1 = new Date().toISOString();
     this.state = {
+        value: value1,
+        displayDate: 'Issue Date'
     }
+  }
+
+  handleChangeDate(value, formattedValue) {
+    this.setState({
+      value: value, // ISO String, ex: "2016-11-19T12:00:00.000Z" 
+      formattedValue: formattedValue, // Formatted String, ex: "11/19/2016" 
+    });
   }
 
   async componentDidMount() {
    }
 
   handleChange = event => {
+    if(event.target.id == 'ticketType') {
+        if(event.target.value == 'Vestings')
+            this.setState({
+                displayDate: 'Vesting Date',
+            })
+        else
+            if(event.target.value === 'Terminations')
+                this.setState({
+                    displayDate: 'Termination Date',
+                })
+            else
+                this.setState({
+                    displayDate: 'Issue Date',
+                })
+    }
     this.setState({
       [event.target.id]: event.target.value
     });
@@ -23,7 +49,7 @@ export default class EditOICore extends Component {
     return(
         <div>
             <FormGroup controlId="ticketType">
-                <Col componentClass={ControlLabel} sm={3}>Ticket Type</Col>
+                <Col componentClass={ControlLabel} sm={3}>Request Type</Col>
                 <Col sm={6}>
                     <FormControl bsSize ="small" componentClass="select" placeholder="select" onChange={this.handleChange}>
                         <option value="Original">Original Issuance</option>
@@ -70,6 +96,34 @@ export default class EditOICore extends Component {
                 <Col componentClass={ControlLabel} sm={3}>Treasury Account No #</Col>
                 <Col sm={6}>
                     <FormControl onChange={this.handleChange} type="text"   value={jsonEditOICoreData[0].treasureaccount}/>
+                </Col>
+                <Col smoffset={3}></Col>
+            </FormGroup>
+            <FormGroup controlId="TotalShares">
+                <Col componentClass={ControlLabel} sm={3}>Total Shares #</Col>
+                <Col sm={6}>
+                    <FormControl onChange={this.handleChange} type="text"  value={jsonEditOICoreData[0].totalshares} />
+                </Col>
+                <Col smoffset={3}></Col>
+            </FormGroup>
+            <FormGroup controlId="Legend">
+                <Col componentClass={ControlLabel} sm={3}>Legend</Col>
+                <Col sm={6}>
+                    <FormControl onChange={this.handleChange} type="text" maxLength="1"  value={jsonEditOICoreData[0].Legend} />
+                </Col>
+                <Col smoffset={3}></Col>
+            </FormGroup>
+            <FormGroup controlId="Date">
+                <Col componentClass={ControlLabel} sm={3}>{ this.state.displayDate }</Col>
+                <Col sm={6}>
+                    <DatePicker id="example-datepicker" value={this.state.value} onChange={this.handleChangeDate.bind(this)} />
+                </Col>
+                <Col smoffset={3}></Col>
+            </FormGroup>
+            <FormGroup controlId="BookEntry">
+                <Col componentClass={ControlLabel} sm={3}>Book Entry</Col>
+                <Col sm={6}>
+                    <FormControl onChange={this.handleChange} type="text" value="B" maxLength="1"/>
                 </Col>
                 <Col smoffset={3}></Col>
             </FormGroup>

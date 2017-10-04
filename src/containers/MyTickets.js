@@ -90,7 +90,8 @@ export default class MyTickets extends Component {
                         Change status form { this.state.cellvalue } to { this.state.cellvalueTo }
                       </Modal.Body>
                       <Modal.Footer>
-                        <Button onClick={() => this.setState({ show: false, tickets : this.updatetickets(this.state.rowid) })}>Save & Close</Button>
+                        <Button onClick={() => { this.setState({ show: false }); if(this.state.cellvalue !== 'Pending') this.props.handleToUpdate('3') }}>Cancel</Button>
+                        <Button onClick={() => { this.setState({ show: false, tickets : this.updatetickets(this.state.rowid) }); this.props.handleToUpdate('3') }}>OK</Button>
                       </Modal.Footer>
                     </Modal>
                   </div>
@@ -134,7 +135,7 @@ export default class MyTickets extends Component {
       <BootstrapTable data={this.state.tickets } striped={true} hover={true} pagination options = {options } selectRow={ selectRow }  exportCSV search>
         <TableHeaderColumn dataField='ID' isKey headerAlign='left' dataAlign='left' dataSort sortFunc={ this.numericSortFunc }>Request ID</TableHeaderColumn>
         <TableHeaderColumn dataField='ParentCompany' headerAlign='left' dataAlign='left' dataSort>Company No </TableHeaderColumn>
-        <TableHeaderColumn dataField='Type' headerAlign='left' dataAlign='left' dataSort>Ticket Type</TableHeaderColumn>
+        <TableHeaderColumn dataField='Type' headerAlign='left' dataAlign='left' dataSort>Request Type</TableHeaderColumn>
         <TableHeaderColumn dataField='Priority' headerAlign='left' dataAlign='left' dataSort>Priority</TableHeaderColumn>
         <TableHeaderColumn dataField='CreatedDate' headerAlign='left' dataAlign='left' dataFormat={this.dateFormatter} dataSort>Created Date</TableHeaderColumn>
         <TableHeaderColumn dataField='SubmittedDate' headerAlign='left' dataAlign='left' dataFormat={this.dateFormatter} dataSort>Submitted Date</TableHeaderColumn>
