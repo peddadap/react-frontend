@@ -91,7 +91,7 @@ export default class MyTickets extends Component {
                       </Modal.Body>
                       <Modal.Footer>
                         <Button onClick={() => { this.setState({ show: false }); if(this.state.cellvalue !== 'Pending') this.props.handleToUpdate('3') }}>Cancel</Button>
-                        <Button onClick={() => { this.setState({ show: false, tickets : this.updatetickets(this.state.rowid) }); this.props.handleToUpdate('3') }}>OK</Button>
+                        <Button onClick={() => { this.setState({ show: false, tickets : this.updatetickets(this.state.rowid) }); if(this.state.cellvalue !== 'Done') this.props.handleToUpdate('3') }}>OK</Button>
                       </Modal.Footer>
                     </Modal>
                   </div>
