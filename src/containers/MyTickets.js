@@ -63,7 +63,7 @@ export default class MyTickets extends Component {
     if(cell == 'Error' )
       return (<Button bsStyle="danger" bsSize="small" onClick={ () => this.props.handleToUpdate('3') } block>{ cell }</Button>);
     else
-      if(cell == 'Open Grayed' || cell == 'Open Solid' || cell == 'In-Progress')
+      if(cell == 'Open' || cell == 'In-Progress')
         return (<Button bsStyle="info" bsSize="small" block>{ cell }</Button>);
       else
         if(cell == 'Pending' || cell == 'Review' || cell == 'Hold' || cell == 'Done') {

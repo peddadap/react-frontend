@@ -9,7 +9,9 @@ export default class OICore extends Component {
     var value1 = new Date().toISOString();
     this.state = {
         value: value1,
-        displayDate: 'Issue Date'
+        displayDate: 'Issue Date',
+        shareno: 'Share #',
+        showlegend: true,
      }
   }
 
@@ -28,15 +30,21 @@ export default class OICore extends Component {
         if(event.target.value == 'Vestings')
             this.setState({
                 displayDate: 'Vesting Date',
+                shareno: 'Shares Vested',
+                showlegend: false,
             })
         else
             if(event.target.value === 'Terminations')
                 this.setState({
                     displayDate: 'Termination Date',
+                    shareno: 'Shares Terminated',
+                    showlegend: false,
                 })
             else
                 this.setState({
                     displayDate: 'Issue Date',
+                    shareno: 'Share #',
+                    showlegend: true,
                 })
     }
     this.setState({
@@ -45,6 +53,31 @@ export default class OICore extends Component {
   }
   
   render(){
+    let legendTxt="";
+    let bookTxt="";
+    if(this.state.showlegend) {
+        legendTxt = (
+            <FormGroup controlId="Legend">
+                <Col componentClass={ControlLabel} sm={3}>Legend</Col>
+                <Col sm={6}>
+                    <FormControl onChange={this.handleChange} type="text" maxLength="1"  ref="myTextInputLegend" defaultValue={ this.state.Legend } onBlur = {this.handleChange} />
+                </Col>
+                <Col smoffset={3}></Col>
+            </FormGroup>
+        )
+        bookTxt = (
+            <FormGroup controlId="BookEntry">
+                <Col componentClass={ControlLabel} sm={3}>Book Entry</Col>
+                <Col sm={6}>
+                    <FormControl onChange={this.handleChange} type="text" value="B" maxLength="1"/>
+                </Col>
+                <Col smoffset={3}></Col>
+            </FormGroup>    
+        )
+    } else {
+        legendTxt = "";
+        bookTxt="";
+    }
     return(
         <div>
             <FormGroup controlId="ticketType">
@@ -99,19 +132,13 @@ export default class OICore extends Component {
                 <Col smoffset={3}></Col>
             </FormGroup>
             <FormGroup controlId="TotalShares">
-                <Col componentClass={ControlLabel} sm={3}>Total Shares #</Col>
+                <Col componentClass={ControlLabel} sm={3}>{ this.state.shareno }</Col>
                 <Col sm={6}>
                     <FormControl onChange={this.handleChange} type="text" />
                 </Col>
                 <Col smoffset={3}></Col>
             </FormGroup>
-            <FormGroup controlId="Legend">
-                <Col componentClass={ControlLabel} sm={3}>Legend</Col>
-                <Col sm={6}>
-                    <FormControl onChange={this.handleChange} type="text" maxLength="1"/>
-                </Col>
-                <Col smoffset={3}></Col>
-            </FormGroup>
+            { legendTxt }
             <FormGroup controlId="Date">
                 <Col componentClass={ControlLabel} sm={3}>{ this.state.displayDate }</Col>
                 <Col sm={6}>
@@ -119,13 +146,7 @@ export default class OICore extends Component {
                 </Col>
                 <Col smoffset={3}></Col>
             </FormGroup>
-            <FormGroup controlId="BookEntry">
-                <Col componentClass={ControlLabel} sm={3}>Book Entry</Col>
-                <Col sm={6}>
-                    <FormControl onChange={this.handleChange} type="text" value="B" maxLength="1"/>
-                </Col>
-                <Col smoffset={3}></Col>
-            </FormGroup>            
+            { bookTxt }       
         </div>
      );
   }
