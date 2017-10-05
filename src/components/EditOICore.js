@@ -14,13 +14,15 @@ export default class EditOICore extends Component {
         value: value1,
         displayDate: 'Issue Date',
         shareno: 'Share #',
-        showlegend: true,
-        ParentCompany: jsonEditOICoreData[0].ParentCompany,
-        ChildCompany: jsonEditOICoreData[0].ChildCompany,
-        controlaccount: jsonEditOICoreData[0].controlaccount,
-        treasureaccount: jsonEditOICoreData[0].treasureaccount,
+        showfields: 'Original',
+        companyno: jsonEditOICoreData[0].companyno,
         totalshares: jsonEditOICoreData[0].totalshares,
-        Legend: jsonEditOICoreData[0].Legend,
+        legend: jsonEditOICoreData[0].legend,
+        parentCo: jsonEditOICoreData[0].parentCo,
+        childCo: jsonEditOICoreData[0].childCo,
+        controlNo: jsonEditOICoreData[0].controlNo,
+        controlAcct: jsonEditOICoreData[0].controlAcct,
+        surrender: jsonEditOICoreData[0].surrender,
     }
   }
 
@@ -31,74 +33,279 @@ export default class EditOICore extends Component {
     });
   }
 
-    componentDidUpdate () {
+    componentDidMount () {
         if (this.didSwitchParentObject) {
             this.didSwitchParentObject= false;
-            this.refs.myTextInputParentCompany.value = this.state.ParentCompany;
-            this.refs.myTextInputChildCompany.value = this.state.ChildCompany;
-            this.refs.myTextInputcontrolaccount.value = this.state.controlaccount;
-            this.refs.myTextInputtreasureaccount.value = this.state.treasureaccount;
             this.refs.myTextInputtotalshares.value = this.state.totalshares;
-            this.refs.myTextInputLegend.value = this.state.Legend;
+            this.refs.myTextInputcompanyno.value = this.state.companyno;
+            this.refs.myTextInputlegend.value = this.state.legend;
+            // this.refs.myTextInputparentCo.value = this.state.parentCo;
+            // this.refs.myTextInputchildCo.value = this.state.childCo;
+            // this.refs.myTextInputcontrolNo.value = this.state.controlNo;
+            // this.refs.myTextInputcontrolAcct.value = this.state.controlAcct;
+            // this.refs.myTextInputsurrender.value = this.state.surrender;
         }
     }
 
-  async componentDidMount() {
-   }
-
-  handleChange = event => {
-    if(event.target.id == 'ticketType') {
-        if(event.target.value == 'Vestings')
-            this.setState({
-                displayDate: 'Vesting Date',
-                shareno: 'Shares Vested',
-                showlegend: false,
-            })
-        else
-            if(event.target.value === 'Terminations')
+    handleChange = event => {
+        if(event.target.id == 'ticketType') {
+            if(event.target.value == 'Vestings')
                 this.setState({
-                    displayDate: 'Termination Date',
-                    shareno: 'Shares Terminated',
-                    showlegend: false,
+                    showfields: 'Vestings',
                 })
             else
-                this.setState({
-                    displayDate: 'Issue Date',
-                    shareno: 'Share #',
-                    showlegend: true,
-                })
+                if(event.target.value === 'Terminations')
+                    this.setState({
+                        showfields: 'Terminations',
+                    })
+                else
+                    if(event.target.value === 'Grants')
+                        this.setState({
+                            showfields: 'Grants',
+                        })
+                    else
+                        if(event.target.value === 'Surrender')
+                            this.setState({
+                                showfields: 'Surrender',
+                            })
+                        else 
+                            this.setState({
+                                showfields: 'Original',
+                            })
+        }
+
+        this.setState({
+            [event.target.id]: event.target.value
+        });
     }
-    this.setState({
-      [event.target.id]: event.target.value
-    });
-  }
   
-  render(){
-    let legendTxt="";
-    let bookTxt="";
-    if(this.state.showlegend) {
-        legendTxt = (
-            <FormGroup controlId="Legend">
-                <Col componentClass={ControlLabel} sm={3}>Legend</Col>
-                <Col sm={6}>
-                    <FormControl onChange={this.handleChange} type="text" maxLength="1"  ref="myTextInputLegend" defaultValue={ this.state.Legend } onBlur = {this.handleChange} />
-                </Col>
-                <Col smoffset={3}></Col>
-            </FormGroup>
-        )
-        bookTxt = (
-            <FormGroup controlId="BookEntry">
-                <Col componentClass={ControlLabel} sm={3}>Book Entry</Col>
-                <Col sm={6}>
-                    <FormControl onChange={this.handleChange} type="text" value="B" maxLength="1"/>
-                </Col>
-                <Col smoffset={3}></Col>
-            </FormGroup>    
-        )
-    } else {
-        legendTxt = "";
-        bookTxt="";
-    }
+    render(){
+        let Fields;
+        if(this.state.showfields == 'Original') {
+            Fields = (
+                <div>
+                <FormGroup controlId="companyno">
+                   <Col componentClass={ControlLabel} sm={3}>Company #</Col>
+                    <Col sm={6}>
+                        <FormControl onChange={this.handleChange} type="text"  ref="myTextInputcompanyno" defaultValue={ this.state.companyno } onBlur = {this.handleChange}/>
+                    </Col>
+                    <Col smoffset={3}></Col>
+                </FormGroup>
+                <FormGroup controlId="totalshares">
+                    <Col componentClass={ControlLabel} sm={3}>Total Shares #</Col>
+                    <Col sm={6}>
+                        <FormControl onChange={this.handleChange} type="text"  ref="myTextInputtotalshares" defaultValue={ this.state.totalshares } onBlur = {this.handleChange}/>
+                    </Col>
+                    <Col smoffset={3}></Col>
+                </FormGroup>
+                <FormGroup controlId="legend">
+                    <Col componentClass={ControlLabel} sm={3}>Legend</Col>
+                    <Col sm={6}>
+                        <FormControl onChange={this.handleChange} type="text" maxLength="1"  ref="myTextInputlegend" defaultValue={ this.state.legend } onBlur = {this.handleChange}/>
+                    </Col>
+                    <Col smoffset={3}></Col>
+                </FormGroup>
+                <FormGroup controlId="issuancedate">
+                    <Col componentClass={ControlLabel} sm={3}>Issuance Date</Col>
+                    <Col sm={6}>
+                        <DatePicker id="example-datepicker" value={this.state.value} onChange={this.handleChangeDate.bind(this)} />
+                    </Col>
+                    <Col smoffset={3}></Col>
+                </FormGroup>
+                <FormGroup controlId="bookentry">
+                    <Col componentClass={ControlLabel} sm={3}>Book Entry</Col>
+                    <Col sm={6}>
+                        <FormControl bsSize ="small" componentClass="select" placeholder="select" onChange={this.handleChange}>
+                            <option value="book">B</option>
+                            <option value="physical"> </option>
+                        </FormControl>
+                    </Col>
+                    <Col smoffset={3}></Col>
+                </FormGroup>
+                </div>
+            )
+        } else {
+            if(this.state.showfields == 'Grants') {
+                Fields = (<div>
+                    <FormGroup controlId="parentCo"> 
+                        <Col componentClass={ControlLabel} sm={3}>Parent Company No #</Col>
+                        <Col sm={6}>
+                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputparentCo" defaultValue={ this.state.parentCo } onBlur = {this.handleChange}/>
+                        </Col>
+                        <Col smoffset={3}></Col>
+                    </FormGroup>
+                    <FormGroup controlId="childCo">
+                        <Col componentClass={ControlLabel} sm={3}>Child Company No #</Col>
+                        <Col sm={6}>
+                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputchildCo" defaultValue={ this.state.childCo } onBlur = {this.handleChange}/>
+                        </Col>
+                        <Col smoffset={3}></Col>
+                    </FormGroup>
+                    <FormGroup controlId="controlNo">
+                        <Col componentClass={ControlLabel} sm={3}>Control No #</Col>
+                        <Col sm={6}>
+                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputcontrolNo" defaultValue={ this.state.controlNo } onBlur = {this.handleChange}/>
+                        </Col>
+                        <Col smoffset={3}></Col>
+                    </FormGroup>
+                    <FormGroup controlId="totalshares">
+                        <Col componentClass={ControlLabel} sm={3}>Total Shares #</Col>
+                        <Col sm={6}>
+                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputtotalshares" defaultValue={ this.state.totalshares } onBlur = {this.handleChange}/>
+                        </Col>
+                        <Col smoffset={3}></Col>
+                    </FormGroup>
+                    <FormGroup controlId="controlAcct">
+                        <Col componentClass={ControlLabel} sm={3}>Control Account No #</Col>
+                        <Col sm={6}>
+                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputcontrolAcct" defaultValue={ this.state.controlAcct } onBlur = {this.handleChange}/>
+                        </Col>
+                        <Col smoffset={3}></Col>
+                    </FormGroup>
+                    <FormGroup controlId="issuancedate">
+                        <Col componentClass={ControlLabel} sm={3}>Issuance Date</Col>
+                        <Col sm={6}>
+                            <DatePicker id="example-datepicker" value={this.state.value} onChange={this.handleChangeDate.bind(this)} />
+                        </Col>
+                        <Col smoffset={3}></Col>
+                    </FormGroup>
+                </div>)
+            } else {
+                if(this.state.showfields == 'Vestings') {
+                    Fields = (<div>
+                    <FormGroup controlId="parentCo"> 
+                        <Col componentClass={ControlLabel} sm={3}>Parent Company No #</Col>
+                        <Col sm={6}>
+                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputparentCo" defaultValue={ this.state.parentCo } onBlur = {this.handleChange}/>
+                        </Col>
+                        <Col smoffset={3}></Col>
+                    </FormGroup>
+                    <FormGroup controlId="childCo">
+                        <Col componentClass={ControlLabel} sm={3}>Child Company No #</Col>
+                        <Col sm={6}>
+                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputchildCo" defaultValue={ this.state.childCo } onBlur = {this.handleChange}/>
+                        </Col>
+                        <Col smoffset={3}></Col>
+                    </FormGroup>
+                    <FormGroup controlId="controlAcct">
+                        <Col componentClass={ControlLabel} sm={3}>Control Account No #</Col>
+                        <Col sm={6}>
+                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputcontrolAcct" defaultValue={ this.state.controlAcct } onBlur = {this.handleChange}/>
+                        </Col>
+                        <Col smoffset={3}></Col>
+                    </FormGroup>
+                    <FormGroup controlId="totalshares">
+                        <Col componentClass={ControlLabel} sm={3}>Total Shares #</Col>
+                        <Col sm={6}>
+                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputtotalshares" defaultValue={ this.state.totalshares } onBlur = {this.handleChange}/>
+                        </Col>
+                        <Col smoffset={3}></Col>
+                    </FormGroup>
+                    <FormGroup controlId="vestingdate">
+                        <Col componentClass={ControlLabel} sm={3}>Vesting Date</Col>
+                        <Col sm={6}>
+                            <DatePicker id="example-datepicker" value={this.state.value} onChange={this.handleChangeDate.bind(this)} />
+                        </Col>
+                        <Col smoffset={3}></Col>
+                    </FormGroup>                    
+                    </div>)
+                } else {
+                    if(this.state.showfields == 'Terminations') {
+                        Fields = (<div>
+                            <FormGroup controlId="parentCo"> 
+                                <Col componentClass={ControlLabel} sm={3}>Parent Company No #</Col>
+                                <Col sm={6}>
+                                    <FormControl onChange={this.handleChange} type="text"  ref="myTextInputparentCo" defaultValue={ this.state.parentCo } onBlur = {this.handleChange}/>
+                                </Col>
+                                <Col smoffset={3}></Col>
+                            </FormGroup>
+                            <FormGroup controlId="childCo">
+                                <Col componentClass={ControlLabel} sm={3}>Child Company No #</Col>
+                                <Col sm={6}>
+                                    <FormControl onChange={this.handleChange} type="text"  ref="myTextInputchildCo" defaultValue={ this.state.childCo } onBlur = {this.handleChange}/>
+                                </Col>
+                                <Col smoffset={3}></Col>
+                            </FormGroup>
+                            <FormGroup controlId="controlNo">
+                                <Col componentClass={ControlLabel} sm={3}>Control No #</Col>
+                                <Col sm={6}>
+                                    <FormControl onChange={this.handleChange} type="text"  ref="myTextInputcontrolNo" defaultValue={ this.state.controlNo } onBlur = {this.handleChange}/>
+                                </Col>
+                                <Col smoffset={3}></Col>
+                            </FormGroup>
+                            <FormGroup controlId="totalshares">
+                                <Col componentClass={ControlLabel} sm={3}>Total Shares #</Col>
+                                <Col sm={6}>
+                                    <FormControl onChange={this.handleChange} type="text"  ref="myTextInputtotalshares" defaultValue={ this.state.totalshares } onBlur = {this.handleChange}/>
+                                </Col>
+                                <Col smoffset={3}></Col>
+                            </FormGroup>
+                            <FormGroup controlId="issuancedate">
+                                <Col componentClass={ControlLabel} sm={3}>Date</Col>
+                                <Col sm={6}>
+                                    <DatePicker id="example-datepicker" value={this.state.value} onChange={this.handleChangeDate.bind(this)} />
+                                </Col>
+                                <Col smoffset={3}></Col>
+                            </FormGroup>
+                            <FormGroup controlId="disposition">
+                                <Col componentClass={ControlLabel} sm={3}>Disposition</Col>
+                                <Col sm={6}>
+                                <FormControl bsSize ="small" componentClass="select" placeholder="select" onChange={this.handleChange}>
+                                    <option value="retire">Retire</option>
+                                    <option value="return">Return to Company Treasury</option>
+                                </FormControl>
+                                </Col>
+                                <Col smoffset={3}></Col>
+                            </FormGroup>
+                        </div>)
+                    } else {
+                        if(this.state.showfields == 'Surrender') {
+                            Fields = (<div>
+                                <FormGroup controlId="surrender"> 
+                                    <Col componentClass={ControlLabel} sm={3}>Surrender #</Col>
+                                    <Col sm={6}>
+                                        <FormControl onChange={this.handleChange} type="text"  ref="myTextInputsurrender" defaultValue={ this.state.surrender } onBlur = {this.handleChange}/>
+                                    </Col>
+                                    <Col smoffset={3}></Col>
+                                </FormGroup>
+                                <FormGroup controlId="companyno">
+                                    <Col componentClass={ControlLabel} sm={3}>Company No #</Col>
+                                    <Col sm={6}>
+                                        <FormControl onChange={this.handleChange} type="text"  ref="myTextInputcompanyno" defaultValue={ this.state.companyno } onBlur = {this.handleChange}/>
+                                    </Col>
+                                    <Col smoffset={3}></Col>
+                                </FormGroup>
+                                <FormGroup controlId="totalshares">
+                                    <Col componentClass={ControlLabel} sm={3}>Total Shares #</Col>
+                                    <Col sm={6}>
+                                        <FormControl onChange={this.handleChange} type="text"  ref="myTextInputtotalshares" defaultValue={ this.state.totalshares } onBlur = {this.handleChange}/>
+                                    </Col>
+                                    <Col smoffset={3}></Col>
+                                </FormGroup>
+                                <FormGroup controlId="issuancedate">
+                                    <Col componentClass={ControlLabel} sm={3}>Date</Col>
+                                    <Col sm={6}>
+                                        <DatePicker id="example-datepicker" value={this.state.value} onChange={this.handleChangeDate.bind(this)} />
+                                    </Col>
+                                    <Col smoffset={3}></Col>
+                                </FormGroup>
+                                <FormGroup controlId="disposition">
+                                    <Col componentClass={ControlLabel} sm={3}>Disposition</Col>
+                                    <Col sm={6}>
+                                        <FormControl bsSize ="small" componentClass="select" placeholder="select" onChange={this.handleChange}>
+                                            <option value="retire">Retire</option>
+                                            <option value="return">Return to Company Treasury</option>
+                                        </FormControl>
+                                    </Col>
+                                    <Col smoffset={3}></Col>
+                                </FormGroup>                        
+                        </div>)
+                        }
+                    }
+                }
+            }
+        }
+    
     return(
         <div>
             <FormGroup controlId="ticketType">
@@ -108,7 +315,8 @@ export default class EditOICore extends Component {
                         <option value="Original">Original Issuance</option>
                         <option value="Grants">Grants</option>
                         <option value="Vestings">Vestings</option>
-                        <option value="Terminations">Terminations</option>
+                        <option value="Terminations">RSP Termination</option>
+                        <option value="Surrender">Surrender</option>
                     </FormControl>
                 </Col>
                 <Col smoffset={3}></Col>
@@ -124,50 +332,7 @@ export default class EditOICore extends Component {
                 </Col>
                 <Col smoffset={3}></Col>
             </FormGroup>
-            <FormGroup controlId="parentCo">
-                <Col componentClass={ControlLabel} sm={3}>Parent Company No #</Col>
-                <Col sm={6}>
-                    <FormControl onChange={this.handleChange} type="text" ref="myTextInputParentCompany" defaultValue={ this.state.ParentCompany } onBlur = {this.handleChange}/>
-                </Col>
-                <Col smoffset={3}></Col>
-            </FormGroup>
-            <FormGroup controlId="childCo">
-                <Col componentClass={ControlLabel} sm={3}>Child Company No #</Col>
-                <Col sm={6}>
-                    <FormControl onChange={this.handleChange} type="text" ref="myTextInputChildCompany" defaultValue={ this.state.ChildCompany } onBlur = {this.handleChange}/>
-                </Col>
-                <Col smoffset={3}></Col>
-            </FormGroup>
-            <FormGroup controlId="controlAcct">
-                <Col componentClass={ControlLabel} sm={3}>Control Account No #</Col>
-                <Col sm={6}>
-                    <FormControl onChange={this.handleChange} type="text" ref="myTextInputcontrolaccount" defaultValue={ this.state.controlaccount } onBlur = {this.handleChange}/>
-                </Col>
-                <Col smoffset={3}></Col>
-            </FormGroup>
-            <FormGroup controlId="TreasuryAcct">
-                <Col componentClass={ControlLabel} sm={3}>Treasury Account No #</Col>
-                <Col sm={6}>
-                    <FormControl onChange={this.handleChange} type="text" ref="myTextInputtreasureaccount" defaultValue={ this.state.treasureaccount } onBlur = {this.handleChange}/>
-                </Col>
-                <Col smoffset={3}></Col>
-            </FormGroup>
-            <FormGroup controlId="TotalShares">
-                <Col componentClass={ControlLabel} sm={3}>{ this.state.shareno }</Col>
-                <Col sm={6}>
-                    <FormControl onChange={this.handleChange} type="text" ref="myTextInputtotalshares" defaultValue={ this.state.totalshares } onBlur = {this.handleChange} />
-                </Col>
-                <Col smoffset={3}></Col>
-            </FormGroup>
-            { legendTxt }
-            <FormGroup controlId="Date">
-                <Col componentClass={ControlLabel} sm={3}>{ this.state.displayDate }</Col>
-                <Col sm={6}>
-                    <DatePicker id="example-datepicker" value={this.state.value} onChange={this.handleChangeDate.bind(this)} />
-                </Col>
-                <Col smoffset={3}></Col>
-            </FormGroup>
-            { bookTxt }
+            { Fields }
         </div>
      );
   }

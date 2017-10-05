@@ -1,16 +1,21 @@
 [
 	{
 		"ID": "7", 
-		"ParentCompany": "321654987",
+		"parentCo": "1321654987",
 		"ChildCompany": "654741369",
+		"childCo": "654741369",
 		"controlaccount": "963258741",
+		"controlAcct": "963258741",
+		"controlNo": "65893214",
 		"treasureaccount": "147852369",
+		"companyno": "65478932541",
 		"totalshares": "1236543",
-		"Legend": "M",
+		"legend": "7",
 		"Type": "Original", 
 		"Priority": "Medium", 
 		"CreatedDate": "10-10-2016T00:00:00.000Z", 
 		"SubmittedDate": "09-09-2017T00:00:00.000Z", 
-		"Status": "error"
+		"Status": "error",
+		"surrender": "096521468"
 	}
 ]
