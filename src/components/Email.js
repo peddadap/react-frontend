@@ -24,33 +24,29 @@ export default class Email extends Component {
 
    return(
           <div>
-          <FormGroup controlId="To">
+          <FormGroup controlId="To" style={{ 'margin-bottom': '10px' }}>
               <Col componentClass={ControlLabel} sm={3}>To:</Col>
-              <Col sm={6}>
+              <Col sm={6} smoffset={3}>
                 <FormControl onChange={this.handleChange} type="text" />
               </Col>
-              <Col smoffset={3}></Col>
           </FormGroup>
-          <FormGroup controlId="CC">
+          <FormGroup controlId="CC" style={{ 'margin-bottom': '10px' }}>
               <Col componentClass={ControlLabel} sm={3}>Copy:</Col>
-              <Col sm={6}>
+              <Col sm={6} smoffset={3}>
                 <FormControl onChange={this.handleChange} type="text" />
               </Col>
-              <Col smoffset={3}></Col>              
           </FormGroup>
-          <FormGroup controlId="Subject">
+          <FormGroup controlId="Subject" style={{ 'margin-bottom': '10px' }}>
               <Col componentClass={ControlLabel} sm={3}>Subject:</Col>
-              <Col sm={6}>
+              <Col sm={6} smoffset={3}>
                 <FormControl onChange={this.handleChange} type="text" />
               </Col>
-              <Col smoffset={3}></Col> 
           </FormGroup>
-          <FormGroup controlId="Body">
+          <FormGroup controlId="Body" style={{ 'margin-bottom': '10px' }}>
               <Col componentClass={ControlLabel} sm={3}>Body:</Col>
-              <Col sm={6}>
+              <Col sm={6} smoffset={3}>
                 <FormControl componentClass="textarea" placeholder="textarea" bssize="large" bsClass="mytextClass"/>
               </Col>
-              <Col smoffset={3}></Col> 
           </FormGroup>
           </div>
      );

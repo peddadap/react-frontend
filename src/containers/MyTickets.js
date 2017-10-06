@@ -61,10 +61,10 @@ export default class MyTickets extends Component {
   
   imageFormatter = (cell, row) => {
     if(cell == 'Error' )
-      return (<Button bsStyle="danger" bsSize="small" onClick={ () => this.props.handleToUpdate('3') } block>{ cell }</Button>);
+      return (<Button bsStyle="danger" bsSize="small" className="myTicketsButton" onClick={ () => this.props.handleToUpdate('3') } >{ cell }</Button>);
     else
       if(cell == 'Open' || cell == 'In-Progress')
-        return (<Button bsStyle="info" bsSize="small" block>{ cell }</Button>);
+        return (<Button bsStyle="info" bsSize="small" className="myTicketsButton">{ cell }</Button>);
       else
         if(cell == 'Pending' || cell == 'Review' || cell == 'Hold' || cell == 'Done') {
           return (
@@ -72,8 +72,9 @@ export default class MyTickets extends Component {
                     <Button
                       bsStyle="warning"
                       bsSize="small"
+                      className="myTicketsButton"
                       onClick={() => this.setState({ show: true, cellvalue: cell, cellvalueTo: configStatus[cell], rowid: (row.ID - 1) })}
-                      block
+                      
                     >
                       { cell }
                     </Button>
@@ -98,7 +99,7 @@ export default class MyTickets extends Component {
           );
         }
         else 
-          return (<Button bsStyle="success" bsSize="small" block>{ cell }</Button>);
+          return (<Button bsStyle="success" bsSize="small" className="myTicketsButton">{ cell }</Button>);
   }
 
   createCustomToolBar = props => {
@@ -133,7 +134,7 @@ export default class MyTickets extends Component {
 
     return(
       <BootstrapTable data={this.state.tickets } striped={true} hover={true} pagination options = {options } selectRow={ selectRow }  exportCSV search>
-        <TableHeaderColumn dataField='ID' isKey headerAlign='left' dataAlign='left' dataSort sortFunc={ this.numericSortFunc }>Request ID</TableHeaderColumn>
+        <TableHeaderColumn dataField='ID' isKey headerAlign='center' dataAlign='center' dataSort sortFunc={ this.numericSortFunc }>Request ID</TableHeaderColumn>
         <TableHeaderColumn dataField='ParentCompany' headerAlign='left' dataAlign='left' dataSort>Company No </TableHeaderColumn>
         <TableHeaderColumn dataField='Type' headerAlign='left' dataAlign='left' dataSort>Request Type</TableHeaderColumn>
         <TableHeaderColumn dataField='Priority' headerAlign='left' dataAlign='left' dataSort>Priority</TableHeaderColumn>

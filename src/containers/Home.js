@@ -53,13 +53,16 @@ export default class Home extends Component {
     if( this.state.activeTab == 3 ) {
       this.state.activeTab = 3;
     }
+    if( this.state.activeTab == 1 ) {
+      this.state.activeTab = 1;
+    }
     return(
       <Tabs activeKey={this.state.activeTab} onSelect={this.selectTab} id="Tab Container" animation={true}>
         <Tab eventKey={1}  title="My Requests">
           <MyTickets handleToUpdate={this.handleToUpdate.bind(this)}/> 
         </Tab>
         <Tab eventKey={2} title="Create Request">
-          <NewTicket move2Tab={(tab)=>{this.selectTab(tab)}}/>
+          <NewTicket move2Tab={(tab)=>{this.selectTab(tab)}} handleToUpdate={this.handleToUpdate.bind(this)}/>
         </Tab>
         <Tab eventKey={3} title="Edit Request">
           <Edit tickets={()=> {return this.props.match.params.id}}/>

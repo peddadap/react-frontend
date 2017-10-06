@@ -1,6 +1,7 @@
 .Home .lander h1 {
     font-family: "Open Sans", sans-serif;
     font-weight: 600;
+    font-size: '14px';
   }
   
   .Home .lander p {
@@ -20,4 +21,11 @@
 
 .Home .sizeButton button {
   width: '10px';
+}
+
+.myTicketsButton {
+  width: 75px;
+  padding-left: inherit;
+  height: 20px;
+  padding-top: 0px;    
 }

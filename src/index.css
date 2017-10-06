@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Open Sans", sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   color:#333;
 }
 h1, h2, h3, h4, h5, h6 {
@@ -11,7 +11,7 @@ h1, h2, h3, h4, h5, h6 {
 select.form-control,
 textarea.form-control,
 input.form-control {
-  font-size: 16px;
+  font-size: 14px;
 }
 input[type=file] {
   width: 100%;
