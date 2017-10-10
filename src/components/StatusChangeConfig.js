@@ -1,6 +1,6 @@
 export default {
-    Pending: 'Hold',
-    Review: 'Hold',
-    Hold: 'Open',
-    Done: 'Closed',
-  };
+  Review: ['Hold', 'Recall'],
+  Hold: ['Open'],
+  Done: ['Closed'],
+  'In-Progress': ['Hold', 'Recall'],
+};

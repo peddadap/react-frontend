@@ -7,7 +7,6 @@ import "./NewTicket.css";
 export default class NewTicket extends Component {
   constructor(props) {
     super(props);
-    console.log('New Ticket Has Access to Props');
     console.log(props);
     //this.file = null;
 
@@ -74,7 +73,6 @@ export default class NewTicket extends Component {
    }
 
   render() {
-    //console.log(">>>>>>>>>>>>.. New Ticket Rendered");
     return (
   
         <form  onSubmit={this.handleSubmit}>

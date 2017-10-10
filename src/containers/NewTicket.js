@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./Home.css";
-import { Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import OICore from "../components/OICore";
 import Attachments from "../components/Attachments";

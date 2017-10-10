@@ -16,9 +16,10 @@ export default class Home extends Component {
     };  
   }
 
-  handleToUpdate(tabindex){
+  handleToUpdate(tabindex, requestId, requestStatus){
     this.selectTab(tabindex);
-    this.state.activeTab = tabindex;
+    this.setrequestId(requestId);
+    this.setrequestStatus(requestStatus);
   }
 
   getInitialState() {  
@@ -35,6 +36,22 @@ export default class Home extends Component {
     });
   }
 
+  setrequestId(requestId) {
+    this.setState({
+      requestId: requestId
+    }, function(){
+      console.log(this.state.requestId);
+    });
+  }
+
+  setrequestStatus(requestStatus) {
+    this.setState({
+      requestStatus: requestStatus
+    }, function(){
+      console.log(this.state.requestStatus);
+    });
+  }
+
   colFormatter = (cell, row) => {
     return (
       <Link to={"/ticket/"+cell}>
@@ -43,9 +60,8 @@ export default class Home extends Component {
     )
   }
 
- dateFormatter(cell, row){
-   
-   var cdate = (new Date(cell)).toISOString().split('T')[0]
+  dateFormatter(cell, row){
+    var cdate = (new Date(cell)).toISOString().split('T')[0]
     return  cdate;
   }
  
@@ -59,13 +75,22 @@ export default class Home extends Component {
     return(
       <Tabs activeKey={this.state.activeTab} onSelect={this.selectTab} id="Tab Container" animation={true}>
         <Tab eventKey={1}  title="My Requests">
-          <MyTickets handleToUpdate={this.handleToUpdate.bind(this)}/> 
+          <MyTickets 
+            handleToUpdate={this.handleToUpdate.bind(this)} 
+            requestStatus={ this.state.requestStatus } 
+            requestId={ this.state.requestId }
+            actTab={ this.state.activeTab }
+          /> 
         </Tab>
         <Tab eventKey={2} title="Create Request">
           <NewTicket move2Tab={(tab)=>{this.selectTab(tab)}} handleToUpdate={this.handleToUpdate.bind(this)}/>
         </Tab>
         <Tab eventKey={3} title="Edit Request">
-          <Edit tickets={()=> {return this.props.match.params.id}}/>
+          <Edit 
+            handleToUpdate={this.handleToUpdate.bind(this)} 
+            requestStatus={ this.state.requestStatus } 
+            requestId={ this.state.requestId }
+          />
         </Tab>
       </Tabs>
     )

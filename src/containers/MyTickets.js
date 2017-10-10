@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { Link } from 'react-router-dom'
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-import {Button, Modal} from 'react-bootstrap';
+import {Button, Modal, Radio, FormGroup} from 'react-bootstrap';
 import "./Home.css";
 import jsonMyTicketData from "../myTickets.json";
-import StatusChange from "../components/StatusChange";
+// import StatusChange from "../components/StatusChange";
 import configStatus from "../components/StatusChangeConfig";
 
 export default class MyTickets extends Component {
@@ -13,9 +13,11 @@ export default class MyTickets extends Component {
     this.state = {
       isLoading: true,
       tickets: [],
-      show: false,
+      showinprogress: false,
+      showdone: false,
       cellvalue: '',
-      cellvalueTo: '',
+      cellvalueTo: [],
+      cellvalueToSelected: '',
       rowid: 0,
     };
 
@@ -23,6 +25,15 @@ export default class MyTickets extends Component {
       defaultSortName: 'ID',  // default sort column name
       defaultSortOrder: 'asc'  // default sort order
     };
+  }
+
+  async componentWillReceiveProps () {
+    if(this.props.actTab && this.props.actTab == 1 && this.props.requestId && this.props.requestStatus && this.props.requestStatus == 'Open') {
+      this.updateticketswithstate( this.props.requestId, 'Submit' );
+    }
+    if(this.props.actTab && this.props.actTab == 1 && this.props.requestId && this.props.requestStatus && this.props.requestStatus == 'Error') {
+      this.updateticketswithstate( this.props.requestId, 'New' );
+    }
   }
   
   async componentDidMount() {
@@ -43,63 +54,116 @@ export default class MyTickets extends Component {
     )
   }
 
+  handleStateChange(newstate){
+    this.setState({
+      cellvalueToSelected: newstate
+    });
+  }
+
   dateFormatter(cell, row){
     var cdate = cell.split('T')[0];
     return cdate;
   }
 
-  updatetickets(row){
-    var cloneArrayone = JSON.parse(JSON.stringify(this.state)).tickets;
-    cloneArrayone[row].Status = this.state.cellvalueTo;
+  updatetickets(row, newstate){
+    var cloneArrayone = JSON.parse(JSON.stringify(this.state.tickets));
+    cloneArrayone[row].Status = newstate;
     return cloneArrayone;
   }
 
+  updateticketswithstate(row, newstate){
+    var cloneArrayone = JSON.parse(JSON.stringify(this.state.tickets));
+    cloneArrayone[row].Status = newstate;
+    this.setState({ tickets: cloneArrayone });
+  }
+
   close() {
-    this.setState({ show: false});
+    this.setState({ showinprogress: false, showdone: false});
     return;
   }
   
   imageFormatter = (cell, row) => {
-    if(cell == 'Error' )
-      return (<Button bsStyle="danger" bsSize="small" className="myTicketsButton" onClick={ () => this.props.handleToUpdate('3') } >{ cell }</Button>);
-    else
-      if(cell == 'Open' || cell == 'In-Progress')
-        return (<Button bsStyle="info" bsSize="small" className="myTicketsButton">{ cell }</Button>);
-      else
-        if(cell == 'Pending' || cell == 'Review' || cell == 'Hold' || cell == 'Done') {
-          return (
-                  <div className="modal-container" id={row}>
-                    <Button
-                      bsStyle="warning"
-                      bsSize="small"
-                      className="myTicketsButton"
-                      onClick={() => this.setState({ show: true, cellvalue: cell, cellvalueTo: configStatus[cell], rowid: (row.ID - 1) })}
-                      
-                    >
-                      { cell }
-                    </Button>
-                    <Modal
-                      show={ this.state.show }
-                      onHide={() => this.setState({ show: false})}
-                      container={this}
-                      aria-labelledby="contained-modal-title"
-                    >
-                      <Modal.Header closeButton>
-                        <Modal.Title id="contained-modal-title">Change Status</Modal.Title>
-                      </Modal.Header>
-                      <Modal.Body>
-                        Change status form { this.state.cellvalue } to { this.state.cellvalueTo }
-                      </Modal.Body>
-                      <Modal.Footer>
-                        <Button onClick={() => { this.setState({ show: false }); if(this.state.cellvalue !== 'Pending') this.props.handleToUpdate('3') }}>Cancel</Button>
-                        <Button onClick={() => { this.setState({ show: false, tickets : this.updatetickets(this.state.rowid) }); if(this.state.cellvalue !== 'Done') this.props.handleToUpdate('3') }}>OK</Button>
-                      </Modal.Footer>
-                    </Modal>
-                  </div>
-          );
-        }
-        else 
+    switch(cell) {
+      case 'Error':
+          return (<Button bsStyle="danger" bsSize="small" className="myTicketsButton" onClick={ () => this.props.handleToUpdate('3', (row.ID - 1), { cell } ) } >{ cell }</Button>);
+      case 'Recall':
+          return (<Button bsStyle="danger" bsSize="small" className="myTicketsButton">{ cell }</Button>);
+      case 'New':
           return (<Button bsStyle="success" bsSize="small" className="myTicketsButton">{ cell }</Button>);
+      case 'Open':
+          return ( <Button bsStyle="warning" bsSize="small" className="myTicketsButton" onClick={ () => this.props.handleToUpdate('3', (row.ID - 1), { cell } ) }>{ cell }</Button> );
+      case 'Submit':
+          return (<Button bsStyle="success" bsSize="small" className="myTicketsButton">{ cell }</Button>);
+      case 'In-Progress':
+          return (
+              <div className="modal-container" id={row}>
+                <Button
+                  bsStyle="warning"
+                  bsSize="small"
+                  className="myTicketsButton"
+                  onClick={() => this.setState({ showinprogress: true, cellvalue: cell, cellvalueTo: configStatus[cell], rowid: (row.ID - 1) })}
+                >
+                  { cell }
+                </Button>
+                <Modal
+                  show={ this.state.showinprogress }
+                  onHide={() => this.setState({ showinprogress: false})}
+                  container={this}
+                  aria-labelledby="contained-modal-title"
+                >
+                  <Modal.Header closeButton>
+                    <Modal.Title id="contained-modal-title">Change Status</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    Change status form { this.state.cellvalue } to 
+                    <FormGroup>
+                      <Radio name="radioStateChange" onChange={ () => this.handleStateChange(this.state.cellvalueTo[0]) }>{ this.state.cellvalueTo[0] }</Radio>
+                      <Radio name="radioStateChange" onChange={ () => this.handleStateChange(this.state.cellvalueTo[1]) }>{ this.state.cellvalueTo[1] }</Radio>
+                    </FormGroup>
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button onClick={() => { this.setState({ showinprogress: false });}}>Cancel</Button>
+                    <Button onClick={() => { this.setState({ showinprogress: false, tickets : this.updatetickets(this.state.rowid, this.state.cellvalueToSelected) }); }}>OK</Button>
+                  </Modal.Footer>
+                </Modal>
+              </div>
+          );
+      case 'Hold':
+          return (<Button bsStyle="danger" bsSize="small" className="myTicketsButton">{ cell }</Button>);
+      case 'Done':
+          return (
+            <div className="modal-container" id={row}>
+              <Button
+                bsStyle="warning"
+                bsSize="small"
+                className="myTicketsButton"
+                onClick={() => this.setState({ showdone: true, cellvalue: cell, cellvalueTo: configStatus[cell], rowid: (row.ID - 1) })}
+              
+              >
+                { cell }
+              </Button>
+              <Modal
+                show={ this.state.showdone }
+                onHide={() => this.setState({ showdone: false})}
+                container={this}
+                aria-labelledby="contained-modal-title"
+              >
+                <Modal.Header closeButton>
+                  <Modal.Title id="contained-modal-title">Change Status</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  Change status form { this.state.cellvalue } to { this.state.cellvalueTo[0] }
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button onClick={() => { this.setState({ showdone: false });}}>Cancel</Button>
+                  <Button onClick={() => { this.setState({ showdone: false, tickets : this.updatetickets( this.state.rowid, this.state.cellvalueTo[0] ) }); }}>OK</Button>
+                </Modal.Footer>
+              </Modal>
+            </div>
+          );
+      case 'Closed':
+          return (<Button bsStyle="success" bsSize="small" className="myTicketsButton">{ cell }</Button>);
+    }
   }
 
   createCustomToolBar = props => {
