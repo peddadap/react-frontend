@@ -239,12 +239,6 @@ export default class EditOICore extends Component {
                     } else {
                         if(this.state.showfields == 'Surrender') {
                             Fields = (<div>
-                                <FormGroup controlId="surrender" style={{ 'margin-bottom': '10px' }}> 
-                                    <Col componentClass={ControlLabel} sm={3}>Surrender #</Col>
-                                    <Col sm={6} smoffset={3}>
-                                        <FormControl onChange={this.handleChange} type="text"  ref="myTextInputsurrender" defaultValue={ this.state.surrender } onBlur = {this.handleChange}/>
-                                    </Col>
-                                </FormGroup>
                                 <FormGroup controlId="companyno" style={{ 'margin-bottom': '10px' }}>
                                     <Col componentClass={ControlLabel} sm={3}>Company No #</Col>
                                     <Col sm={6} smoffset={3}>

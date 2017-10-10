@@ -280,13 +280,6 @@ export default class OICore extends Component {
                 } else {
                     if(this.state.showfields == 'Surrender') {
                         Fields = (<div>
-                            <FormGroup controlId="surrender" style={{ 'margin-bottom': '10px' }}> 
-                                <Col componentClass={ControlLabel} sm={3}>Surrender #</Col>
-                                <Col sm={6}>
-                                    <FormControl onChange={this.handleChange} type="text" />
-                                </Col>
-                                <Col smoffset={3}></Col>
-                            </FormGroup>
                             <FormGroup controlId="companyno" style={{ 'margin-bottom': '10px' }}>
                                 <Col componentClass={ControlLabel} sm={3}>Company No #</Col>
                                 <Col sm={6}>
