@@ -35,8 +35,8 @@ export default class Edit extends Component {
 
   async componentWillReceiveProps () {
     if(this.props.requestStatus['cell'] == 'Error') {
-      this.setState({ text: "Edit Errors" });
-      this.setState({ loadingText: "Editing ....." });
+      this.setState({ text: "Submit" });
+      this.setState({ loadingText: "Submitting ....." });
     }
   }
 
