@@ -163,8 +163,6 @@ export default class Edit extends Component {
 
     function trClassFormat(rowData, rIndex) {
       var myClassName='';
-      // console.log(JSON.stringify(rowData));
-      // console.log(rIndex);
       if(rowData.Remark !== '') myClassName='myErrorRow'
       console.log('CLass: '+myClassName+'--'+rIndex);
       return myClassName;
@@ -202,7 +200,7 @@ export default class Edit extends Component {
     return(
       <Form horizontal onSubmit={this.handleSubmit}>
       <br/>
-      <EditOICore></EditOICore>
+      <EditOICore requestId={ this.props.requestId } />
       <hr/>
       { attachmentList } 
       <FormGroup controlId="ticketType">
@@ -216,16 +214,31 @@ export default class Edit extends Component {
       </FormGroup>
       <hr/>
       <BootstrapTable data={ this.state.ticketData } trClassName={ trClassFormat } cellEdit={ cellEditProp } striped={true} pagination options={ options } selectRow={ selectRowProp }  multiColumnSearch={ true } search>{rows}</BootstrapTable>
-      <LoaderButton
-        bsStyle="primary"
-        bsSize="large"
-        className = "myclassforbutton"
-        disabled={!this.validateForm()}
-        type="submit"
-        isLoading={this.state.isLoading}
-        text={this.state.text}
-        loadingText={this.state.loadingText}
-      />
+      <hr/>
+      <FormGroup controlId="ticketTypeButtons">
+        <Col sm={5}></Col>
+        <Col sm={1}>
+          <Button
+            bsStyle="primary"
+            bsSize="large"
+            onClick={ () => this.props.handleToUpdate('1') } 
+          >
+            Cancel
+          </Button>
+        </Col>
+        <Col sm={1}>
+          <LoaderButton
+            bsStyle="primary"
+            bsSize="large"
+            disabled={!this.validateForm()}
+            type="submit"
+            isLoading={this.state.isLoading}
+            text={this.state.text}
+            loadingText={this.state.loadingText}
+          />
+          <Col sm={5}></Col>
+        </Col>
+      </FormGroup>
       </Form>
     );
   }
