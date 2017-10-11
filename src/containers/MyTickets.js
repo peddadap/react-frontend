@@ -87,13 +87,13 @@ export default class MyTickets extends Component {
       case 'Error':
           return (<Button bsStyle="danger" bsSize="small" className="myTicketsButton" onClick={ () => this.props.handleToUpdate('3', (row.ID - 1), { cell } ) } >{ cell }</Button>);
       case 'Recall':
-          return (<Button bsStyle="danger" bsSize="small" className="myTicketsButton" disabled>{ cell }</Button>);
+          return (<Button bsStyle="danger" bsSize="small" className="myTicketsButton" onClick={ () => this.props.handleToUpdate('3', (row.ID - 1), { cell } ) }>{ cell }</Button>);
       case 'New':
-          return (<Button bsStyle="success" bsSize="small" className="myTicketsButton" disabled>{ cell }</Button>);
+          return (<Button bsStyle="success" bsSize="small" className="myTicketsButton" onClick={ () => this.props.handleToUpdate('3', (row.ID - 1), { cell } ) }>{ cell }</Button>);
       case 'Open':
           return ( <Button bsStyle="warning" bsSize="small" className="myTicketsButton" onClick={ () => this.props.handleToUpdate('3', (row.ID - 1), { cell } ) }>{ cell }</Button> );
       case 'Pending':
-          return (<Button bsStyle="success" bsSize="small" className="myTicketsButton" disabled>{ cell }</Button>);
+          return (<Button bsStyle="success" bsSize="small" className="myTicketsButton" onClick={ () => this.props.handleToUpdate('3', (row.ID - 1), { cell } ) }>{ cell }</Button>);
       case 'In-Progress':
           return (
               <div className="modal-container" id={row}>
@@ -122,14 +122,14 @@ export default class MyTickets extends Component {
                     </FormGroup>
                   </Modal.Body>
                   <Modal.Footer>
-                    <Button onClick={() => { this.setState({ showinprogress: false });}}>Cancel</Button>
+                    <Button onClick={() => { this.setState({ showinprogress: false,  }); this.props.handleToUpdate('3', (row.ID - 1), { cell } )}}>Cancel</Button>
                     <Button onClick={() => { this.setState({ showinprogress: false, tickets : this.updatetickets(this.state.rowid, this.state.cellvalueToSelected) }); }}>OK</Button>
                   </Modal.Footer>
                 </Modal>
               </div>
           );
       case 'Hold':
-          return (<Button bsStyle="danger" bsSize="small" className="myTicketsButton" disabled>{ cell }</Button>);
+          return (<Button bsStyle="danger" bsSize="small" className="myTicketsButton" onClick={ () => this.props.handleToUpdate('3', (row.ID - 1), { cell } ) }>{ cell }</Button>);
       case 'Done':
           return (
             <div className="modal-container" id={row}>
@@ -155,14 +155,14 @@ export default class MyTickets extends Component {
                   Change status form { this.state.cellvalue } to { this.state.cellvalueTo[0] }
                 </Modal.Body>
                 <Modal.Footer>
-                  <Button onClick={() => { this.setState({ showdone: false });}}>Cancel</Button>
+                  <Button onClick={() => { this.setState({ showdone: false, });this.props.handleToUpdate('3', (row.ID - 1), { cell } )}}>Cancel</Button>
                   <Button onClick={() => { this.setState({ showdone: false, tickets : this.updatetickets( this.state.rowid, this.state.cellvalueTo[0] ) }); }}>OK</Button>
                 </Modal.Footer>
               </Modal>
             </div>
           );
       case 'Closed':
-          return (<Button bsStyle="success" bsSize="small" className="myTicketsButton" disabled>{ cell }</Button>);
+          return (<Button bsStyle="success" bsSize="small" className="myTicketsButton" onClick={ () => this.props.handleToUpdate('3', (row.ID - 1), { cell } ) }>{ cell }</Button>);
     }
   }
 

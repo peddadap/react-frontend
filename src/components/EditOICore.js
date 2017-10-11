@@ -23,6 +23,15 @@ export default class EditOICore extends Component {
         controlNo: jsonEditOICoreData[0].controlNo,
         controlAcct: jsonEditOICoreData[0].controlAcct,
         surrender: jsonEditOICoreData[0].surrender,
+        requestId: 1,
+    }
+  }
+
+  async componentWillReceiveProps () {
+    if(this.props.requestId) {
+        this.setState({requestId: this.props.requestId + 1,});
+    }else{
+        this.setState({requestId: 1,});
     }
   }
 
@@ -277,7 +286,7 @@ export default class EditOICore extends Component {
         <div>
             <FormGroup controlId="ticketType" style={{ 'margin-bottom': '10px' }}>
                 <Col componentClass={ControlLabel} sm={3}>Request Number</Col>
-                <Col sm={6} smoffset={3}>{ this.props.requestId + 1 }</Col>
+                <Col sm={6} smoffset={3}>{ this.state.requestId }</Col>
             </FormGroup>
             <FormGroup controlId="ticketType" style={{ 'margin-bottom': '10px' }}>
                 <Col componentClass={ControlLabel} sm={3}>Request Type</Col>

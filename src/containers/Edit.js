@@ -24,6 +24,7 @@ export default class Edit extends Component {
       ticketDataArrNew: [],
       text: 'Submit',
       loadingText: 'Submitting.....',
+      Submitbutton: false,
     }
     this.state.ticketDataArr.push({name: "Data-09-25-2017.xls", value: "Excel1",});
     this.state.ticketDataArr.push({name: "Data-09-22-2017.xls", value: "Excel2",});
@@ -37,6 +38,11 @@ export default class Edit extends Component {
     if( this.props.requestStatus && this.props.requestStatus['cell'] == 'Error' ) {
       this.setState({ text: "Submit" });
       this.setState({ loadingText: "Submitting ....." });
+    }
+    if(this.props.requestStatus && ( this.props.requestStatus['cell'] == 'Open' || this.props.requestStatus['cell'] == 'Error' )) {
+      this.setState({ Submitbutton: true, });
+    } else {
+      this.setState({ Submitbutton: false, });
     }
   }
 
@@ -81,7 +87,7 @@ export default class Edit extends Component {
   }
 
   validateForm() {
-    return "false";
+    return this.state.Submitbutton;
   }
 
   tooltip =(cell, row) => {
@@ -164,7 +170,6 @@ export default class Edit extends Component {
     function trClassFormat(rowData, rIndex) {
       var myClassName='';
       if(rowData.Remark !== '') myClassName='myErrorRow'
-      console.log('CLass: '+myClassName+'--'+rIndex);
       return myClassName;
     }
 
