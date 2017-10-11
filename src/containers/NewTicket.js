@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./Home.css";
-import { Form } from "react-bootstrap";
+import { Form, FormGroup, Col } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import OICore from "../components/OICore";
 import Attachments from "../components/Attachments";
@@ -64,17 +64,21 @@ export default class NewTicket extends Component {
       <Attachments/>
       <hr/>
       <br/>
-     <LoaderButton
-        bsStyle="primary"
-        bsSize="large"
-        className = "myclassforbutton"
-        disabled={!this.validateForm()}
-        type="submit"
-        isLoading={this.state.isLoading}
-        text="Create"
-        loadingText="Creating…"
-      />
-      <br/>
+      <FormGroup controlId="ticketTypeButtons">
+        <Col sm={5}></Col>
+        <Col sm={2}>
+          <LoaderButton
+            bsStyle="primary"
+            bsSize="large"
+            disabled={!this.validateForm()}
+            type="submit"
+            isLoading={this.state.isLoading}
+            text="Create"
+            loadingText="Creating…"
+          />
+        </Col>
+        <Col sm={5}></Col>
+      </FormGroup>
       <br/>
       </Form>
     );

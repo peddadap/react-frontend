@@ -276,9 +276,13 @@ export default class EditOICore extends Component {
     return(
         <div>
             <FormGroup controlId="ticketType" style={{ 'margin-bottom': '10px' }}>
+                <Col componentClass={ControlLabel} sm={3}>Request Number</Col>
+                <Col sm={6} smoffset={3}>{ this.props.requestId + 1 }</Col>
+            </FormGroup>
+            <FormGroup controlId="ticketType" style={{ 'margin-bottom': '10px' }}>
                 <Col componentClass={ControlLabel} sm={3}>Request Type</Col>
                 <Col sm={6} smoffset={3}>
-                    <FormControl bsSize ="small" componentClass="select" placeholder="select" onChange={this.handleChange}>
+                    <FormControl bsSize ="small" componentClass="select" placeholder="select" disabled="true">
                         <option value="Original">Original Issuance</option>
                         <option value="Grants">Grants</option>
                         <option value="Vestings">Vestings</option>

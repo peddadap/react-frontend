@@ -29,7 +29,7 @@ export default class MyTickets extends Component {
 
   async componentWillReceiveProps () {
     if(this.props.actTab && this.props.actTab == 1 && this.props.requestId && this.props.requestStatus && this.props.requestStatus == 'Open') {
-      this.updateticketswithstate( this.props.requestId, 'Submit' );
+      this.updateticketswithstate( this.props.requestId, 'Pending' );
     }
     if(this.props.actTab && this.props.actTab == 1 && this.props.requestId && this.props.requestStatus && this.props.requestStatus == 'Error') {
       this.updateticketswithstate( this.props.requestId, 'New' );
@@ -87,13 +87,13 @@ export default class MyTickets extends Component {
       case 'Error':
           return (<Button bsStyle="danger" bsSize="small" className="myTicketsButton" onClick={ () => this.props.handleToUpdate('3', (row.ID - 1), { cell } ) } >{ cell }</Button>);
       case 'Recall':
-          return (<Button bsStyle="danger" bsSize="small" className="myTicketsButton">{ cell }</Button>);
+          return (<Button bsStyle="danger" bsSize="small" className="myTicketsButton" disabled>{ cell }</Button>);
       case 'New':
-          return (<Button bsStyle="success" bsSize="small" className="myTicketsButton">{ cell }</Button>);
+          return (<Button bsStyle="success" bsSize="small" className="myTicketsButton" disabled>{ cell }</Button>);
       case 'Open':
           return ( <Button bsStyle="warning" bsSize="small" className="myTicketsButton" onClick={ () => this.props.handleToUpdate('3', (row.ID - 1), { cell } ) }>{ cell }</Button> );
-      case 'Submit':
-          return (<Button bsStyle="success" bsSize="small" className="myTicketsButton">{ cell }</Button>);
+      case 'Pending':
+          return (<Button bsStyle="success" bsSize="small" className="myTicketsButton" disabled>{ cell }</Button>);
       case 'In-Progress':
           return (
               <div className="modal-container" id={row}>
@@ -129,7 +129,7 @@ export default class MyTickets extends Component {
               </div>
           );
       case 'Hold':
-          return (<Button bsStyle="danger" bsSize="small" className="myTicketsButton">{ cell }</Button>);
+          return (<Button bsStyle="danger" bsSize="small" className="myTicketsButton" disabled>{ cell }</Button>);
       case 'Done':
           return (
             <div className="modal-container" id={row}>
@@ -162,7 +162,7 @@ export default class MyTickets extends Component {
             </div>
           );
       case 'Closed':
-          return (<Button bsStyle="success" bsSize="small" className="myTicketsButton">{ cell }</Button>);
+          return (<Button bsStyle="success" bsSize="small" className="myTicketsButton" disabled>{ cell }</Button>);
     }
   }
 
