@@ -1,26 +1,31 @@
+//import modules
 import React, { Component } from "react";
 import { Link } from 'react-router-dom'
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-import {Button, Modal, Radio, FormGroup} from 'react-bootstrap';
-import "./Home.css";
-import jsonMyTicketData from "../myTickets.json";
-// import StatusChange from "../components/StatusChange";
-import configStatus from "../components/StatusChangeConfig";
+import { Button } from 'react-bootstrap';
 
+//import config not needed here
+// import configStatus from "../components/StatusChangeConfig";
+
+//import data
+import jsonMyTicketData from "../myTickets.json";
+
+//import CSS
+import "../styles/MyTickets.css";
+
+//MyTickets Class
 export default class MyTickets extends Component {
+
+  //Constructor
   constructor(props) {
     super(props);
     this.state = {
       isLoading: true,
       tickets: [],
-      showinprogress: false,
-      showdone: false,
       cellvalue: '',
       cellvalueTo: [],
-      cellvalueToSelected: '',
       rowid: 0,
     };
-
     this.options = {
       defaultSortName: 'ID',  // default sort column name
       defaultSortOrder: 'asc'  // default sort order
@@ -28,11 +33,12 @@ export default class MyTickets extends Component {
   }
 
   async componentWillReceiveProps () {
-    if(this.props.actTab && this.props.actTab == 1 && this.props.requestId && this.props.requestStatus && this.props.requestStatus == 'Open') {
-      this.updateticketswithstate( this.props.requestId, 'Pending' );
-    }
-    if(this.props.actTab && this.props.actTab == 1 && this.props.requestId && this.props.requestStatus && this.props.requestStatus == 'Error') {
-      this.updateticketswithstate( this.props.requestId, 'New' );
+    if( this.props.actTab && 
+        this.props.actTab == 1 && 
+        this.props.requestId && 
+        this.props.requestStatus 
+    ) {
+      this.updateticketswithstate( this.props.requestId, this.props.requestStatus );
     }
   }
   
@@ -42,127 +48,44 @@ export default class MyTickets extends Component {
     } catch (e) {
       alert(e);
     }
-  
     this.setState({ isLoading: false });
   }
  
-  colFormatter = (cell, row) => {
-    return (
-      <Link to={"/ticket/"+cell}>
-        {cell}
-      </Link>
-    )
-  }
-
-  handleStateChange(newstate){
-    this.setState({
-      cellvalueToSelected: newstate
-    });
-  }
-
-  dateFormatter(cell, row){
+  dateFormatter( cell, row ){
     var cdate = cell.split('T')[0];
     return cdate;
   }
 
-  updatetickets(row, newstate){
-    var cloneArrayone = JSON.parse(JSON.stringify(this.state.tickets));
-    cloneArrayone[row].Status = newstate;
-    return cloneArrayone;
-  }
-
-  updateticketswithstate(row, newstate){
+  updateticketswithstate( row, newstate ){
     var cloneArrayone = JSON.parse(JSON.stringify(this.state.tickets));
     cloneArrayone[row].Status = newstate;
     this.setState({ tickets: cloneArrayone });
   }
 
-  close() {
-    this.setState({ showinprogress: false, showdone: false});
-    return;
+  getbuttonforstatus = (mystyle, cell, row ) => {
+    return (
+        <Button 
+            bsStyle={mystyle} 
+            bsSize="small" 
+            className="myTicketsButton" 
+            onClick={ 
+              () => this.props.handleToUpdate(
+                      '3', (row.ID - 1), { cell } 
+                    ) 
+            } 
+        >
+          { cell }
+        </Button>);
   }
-  
-  imageFormatter = (cell, row) => {
-    switch(cell) {
-      case 'Error':
-          return (<Button bsStyle="danger" bsSize="small" className="myTicketsButton" onClick={ () => this.props.handleToUpdate('3', (row.ID - 1), { cell } ) } >{ cell }</Button>);
-      case 'Recall':
-          return (<Button bsStyle="danger" bsSize="small" className="myTicketsButton" onClick={ () => this.props.handleToUpdate('3', (row.ID - 1), { cell } ) }>{ cell }</Button>);
-      case 'New':
-          return (<Button bsStyle="success" bsSize="small" className="myTicketsButton" onClick={ () => this.props.handleToUpdate('3', (row.ID - 1), { cell } ) }>{ cell }</Button>);
-      case 'Open':
-          return ( <Button bsStyle="warning" bsSize="small" className="myTicketsButton" onClick={ () => this.props.handleToUpdate('3', (row.ID - 1), { cell } ) }>{ cell }</Button> );
-      case 'Pending':
-          return (<Button bsStyle="success" bsSize="small" className="myTicketsButton" onClick={ () => this.props.handleToUpdate('3', (row.ID - 1), { cell } ) }>{ cell }</Button>);
-      case 'In-Progress':
-          return (
-              <div className="modal-container" id={row}>
-                <Button
-                  bsStyle="warning"
-                  bsSize="small"
-                  className="myTicketsButton"
-                  onClick={() => this.setState({ showinprogress: true, cellvalue: cell, cellvalueTo: configStatus[cell], rowid: (row.ID - 1) })}
-                >
-                  { cell }
-                </Button>
-                <Modal
-                  show={ this.state.showinprogress }
-                  onHide={() => this.setState({ showinprogress: false})}
-                  container={this}
-                  aria-labelledby="contained-modal-title"
-                >
-                  <Modal.Header closeButton>
-                    <Modal.Title id="contained-modal-title">Change Status</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                    Change status form { this.state.cellvalue } to 
-                    <FormGroup>
-                      <Radio name="radioStateChange" onChange={ () => this.handleStateChange(this.state.cellvalueTo[0]) }>{ this.state.cellvalueTo[0] }</Radio>
-                      <Radio name="radioStateChange" onChange={ () => this.handleStateChange(this.state.cellvalueTo[1]) }>{ this.state.cellvalueTo[1] }</Radio>
-                    </FormGroup>
-                  </Modal.Body>
-                  <Modal.Footer>
-                    <Button onClick={() => { this.setState({ showinprogress: false,  }); this.props.handleToUpdate('3', (row.ID - 1), { cell } )}}>Cancel</Button>
-                    <Button onClick={() => { this.setState({ showinprogress: false, tickets : this.updatetickets(this.state.rowid, this.state.cellvalueToSelected) }); }}>OK</Button>
-                  </Modal.Footer>
-                </Modal>
-              </div>
-          );
-      case 'Hold':
-          return (<Button bsStyle="danger" bsSize="small" className="myTicketsButton" onClick={ () => this.props.handleToUpdate('3', (row.ID - 1), { cell } ) }>{ cell }</Button>);
-      case 'Done':
-          return (
-            <div className="modal-container" id={row}>
-              <Button
-                bsStyle="warning"
-                bsSize="small"
-                className="myTicketsButton"
-                onClick={() => this.setState({ showdone: true, cellvalue: cell, cellvalueTo: configStatus[cell], rowid: (row.ID - 1) })}
-              
-              >
-                { cell }
-              </Button>
-              <Modal
-                show={ this.state.showdone }
-                onHide={() => this.setState({ showdone: false})}
-                container={this}
-                aria-labelledby="contained-modal-title"
-              >
-                <Modal.Header closeButton>
-                  <Modal.Title id="contained-modal-title">Change Status</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  Change status form { this.state.cellvalue } to { this.state.cellvalueTo[0] }
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button onClick={() => { this.setState({ showdone: false, });this.props.handleToUpdate('3', (row.ID - 1), { cell } )}}>Cancel</Button>
-                  <Button onClick={() => { this.setState({ showdone: false, tickets : this.updatetickets( this.state.rowid, this.state.cellvalueTo[0] ) }); }}>OK</Button>
-                </Modal.Footer>
-              </Modal>
-            </div>
-          );
-      case 'Closed':
-          return (<Button bsStyle="success" bsSize="small" className="myTicketsButton" onClick={ () => this.props.handleToUpdate('3', (row.ID - 1), { cell } ) }>{ cell }</Button>);
+
+  imageFormatter = ( cell, row ) => {
+    if( cell == 'Error' || cell == 'Recall' || cell == 'Hold' ) {
+      return this.getbuttonforstatus('danger', cell, row );
+    } else {
+      if( cell == 'Done' || cell == 'Open' || cell == 'In-Progress' )
+        return this.getbuttonforstatus('warning', cell, row );
+      else
+        return this.getbuttonforstatus('success', cell, row );
     }
   }
 
@@ -186,10 +109,12 @@ export default class MyTickets extends Component {
   }
 
   render(tickets){
+
     const selectRow = {
       mode: 'checkbox',
       showOnlySelected: true
     };
+
     const options = {
       toolBar: this.createCustomToolBar,
       defaultSortName: 'ID',  // default sort column name
@@ -210,5 +135,4 @@ export default class MyTickets extends Component {
     )
   }
 
-  
- }
+}

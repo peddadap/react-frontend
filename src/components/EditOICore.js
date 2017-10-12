@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FormGroup, FormControl, ControlLabel, Col} from "react-bootstrap";
+import { FormGroup, FormControl, ControlLabel, Col } from "react-bootstrap";
 import jsonEditOICoreData from "../EditOICore.json";
 import DatePicker from "react-bootstrap-date-picker";
 
@@ -24,6 +24,7 @@ export default class EditOICore extends Component {
         controlAcct: jsonEditOICoreData[0].controlAcct,
         surrender: jsonEditOICoreData[0].surrender,
         requestId: 1,
+        fielddisabled: true,
     }
   }
 
@@ -32,6 +33,14 @@ export default class EditOICore extends Component {
         this.setState({requestId: this.props.requestId + 1,});
     }else{
         this.setState({requestId: 1,});
+    }
+    if(this.props.requestStatus && 
+        ( this.props.requestStatus['cell'] == 'Open' || 
+        this.props.requestStatus['cell'] == 'Error' )
+    ) {
+        this.setState({fielddisabled: false,});
+    } else {
+        this.setState({fielddisabled: true,});
     }
   }
 
@@ -48,11 +57,6 @@ export default class EditOICore extends Component {
             this.refs.myTextInputtotalshares.value = this.state.totalshares;
             this.refs.myTextInputcompanyno.value = this.state.companyno;
             this.refs.myTextInputlegend.value = this.state.legend;
-            // this.refs.myTextInputparentCo.value = this.state.parentCo;
-            // this.refs.myTextInputchildCo.value = this.state.childCo;
-            // this.refs.myTextInputcontrolNo.value = this.state.controlNo;
-            // this.refs.myTextInputcontrolAcct.value = this.state.controlAcct;
-            // this.refs.myTextInputsurrender.value = this.state.surrender;
         }
     }
 
@@ -96,31 +100,31 @@ export default class EditOICore extends Component {
                 <FormGroup controlId="companyno" style={{ 'margin-bottom': '10px' }}>
                    <Col componentClass={ControlLabel} sm={3}>Company #</Col>
                     <Col sm={6} smoffset={3}>
-                        <FormControl onChange={this.handleChange} type="text"  ref="myTextInputcompanyno" defaultValue={ this.state.companyno } onBlur = {this.handleChange}/>
+                        <FormControl onChange={this.handleChange} type="text"  ref="myTextInputcompanyno" defaultValue={ this.state.companyno } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
                     </Col>
                 </FormGroup>
                 <FormGroup controlId="totalshares" style={{ 'margin-bottom': '10px' }}>
                     <Col componentClass={ControlLabel} sm={3}>Total Shares #</Col>
                     <Col sm={6} smoffset={3}>
-                        <FormControl onChange={this.handleChange} type="text"  ref="myTextInputtotalshares" defaultValue={ this.state.totalshares } onBlur = {this.handleChange}/>
+                        <FormControl onChange={this.handleChange} type="text"  ref="myTextInputtotalshares" defaultValue={ this.state.totalshares } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
                     </Col>
                 </FormGroup>
                 <FormGroup controlId="legend" style={{ 'margin-bottom': '10px' }}>
                     <Col componentClass={ControlLabel} sm={3}>Legend</Col>
                     <Col sm={6} smoffset={3}>
-                        <FormControl onChange={this.handleChange} type="text" maxLength="1"  ref="myTextInputlegend" defaultValue={ this.state.legend } onBlur = {this.handleChange}/>
+                        <FormControl onChange={this.handleChange} type="text" maxLength="1"  ref="myTextInputlegend" defaultValue={ this.state.legend } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
                     </Col>
                 </FormGroup>
                 <FormGroup controlId="issuancedate" style={{ 'margin-bottom': '10px' }}>
                     <Col componentClass={ControlLabel} sm={3}>Issuance Date</Col>
                     <Col sm={6} smoffset={3}>
-                        <DatePicker id="example-datepicker" value={this.state.value} onChange={this.handleChangeDate.bind(this)} />
+                        <DatePicker id="example-datepicker" value={this.state.value} onChange={this.handleChangeDate.bind(this)}  disabled={ this.state.fielddisabled }/>
                     </Col>
                 </FormGroup>
                 <FormGroup controlId="bookentry" style={{ 'margin-bottom': '10px' }}>
                     <Col componentClass={ControlLabel} sm={3}>Book Entry</Col>
                     <Col sm={6} smoffset={3}>
-                        <FormControl bsSize ="small" componentClass="select" placeholder="select" onChange={this.handleChange}>
+                        <FormControl bsSize ="small" componentClass="select" placeholder="select" onChange={this.handleChange} disabled={ this.state.fielddisabled }>
                             <option value="book">B</option>
                             <option value="physical"> </option>
                         </FormControl>
@@ -134,37 +138,37 @@ export default class EditOICore extends Component {
                     <FormGroup controlId="parentCo" style={{ 'margin-bottom': '10px' }}> 
                         <Col componentClass={ControlLabel} sm={3}>Parent Company No #</Col>
                         <Col sm={6} smoffset={3}>
-                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputparentCo" defaultValue={ this.state.parentCo } onBlur = {this.handleChange}/>
+                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputparentCo" defaultValue={ this.state.parentCo } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
                         </Col>
                     </FormGroup>
                     <FormGroup controlId="childCo" style={{ 'margin-bottom': '10px' }}>
                         <Col componentClass={ControlLabel} sm={3}>Child Company No #</Col>
                         <Col sm={6} smoffset={3}>
-                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputchildCo" defaultValue={ this.state.childCo } onBlur = {this.handleChange}/>
+                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputchildCo" defaultValue={ this.state.childCo } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
                         </Col>
                     </FormGroup>
                     <FormGroup controlId="controlNo" style={{ 'margin-bottom': '10px' }}>
                         <Col componentClass={ControlLabel} sm={3}>Control No #</Col>
                         <Col sm={6} smoffset={3}>
-                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputcontrolNo" defaultValue={ this.state.controlNo } onBlur = {this.handleChange}/>
+                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputcontrolNo" defaultValue={ this.state.controlNo } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
                         </Col>
                     </FormGroup>
                     <FormGroup controlId="totalshares" style={{ 'margin-bottom': '10px' }}>
                         <Col componentClass={ControlLabel} sm={3}>Total Shares #</Col>
                         <Col sm={6} smoffset={3}>
-                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputtotalshares" defaultValue={ this.state.totalshares } onBlur = {this.handleChange}/>
+                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputtotalshares" defaultValue={ this.state.totalshares } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
                         </Col>
                     </FormGroup>
                     <FormGroup controlId="controlAcct" style={{ 'margin-bottom': '10px' }}>
                         <Col componentClass={ControlLabel} sm={3}>Control Account No #</Col>
                         <Col sm={6} smoffset={3}>
-                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputcontrolAcct" defaultValue={ this.state.controlAcct } onBlur = {this.handleChange}/>
+                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputcontrolAcct" defaultValue={ this.state.controlAcct } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
                         </Col>
                     </FormGroup>
                     <FormGroup controlId="issuancedate" style={{ 'margin-bottom': '10px' }}>
                         <Col componentClass={ControlLabel} sm={3}>Issuance Date</Col>
                         <Col sm={6} smoffset={3}>
-                            <DatePicker id="example-datepicker" value={this.state.value} onChange={this.handleChangeDate.bind(this)} />
+                            <DatePicker id="example-datepicker" value={this.state.value} onChange={this.handleChangeDate.bind(this)}  disabled={ this.state.fielddisabled }/>
                         </Col>
                     </FormGroup>
                 </div>)
@@ -174,31 +178,31 @@ export default class EditOICore extends Component {
                     <FormGroup controlId="parentCo" style={{ 'margin-bottom': '10px' }}> 
                         <Col componentClass={ControlLabel} sm={3}>Parent Company No #</Col>
                         <Col sm={6} smoffset={3}>
-                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputparentCo" defaultValue={ this.state.parentCo } onBlur = {this.handleChange}/>
+                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputparentCo" defaultValue={ this.state.parentCo } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
                         </Col>
                     </FormGroup>
                     <FormGroup controlId="childCo" style={{ 'margin-bottom': '10px' }}>
                         <Col componentClass={ControlLabel} sm={3}>Child Company No #</Col>
                         <Col sm={6} smoffset={3}>
-                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputchildCo" defaultValue={ this.state.childCo } onBlur = {this.handleChange}/>
+                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputchildCo" defaultValue={ this.state.childCo } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
                         </Col>
                     </FormGroup>
                     <FormGroup controlId="controlAcct" style={{ 'margin-bottom': '10px' }}>
                         <Col componentClass={ControlLabel} sm={3}>Control Account No #</Col>
                         <Col sm={6} smoffset={3}>
-                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputcontrolAcct" defaultValue={ this.state.controlAcct } onBlur = {this.handleChange}/>
+                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputcontrolAcct" defaultValue={ this.state.controlAcct } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
                         </Col>
                     </FormGroup>
                     <FormGroup controlId="totalshares" style={{ 'margin-bottom': '10px' }}>
                         <Col componentClass={ControlLabel} sm={3}>Total Shares #</Col>
                         <Col sm={6} smoffset={3}>
-                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputtotalshares" defaultValue={ this.state.totalshares } onBlur = {this.handleChange}/>
+                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputtotalshares" defaultValue={ this.state.totalshares } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
                         </Col>
                     </FormGroup>
                     <FormGroup controlId="vestingdate" style={{ 'margin-bottom': '10px' }}>
                         <Col componentClass={ControlLabel} sm={3}>Vesting Date</Col>
                         <Col sm={6} smoffset={3}>
-                            <DatePicker id="example-datepicker" value={this.state.value} onChange={this.handleChangeDate.bind(this)} />
+                            <DatePicker id="example-datepicker" value={this.state.value} onChange={this.handleChangeDate.bind(this)}  disabled={ this.state.fielddisabled }/>
                         </Col>
                     </FormGroup>                    
                     </div>)
@@ -208,37 +212,37 @@ export default class EditOICore extends Component {
                             <FormGroup controlId="parentCo" style={{ 'margin-bottom': '10px' }}> 
                                 <Col componentClass={ControlLabel} sm={3}>Parent Company No #</Col>
                                 <Col sm={6} smoffset={3}>
-                                    <FormControl onChange={this.handleChange} type="text"  ref="myTextInputparentCo" defaultValue={ this.state.parentCo } onBlur = {this.handleChange}/>
+                                    <FormControl onChange={this.handleChange} type="text"  ref="myTextInputparentCo" defaultValue={ this.state.parentCo } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
                                 </Col>
                             </FormGroup>
                             <FormGroup controlId="childCo" style={{ 'margin-bottom': '10px' }}>
                                 <Col componentClass={ControlLabel} sm={3}>Child Company No #</Col>
                                 <Col sm={6} smoffset={3}>
-                                    <FormControl onChange={this.handleChange} type="text"  ref="myTextInputchildCo" defaultValue={ this.state.childCo } onBlur = {this.handleChange}/>
+                                    <FormControl onChange={this.handleChange} type="text"  ref="myTextInputchildCo" defaultValue={ this.state.childCo } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
                                 </Col>
                             </FormGroup>
                             <FormGroup controlId="controlNo" style={{ 'margin-bottom': '10px' }}>
                                 <Col componentClass={ControlLabel} sm={3}>Control No #</Col>
                                 <Col sm={6} smoffset={3}>
-                                    <FormControl onChange={this.handleChange} type="text"  ref="myTextInputcontrolNo" defaultValue={ this.state.controlNo } onBlur = {this.handleChange}/>
+                                    <FormControl onChange={this.handleChange} type="text"  ref="myTextInputcontrolNo" defaultValue={ this.state.controlNo } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
                                 </Col>
                             </FormGroup>
                             <FormGroup controlId="totalshares" style={{ 'margin-bottom': '10px' }}>
                                 <Col componentClass={ControlLabel} sm={3}>Total Shares #</Col>
                                 <Col sm={6} smoffset={3}>
-                                    <FormControl onChange={this.handleChange} type="text"  ref="myTextInputtotalshares" defaultValue={ this.state.totalshares } onBlur = {this.handleChange}/>
+                                    <FormControl onChange={this.handleChange} type="text"  ref="myTextInputtotalshares" defaultValue={ this.state.totalshares } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
                                 </Col>
                             </FormGroup>
                             <FormGroup controlId="issuancedate" style={{ 'margin-bottom': '10px' }}>
                                 <Col componentClass={ControlLabel} sm={3}>Date</Col>
                                 <Col sm={6} smoffset={3}>
-                                    <DatePicker id="example-datepicker" value={this.state.value} onChange={this.handleChangeDate.bind(this)} />
+                                    <DatePicker id="example-datepicker" value={this.state.value} onChange={this.handleChangeDate.bind(this)}  disabled={ this.state.fielddisabled }/>
                                 </Col>
                             </FormGroup>
                             <FormGroup controlId="disposition" style={{ 'margin-bottom': '10px' }}>
                                 <Col componentClass={ControlLabel} sm={3}>Disposition</Col>
                                 <Col sm={6} smoffset={3}>
-                                <FormControl bsSize ="small" componentClass="select" placeholder="select" onChange={this.handleChange}>
+                                <FormControl bsSize ="small" componentClass="select" placeholder="select" onChange={this.handleChange} disabled={ this.state.fielddisabled }>
                                     <option value="retire">Retire</option>
                                     <option value="return">Return to Company Treasury</option>
                                 </FormControl>
@@ -251,25 +255,25 @@ export default class EditOICore extends Component {
                                 <FormGroup controlId="companyno" style={{ 'margin-bottom': '10px' }}>
                                     <Col componentClass={ControlLabel} sm={3}>Company No #</Col>
                                     <Col sm={6} smoffset={3}>
-                                        <FormControl onChange={this.handleChange} type="text"  ref="myTextInputcompanyno" defaultValue={ this.state.companyno } onBlur = {this.handleChange}/>
+                                        <FormControl onChange={this.handleChange} type="text"  ref="myTextInputcompanyno" defaultValue={ this.state.companyno } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
                                     </Col>
                                 </FormGroup>
                                 <FormGroup controlId="totalshares" style={{ 'margin-bottom': '10px' }}>
                                     <Col componentClass={ControlLabel} sm={3}>Total Shares #</Col>
                                     <Col sm={6} smoffset={3}>
-                                        <FormControl onChange={this.handleChange} type="text"  ref="myTextInputtotalshares" defaultValue={ this.state.totalshares } onBlur = {this.handleChange}/>
+                                        <FormControl onChange={this.handleChange} type="text"  ref="myTextInputtotalshares" defaultValue={ this.state.totalshares } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
                                     </Col>
                                 </FormGroup>
                                 <FormGroup controlId="issuancedate" style={{ 'margin-bottom': '10px' }}>
                                     <Col componentClass={ControlLabel} sm={3}>Date</Col>
                                     <Col sm={6} smoffset={3}>
-                                        <DatePicker id="example-datepicker" value={this.state.value} onChange={this.handleChangeDate.bind(this)} />
+                                        <DatePicker id="example-datepicker" value={this.state.value} onChange={this.handleChangeDate.bind(this)}  disabled={ this.state.fielddisabled }/>
                                     </Col>
                                 </FormGroup>
                                 <FormGroup controlId="disposition" style={{ 'margin-bottom': '10px' }}>
                                     <Col componentClass={ControlLabel} sm={3}>Disposition</Col>
                                     <Col sm={6} smoffset={3}>
-                                        <FormControl bsSize ="small" componentClass="select" placeholder="select" onChange={this.handleChange}>
+                                        <FormControl bsSize ="small" componentClass="select" placeholder="select" onChange={this.handleChange} disabled={ this.state.fielddisabled }>
                                             <option value="retire">Retire</option>
                                             <option value="return">Return to Company Treasury</option>
                                         </FormControl>
@@ -286,7 +290,7 @@ export default class EditOICore extends Component {
         <div>
             <FormGroup controlId="ticketType" style={{ 'margin-bottom': '10px' }}>
                 <Col componentClass={ControlLabel} sm={3}>Request Number</Col>
-                <Col sm={6} smoffset={3}>{ this.state.requestId }</Col>
+                <Col sm={6} smoffset={3}><h4>{ this.state.requestId }</h4></Col>
             </FormGroup>
             <FormGroup controlId="ticketType" style={{ 'margin-bottom': '10px' }}>
                 <Col componentClass={ControlLabel} sm={3}>Request Type</Col>
@@ -303,7 +307,7 @@ export default class EditOICore extends Component {
             <FormGroup controlId="priority" style={{ 'margin-bottom': '10px' }}>
                 <Col componentClass={ControlLabel} sm={3}>Priority</Col>
                 <Col sm={6} smoffset={3}>
-                    <FormControl componentClass="select" placeholder="select" onChange={this.handleChange}>
+                    <FormControl componentClass="select" placeholder="select" onChange={this.handleChange}  disabled={ this.state.fielddisabled }>
                         <option value="Low">Low</option>
                         <option value="Medium">Medium</option>
                         <option value="High">High</option>

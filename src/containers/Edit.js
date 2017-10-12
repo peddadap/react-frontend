@@ -12,6 +12,7 @@ import issuanceData2 from "../Issuance-2.json";
 import issuanceData3 from "../Issuance-3.json";
 import LinkWithTooltip from "../components/tooltip";
 import Config from "./ux.json";
+import configStatusOptions from "../configurations/ticketStatusConfig";
 
 export default class Edit extends Component {
 
@@ -25,35 +26,57 @@ export default class Edit extends Component {
       text: 'Submit',
       loadingText: 'Submitting.....',
       Submitbutton: false,
+      editdata: {},
+      statusOptions: '',
+      selectedStatus: '',
     }
     this.state.ticketDataArr.push({name: "Data-09-25-2017.xls", value: "Excel1",});
     this.state.ticketDataArr.push({name: "Data-09-22-2017.xls", value: "Excel2",});
     this.state.ticketDataArr.push({name: "Data-09-21-2017.xls", value: "Excel3",});
-    this.state.ticketDataArrNew.push({name: "Data-09-25-2017.xls", value: "Excel1",});
-    this.state.ticketDataArrNew.push({name: "Data-09-22-2017.xls", value: "Excel2",});
-    this.state.ticketDataArrNew.push({name: "Data-09-21-2017.xls", value: "Excel3",});
+    this.state.ticketDataArrNew = this.state.ticketDataArr;
   }
 
   async componentWillReceiveProps () {
-    if( this.props.requestStatus && this.props.requestStatus['cell'] == 'Error' ) {
-      this.setState({ text: "Submit" });
-      this.setState({ loadingText: "Submitting ....." });
+    if( this.props.requestStatus && this.props.requestStatus['cell'] !== '' ){
+      this.setState({ selectedStatus: this.props.requestStatus['cell'] });
     }
-    if(this.props.requestStatus && ( this.props.requestStatus['cell'] == 'Open' || this.props.requestStatus['cell'] == 'Error' )) {
-      this.setState({ Submitbutton: true, });
+    if(this.props.requestStatus && 
+        ( this.props.requestStatus['cell'] == 'Open' || 
+          this.props.requestStatus['cell'] == 'Error' )
+    ) {
+      this.setState({ editdata: {mode: 'click', blurToSave: true, afterSaveCell: this.onAfterSaveCell} });
     } else {
-      this.setState({ Submitbutton: false, });
+      this.setState({ editdata: {} });
+    }
+    if(this.props.requestStatus && 
+        ( this.props.requestStatus['cell'] == 'New' || 
+          this.props.requestStatus['cell'] == 'Pending' ||
+          this.props.requestStatus['cell'] == 'Closed' ||
+          this.props.requestStatus['cell'] == 'Recall')
+    ) {
+      this.setState({ Submitbutton: false });
+    } else {
+      this.setState({ Submitbutton: true });
+    }
+    if( this.props.requestStatus ) {
+      var status = this.props.requestStatus['cell'];
+      if(status !== '' && status !== 'undefined' && status !== undefined ) {
+        var statoption = [];
+        Object.keys( configStatusOptions[status] ).map((k, index) => {
+          if( configStatusOptions[status][k] == this.state.selectedStatus ) {
+            statoption.push(<option value={ configStatusOptions[status][k] } selected>{ configStatusOptions[status][k] }</option>);
+          } else {
+            statoption.push(<option value={ configStatusOptions[status][k] }>{ configStatusOptions[status][k] }</option>);
+          }
+        });
+        this.setState({ statusOptions: statoption, });  
+      }
     }
   }
 
   handleSubmit = async event => {
     event.preventDefault();
-    if(this.props.requestStatus && this.props.requestStatus['cell'] == 'Open') {
-      this.props.handleToUpdate(1, this.props.requestId, this.props.requestStatus['cell']);
-    }
-    if(this.props.requestStatus && this.props.requestStatus['cell'] == 'Error') {
-      this.props.handleToUpdate(1, this.props.requestId, this.props.requestStatus['cell']);
-    }
+    this.props.handleToUpdate(1, this.props.requestId, this.state.selectedStatus);
     return;
   }
 
@@ -117,6 +140,10 @@ export default class Edit extends Component {
     }
   }
 
+  handleStatusChange = event => {
+    this.setState({ selectedStatus: event.target.value }); 
+  }
+
   handleChange = event => {
     if(event.target.value === 'Excel2') {
       this.setState({
@@ -137,7 +164,7 @@ export default class Edit extends Component {
 
   createCustomToolBar = props => {
     return (
-      <div style={ { margin: '15px', 'padding-right': '2cm' } }>
+      <div style={ { margin: '15px' } }>
         { props.components.btnGroup }
         <div className='col-xs-8 col-sm-4 col-md-4 col-lg-2'>
           { props.components.searchPanel }
@@ -157,14 +184,10 @@ export default class Edit extends Component {
       insertModalHeader: this.createCustomModalHeader,
       toolBar: this.createCustomToolBar,
     };
+
     const selectRowProp = {
       mode: 'checkbox',
       showOnlySelected: true,
-    };
-    const  cellEditProp = {
-      mode: 'click',
-      blurToSave: true,
-      afterSaveCell: this.onAfterSaveCell
     };
 
     function trClassFormat(rowData, rIndex) {
@@ -181,7 +204,7 @@ export default class Edit extends Component {
         attachmentListData.push(<Checkbox inline label={this.state.ticketDataArrNew[k]['value']} onChange={() => this.handleFileChange(this.state.ticketDataArrNew[k]['value'])}> { this.state.ticketDataArrNew[k]['name'] } </Checkbox>);
       });
       attachmentList.push(
-        <FormGroup controlId = {"ticketTypeedit"}>
+        <FormGroup controlId = {"ticketTypeedit"} style={{ 'margin-bottom': '10px' }}>
           <Col componentClass={ControlLabel} sm={3}>{ "Select Attachments you wish to remove" }</Col>
           <Col sm={6}> { attachmentListData }</Col>
           <Col smoffset={3}></Col>
@@ -205,10 +228,10 @@ export default class Edit extends Component {
     return(
       <Form horizontal onSubmit={this.handleSubmit}>
       <br/>
-      <EditOICore requestId={ this.props.requestId } />
+      <EditOICore requestId={ this.props.requestId } requestStatus={ this.props.requestStatus } />
       <hr/>
       { attachmentList } 
-      <FormGroup controlId="ticketType">
+      <FormGroup controlId="attachment" style={{ 'margin-bottom': '10px' }}>
         <Col componentClass={ControlLabel} sm={3}>Attachment</Col>
         <Col sm={6}>
           <FormControl bsSize ="small" componentClass="select" placeholder="select" onChange={this.handleChange}>
@@ -218,7 +241,16 @@ export default class Edit extends Component {
         <Col smoffset={3}></Col>
       </FormGroup>
       <hr/>
-      <BootstrapTable data={ this.state.ticketData } trClassName={ trClassFormat } cellEdit={ cellEditProp } striped={true} pagination options={ options } selectRow={ selectRowProp }  multiColumnSearch={ true } search>{rows}</BootstrapTable>
+      <FormGroup controlId="statusChange" style={{ 'margin-bottom': '10px' }}>
+        <Col componentClass={ControlLabel} sm={3}>Change Request Status</Col>
+        <Col sm={6} smoffset={3}>
+          <FormControl componentClass="select" placeholder="select" onChange={this.handleStatusChange}>
+            { this.state.statusOptions }
+          </FormControl>
+        </Col>
+      </FormGroup>
+      <hr/>
+      <BootstrapTable data={ this.state.ticketData } trClassName={ trClassFormat } cellEdit={ this.state.editdata } striped={true} pagination options={ options } selectRow={ selectRowProp }  multiColumnSearch={ true } exportCSV search>{rows}</BootstrapTable>
       <hr/>
       <FormGroup controlId="ticketTypeButtons">
         <Col sm={5}></Col>
