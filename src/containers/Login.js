@@ -1,16 +1,29 @@
+//import modules
 import React, { Component } from "react";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
-import "./Login.css";
+
+//Load Application Components
 import LoaderButton from "../components/LoaderButton";
 
+//import config not needed here
+//Not required here
+
+//import data
+//Not required here
+
+//import CSS
+import "../styles/Login.css";
+
+//Login Class
 export default class Login extends Component {
+
+  //Constructor
   constructor(props) {
     super(props);
-
     this.state = {
       isLoading: false,
       email: "",
-      password: ""
+      password: "",
     };
   }
 
@@ -19,16 +32,12 @@ export default class Login extends Component {
   }
 
   handleChange = event => {
-    this.setState({
-      [event.target.id]: event.target.value
-    });
+    this.setState({ [event.target.id]: event.target.value });
   }
 
   handleSubmit = async event => {
     event.preventDefault();
-  
     this.setState({ isLoading: true });
-  
     try {
       await this.login(this.state.email, this.state.password);
       this.props.userHasAuthenticated(true);
@@ -40,43 +49,44 @@ export default class Login extends Component {
   }
   
   login(email, password) {
-    
     return new Promise(function(resolve, reject){
-         resolve();
-     });
+      resolve();
+    });
   }
+
   render() {
     return (
-      <div className="Login">
-        <form onSubmit={this.handleSubmit}>
-          <FormGroup controlId="email" bsSize="large">
-            <ControlLabel>Email</ControlLabel>
-            <FormControl
-              autoFocus
-              type="email"
-              value={this.state.email}
-              onChange={this.handleChange}
-            />
-          </FormGroup>
-          <FormGroup controlId="password" bsSize="large">
-            <ControlLabel>Password</ControlLabel>
-            <FormControl
-              value={this.state.password}
-              onChange={this.handleChange}
-              type="password"
-            />
-          </FormGroup>
-          <LoaderButton
-            block
-            bsSize="large"
-            disabled={!this.validateForm()}
-            type="submit"
-            isLoading={this.state.isLoading}
-            text="Login"
-            loadingText="Logging in…"
-          />
-        </form>
-      </div>
+          <div className="Login">
+            <form onSubmit={this.handleSubmit}>
+              <FormGroup controlId="email" bsSize="large">
+                <ControlLabel>Email</ControlLabel>
+                <FormControl
+                  autoFocus
+                  type="email"
+                  value={this.state.email}
+                  onChange={this.handleChange}
+                />
+              </FormGroup>
+              <FormGroup controlId="password" bsSize="large">
+                <ControlLabel>Password</ControlLabel>
+                <FormControl
+                  value={this.state.password}
+                  onChange={this.handleChange}
+                  type="password"
+                />
+              </FormGroup>
+              <LoaderButton
+                block
+                bsSize="large"
+                disabled={!this.validateForm()}
+                type="submit"
+                isLoading={this.state.isLoading}
+                text="Login"
+                loadingText="Logging in…"
+              />
+            </form>
+          </div>
     );
   }
+
 }

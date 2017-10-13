@@ -5,14 +5,15 @@ body {
   font-size: 14px;
   color:#333;
 }
+
 h1, h2, h3, h4, h5, h6 {
   font-family: "PT Serif", serif;
 }
-select.form-control,
-textarea.form-control,
-input.form-control {
+
+select.form-control, textarea.form-control, input.form-control {
   font-size: 14px;
 }
+
 input[type=file] {
   width: 100%;
 }

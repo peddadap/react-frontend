@@ -2,16 +2,16 @@ import React, { Component } from "react";
 import { Button } from "react-bootstrap";
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import { FormGroup, FormControl, ControlLabel, Col, OverlayTrigger, ButtonToolbar, Tooltip, Checkbox} from "react-bootstrap";
-import "./Home.css";
+import "../styles/Home.css";
 import { Form } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import EditOICore from "../components/EditOICore";
-import attachmentData from "../attachmentData.json";
-import issuanceData1 from "../Issuance-1.json";
-import issuanceData2 from "../Issuance-2.json";
-import issuanceData3 from "../Issuance-3.json";
+import Attachments from "../components/Attachments";
+import issuanceData1 from "../data/Issuance-1.json";
+import issuanceData2 from "../data/Issuance-2.json";
+import issuanceData3 from "../data/Issuance-3.json";
 import LinkWithTooltip from "../components/tooltip";
-import Config from "./ux.json";
+import Config from "../configurations/ux.json";
 import configStatusOptions from "../configurations/ticketStatusConfig";
 
 export default class Edit extends Component {
@@ -29,6 +29,7 @@ export default class Edit extends Component {
       editdata: {},
       statusOptions: '',
       selectedStatus: '',
+      newattachments: '',
     }
     this.state.ticketDataArr.push({name: "Data-09-25-2017.xls", value: "Excel1",});
     this.state.ticketDataArr.push({name: "Data-09-22-2017.xls", value: "Excel2",});
@@ -52,7 +53,7 @@ export default class Edit extends Component {
         ( this.props.requestStatus['cell'] == 'New' || 
           this.props.requestStatus['cell'] == 'Pending' ||
           this.props.requestStatus['cell'] == 'Closed' ||
-          this.props.requestStatus['cell'] == 'Recall')
+          this.props.requestStatus['cell'] == 'Recall' )
     ) {
       this.setState({ Submitbutton: false });
     } else {
@@ -71,6 +72,11 @@ export default class Edit extends Component {
         });
         this.setState({ statusOptions: statoption, });  
       }
+    }
+    if(this.props.requestStatus && this.props.requestStatus['cell'] == 'Error') {
+      this.setState({ newattachments: <Attachments/>, });
+    } else {
+      this.setState({ newattachments: '', });
     }
   }
 
@@ -199,13 +205,13 @@ export default class Edit extends Component {
     Object.keys(this.state.ticketDataArr).map((k, index) => {
       attachementListShow.push(<option value={ this.state.ticketDataArr[k]['value'] }>{ this.state.ticketDataArr[k]['name'] }</option>);
     });
-    if(this.props.requestStatus && this.props.requestStatus['cell'] == 'Open') {
+    if(this.props.requestStatus && ( this.props.requestStatus['cell'] == 'Open' || this.props.requestStatus['cell'] == 'Error' )) {
       Object.keys(this.state.ticketDataArrNew).map((k, index) => {
         attachmentListData.push(<Checkbox inline label={this.state.ticketDataArrNew[k]['value']} onChange={() => this.handleFileChange(this.state.ticketDataArrNew[k]['value'])}> { this.state.ticketDataArrNew[k]['name'] } </Checkbox>);
       });
       attachmentList.push(
         <FormGroup controlId = {"ticketTypeedit"} style={{ 'margin-bottom': '10px' }}>
-          <Col componentClass={ControlLabel} sm={3}>{ "Select Attachments you wish to remove" }</Col>
+          <Col componentClass={ControlLabel} sm={3}>{ "Select Existing Attachments you wish to remove" }</Col>
           <Col sm={6}> { attachmentListData }</Col>
           <Col smoffset={3}></Col>
         </FormGroup>
@@ -230,17 +236,6 @@ export default class Edit extends Component {
       <br/>
       <EditOICore requestId={ this.props.requestId } requestStatus={ this.props.requestStatus } />
       <hr/>
-      { attachmentList } 
-      <FormGroup controlId="attachment" style={{ 'margin-bottom': '10px' }}>
-        <Col componentClass={ControlLabel} sm={3}>Attachment</Col>
-        <Col sm={6}>
-          <FormControl bsSize ="small" componentClass="select" placeholder="select" onChange={this.handleChange}>
-            { attachementListShow }
-          </FormControl>
-        </Col>
-        <Col smoffset={3}></Col>
-      </FormGroup>
-      <hr/>
       <FormGroup controlId="statusChange" style={{ 'margin-bottom': '10px' }}>
         <Col componentClass={ControlLabel} sm={3}>Change Request Status</Col>
         <Col sm={6} smoffset={3}>
@@ -248,6 +243,18 @@ export default class Edit extends Component {
             { this.state.statusOptions }
           </FormControl>
         </Col>
+      </FormGroup>
+      <hr/>
+      { this.state.newattachments }
+      { attachmentList } 
+      <FormGroup controlId="attachment" style={{ 'margin-bottom': '10px' }}>
+        <Col componentClass={ControlLabel} sm={3}>Existing Attachments</Col>
+        <Col sm={6}>
+          <FormControl bsSize ="small" componentClass="select" placeholder="select" onChange={this.handleChange}>
+            { attachementListShow }
+          </FormControl>
+        </Col>
+        <Col smoffset={3}></Col>
       </FormGroup>
       <hr/>
       <BootstrapTable data={ this.state.ticketData } trClassName={ trClassFormat } cellEdit={ this.state.editdata } striped={true} pagination options={ options } selectRow={ selectRowProp }  multiColumnSearch={ true } exportCSV search>{rows}</BootstrapTable>

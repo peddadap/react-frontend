@@ -1,29 +1,38 @@
+//import modules
 import React, { Component } from "react";
-import "./Home.css";
 import { Form, FormGroup, Col } from "react-bootstrap";
+
+//Load Application Components
 import LoaderButton from "../components/LoaderButton";
 import OICore from "../components/OICore";
 import Attachments from "../components/Attachments";
 import Email from "../components/Email";
 
-//import jsonData from "../data.json";
-import Config from "./ux.json";
+//import config not needed here
+import Config from "../configurations/ux.json";
 
+//import data
+//Not required here
+
+//import CSS
+import "../styles/NewTicket.css";
+
+//NewTicket Class
 export default class NewTicket extends Component {
 
+  //Constructor
   constructor(props) {
     super(props);
     this.state = {
       isLoading: true,
       ticketData: []
-     }
+    }
   }
 
   async componentDidMount() {
-     this.setState({ isLoading: false });
-   }
+    this.setState({ isLoading: false });
+  }
 
-  
   validateForm(){
     return true;
   }
@@ -32,7 +41,6 @@ export default class NewTicket extends Component {
     event.preventDefault();
     this.props.handleToUpdate('1');
     return;
-
   }
 
   render(tickets) {
@@ -56,31 +64,32 @@ export default class NewTicket extends Component {
 
     return(
       <Form horizontal onSubmit={this.handleSubmit} ref="createRequest">
-      <br/>
-      <Email/>
-      <hr/>
-      <OICore/>
-      <hr/>
-      <Attachments/>
-      <hr/>
-      <br/>
-      <FormGroup controlId="ticketTypeButtons">
-        <Col sm={5}></Col>
-        <Col sm={2}>
-          <LoaderButton
-            bsStyle="primary"
-            bsSize="large"
-            disabled={!this.validateForm()}
-            type="submit"
-            isLoading={this.state.isLoading}
-            text="Create"
-            loadingText="Creating…"
-          />
-        </Col>
-        <Col sm={5}></Col>
-      </FormGroup>
-      <br/>
+        <br/>
+        <Email/>
+        <hr/>
+        <OICore/>
+        <hr/>
+        <Attachments/>
+        <hr/>
+        <br/>
+        <FormGroup controlId="ticketTypeButtons">
+          <Col sm={5}></Col>
+          <Col sm={2}>
+            <LoaderButton
+              bsStyle="primary"
+              bsSize="large"
+              disabled={!this.validateForm()}
+              type="submit"
+              isLoading={this.state.isLoading}
+              text="Create"
+              loadingText="Creating…"
+            />
+          </Col>
+          <Col sm={5}></Col>
+        </FormGroup>
+        <br/>
       </Form>
     );
   }
+
 }

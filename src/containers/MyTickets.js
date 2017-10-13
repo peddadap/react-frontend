@@ -5,10 +5,10 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import { Button } from 'react-bootstrap';
 
 //import config not needed here
-// import configStatus from "../components/StatusChangeConfig";
+//Not required here
 
 //import data
-import jsonMyTicketData from "../myTickets.json";
+import jsonMyTicketData from "../data/myTickets.json";
 
 //import CSS
 import "../styles/MyTickets.css";
@@ -63,7 +63,18 @@ export default class MyTickets extends Component {
   }
 
   getbuttonforstatus = (mystyle, cell, row ) => {
-    return (
+    if(cell == 'New') {
+      return (
+        <Button
+            bsStyle={mystyle} 
+            bsSize="small" 
+            className="myTicketsButton"
+            disabled
+        >
+          { cell }
+        </Button>);
+    } else {
+      return (
         <Button 
             bsStyle={mystyle} 
             bsSize="small" 
@@ -76,17 +87,20 @@ export default class MyTickets extends Component {
         >
           { cell }
         </Button>);
+    }
   }
 
   imageFormatter = ( cell, row ) => {
+    var statusButton='';
     if( cell == 'Error' || cell == 'Recall' || cell == 'Hold' ) {
-      return this.getbuttonforstatus('danger', cell, row );
+      statusButton = this.getbuttonforstatus('danger', cell, row );
     } else {
       if( cell == 'Done' || cell == 'Open' || cell == 'In-Progress' )
-        return this.getbuttonforstatus('warning', cell, row );
+        statusButton = this.getbuttonforstatus('warning', cell, row );
       else
-        return this.getbuttonforstatus('success', cell, row );
+        statusButton = this.getbuttonforstatus('success', cell, row );
     }
+    return statusButton;
   }
 
   createCustomToolBar = props => {

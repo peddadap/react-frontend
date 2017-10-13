@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { FormGroup, FormControl, ControlLabel, Col } from "react-bootstrap";
-import jsonEditOICoreData from "../EditOICore.json";
+import jsonEditOICoreData from "../data/EditOICore.json";
 import DatePicker from "react-bootstrap-date-picker";
 
 
@@ -25,6 +25,7 @@ export default class EditOICore extends Component {
         surrender: jsonEditOICoreData[0].surrender,
         requestId: 1,
         fielddisabled: true,
+        reqtypefielddisabled: true,
     }
   }
 
@@ -34,6 +35,7 @@ export default class EditOICore extends Component {
     }else{
         this.setState({requestId: 1,});
     }
+
     if(this.props.requestStatus && 
         ( this.props.requestStatus['cell'] == 'Open' || 
         this.props.requestStatus['cell'] == 'Error' )
@@ -42,6 +44,12 @@ export default class EditOICore extends Component {
     } else {
         this.setState({fielddisabled: true,});
     }
+
+    if(this.props.requestStatus && this.props.requestStatus['cell'] == 'Error' ) {
+        this.setState({reqtypefielddisabled: false,});
+    } else {
+        this.setState({reqtypefielddisabled: true,});
+    }    
   }
 
   handleChangeDate(value, formattedValue) {
@@ -295,7 +303,7 @@ export default class EditOICore extends Component {
             <FormGroup controlId="ticketType" style={{ 'margin-bottom': '10px' }}>
                 <Col componentClass={ControlLabel} sm={3}>Request Type</Col>
                 <Col sm={6} smoffset={3}>
-                    <FormControl bsSize ="small" componentClass="select" placeholder="select" disabled="true">
+                    <FormControl bsSize ="small" componentClass="select" placeholder="select" disabled={ this.state.reqtypefielddisabled }>
                         <option value="Original">Original Issuance</option>
                         <option value="Grants">Grants</option>
                         <option value="Vestings">Vestings</option>

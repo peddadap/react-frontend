@@ -30,7 +30,7 @@ export default class Attachments extends React.Component {
     return (
       <section>
         <FormGroup controlId="Attachments"  style={{ 'margin-bottom': '10px' }}>
-          <Col componentClass={ControlLabel} sm={3}>Attachments</Col>
+          <Col componentClass={ControlLabel} sm={3}>Add Attachments</Col>
           <Col sm={9}>
             <div className="dropzone">
               <Dropzone onDrop={this.onDrop.bind(this)} style={dropzoneStyle} accept=".pdf, .xls, .xlsx, .docx, .doc">

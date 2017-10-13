@@ -1,0 +1,14 @@
+.Attachments{
+
+    div.example {
+        margin-left: 20px;
+    }
+    
+}
+
+/* styles.css */
+.dropzone {
+    width : 100%;
+    height : 20%;
+    border : 1px solid black;
+  }
