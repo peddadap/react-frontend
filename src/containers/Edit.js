@@ -7,6 +7,7 @@ import { Form } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import EditOICore from "../components/EditOICore";
 import Attachments from "../components/Attachments";
+import StatusOptions from "../components/StatusOptions";
 import issuanceData1 from "../data/Issuance-1.json";
 import issuanceData2 from "../data/Issuance-2.json";
 import issuanceData3 from "../data/Issuance-3.json";
@@ -28,8 +29,8 @@ export default class Edit extends Component {
       Submitbutton: false,
       editdata: {},
       statusOptions: '',
-      selectedStatus: '',
       newattachments: '',
+      selectedStatus: '',
     }
     this.state.ticketDataArr.push({name: "Data-09-25-2017.xls", value: "Excel1",});
     this.state.ticketDataArr.push({name: "Data-09-22-2017.xls", value: "Excel2",});
@@ -38,10 +39,25 @@ export default class Edit extends Component {
   }
 
   async componentWillReceiveProps () {
-    if( this.props.requestStatus && this.props.requestStatus['cell'] !== '' ){
-      this.setState({ selectedStatus: this.props.requestStatus['cell'] });
+
+    if( this.props.requestStatus && this.props.requestStatus['cell'] !== '' ) {
+      this.setStatusOfTicket( this.props.requestStatus['cell'] );
     }
-    if(this.props.requestStatus && 
+
+    if( this.props.requestStatus ) {
+      var status = this.props.requestStatus['cell'];
+      if(status !== '' && status !== 'undefined' && status !== undefined ) {
+        if( configStatusOptions[status] ) {
+          Object.keys( configStatusOptions[status] ).map((k, index) => {
+            if( index == 0 ) {
+              this.setStatusOfTicket(configStatusOptions[status][k]);
+            }
+          });
+        }
+      }
+    }
+
+    if( this.props.requestStatus && 
         ( this.props.requestStatus['cell'] == 'Open' || 
           this.props.requestStatus['cell'] == 'Error' )
     ) {
@@ -58,20 +74,6 @@ export default class Edit extends Component {
       this.setState({ Submitbutton: false });
     } else {
       this.setState({ Submitbutton: true });
-    }
-    if( this.props.requestStatus ) {
-      var status = this.props.requestStatus['cell'];
-      if(status !== '' && status !== 'undefined' && status !== undefined ) {
-        var statoption = [];
-        Object.keys( configStatusOptions[status] ).map((k, index) => {
-          if( configStatusOptions[status][k] == this.state.selectedStatus ) {
-            statoption.push(<option value={ configStatusOptions[status][k] } selected>{ configStatusOptions[status][k] }</option>);
-          } else {
-            statoption.push(<option value={ configStatusOptions[status][k] }>{ configStatusOptions[status][k] }</option>);
-          }
-        });
-        this.setState({ statusOptions: statoption, });  
-      }
     }
     if(this.props.requestStatus && this.props.requestStatus['cell'] == 'Error') {
       this.setState({ newattachments: <Attachments/>, });
@@ -131,6 +133,10 @@ export default class Edit extends Component {
     }
   }
 
+  setStatusOfTicket(newstatus) {
+    this.setState({selectedStatus: newstatus, });
+  }
+
   handleFileChange(idname) {
     var index = this.state.ticketDataArr.findIndex(x => x.value == idname);
     if(index == -1) {
@@ -144,10 +150,6 @@ export default class Edit extends Component {
       newData.splice(index, 1);
       this.setState({ticketDataArr: newData});
     }
-  }
-
-  handleStatusChange = event => {
-    this.setState({ selectedStatus: event.target.value }); 
   }
 
   handleChange = event => {
@@ -236,15 +238,7 @@ export default class Edit extends Component {
       <br/>
       <EditOICore requestId={ this.props.requestId } requestStatus={ this.props.requestStatus } />
       <hr/>
-      <FormGroup controlId="statusChange" style={{ 'margin-bottom': '10px' }}>
-        <Col componentClass={ControlLabel} sm={3}>Change Request Status</Col>
-        <Col sm={6} smoffset={3}>
-          <FormControl componentClass="select" placeholder="select" onChange={this.handleStatusChange}>
-            { this.state.statusOptions }
-          </FormControl>
-        </Col>
-      </FormGroup>
-      <hr/>
+      <StatusOptions requestStatus={ this.props.requestStatus } setStatusOfTicket={ this.setStatusOfTicket.bind(this) }/>
       { this.state.newattachments }
       { attachmentList } 
       <FormGroup controlId="attachment" style={{ 'margin-bottom': '10px' }}>
