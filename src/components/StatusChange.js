@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { FormGroup, FormControl, ControlLabel, Col, Button, Modal} from "react-bootstrap";
-import "./StatusChange.css";
+import "../styles/StatusChange.css";
 
 export default class StatusChange extends Component {
 

@@ -1,24 +1,36 @@
+//import modules
 import React, { Component } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-import { FormGroup, FormControl, ControlLabel, Col, OverlayTrigger, ButtonToolbar, Tooltip, Checkbox} from "react-bootstrap";
-import "../styles/Home.css";
-import { Form } from "react-bootstrap";
+import { FormGroup, FormControl, ControlLabel, Col, OverlayTrigger, ButtonToolbar, Tooltip, Checkbox } from "react-bootstrap";
+
+//Load Application Components
 import LoaderButton from "../components/LoaderButton";
 import EditOICore from "../components/EditOICore";
-import Attachments from "../components/Attachments";
+import EditAttachments from "../components/EditAttachments";
 import StatusOptions from "../components/StatusOptions";
-import issuanceData1 from "../data/Issuance-1.json";
-import issuanceData2 from "../data/Issuance-2.json";
-import issuanceData3 from "../data/Issuance-3.json";
 import LinkWithTooltip from "../components/tooltip";
+import SelectFiles from "../components/SelectFiles";
+
+//import config not needed here
 import Config from "../configurations/ux.json";
 import configStatusOptions from "../configurations/ticketStatusConfig";
 
+//import data
+import issuanceData1 from "../data/Issuance-1.json";
+import issuanceData2 from "../data/Issuance-2.json";
+import issuanceData3 from "../data/Issuance-3.json";
+
+//import CSS
+import "../styles/Home.css";
+
+//Home Class
 export default class Edit extends Component {
 
+  //Constructor
   constructor(props) {
     super(props);
+    var getDataToDisplay  = this.getDataToDisplay.bind(this);
     this.state = {
       isLoading: true,
       ticketData: issuanceData1,
@@ -39,11 +51,9 @@ export default class Edit extends Component {
   }
 
   async componentWillReceiveProps () {
-
     if( this.props.requestStatus && this.props.requestStatus['cell'] !== '' ) {
       this.setStatusOfTicket( this.props.requestStatus['cell'] );
     }
-
     if( this.props.requestStatus ) {
       var status = this.props.requestStatus['cell'];
       if(status !== '' && status !== 'undefined' && status !== undefined ) {
@@ -56,7 +66,6 @@ export default class Edit extends Component {
         }
       }
     }
-
     if( this.props.requestStatus && 
         ( this.props.requestStatus['cell'] == 'Open' || 
           this.props.requestStatus['cell'] == 'Error' )
@@ -76,10 +85,44 @@ export default class Edit extends Component {
       this.setState({ Submitbutton: true });
     }
     if(this.props.requestStatus && this.props.requestStatus['cell'] == 'Error') {
-      this.setState({ newattachments: <Attachments/>, });
+      this.setState({ newattachments: <EditAttachments getDataToDisplay={this.getDataToDisplay.bind(this)}/>, });
     } else {
-      this.setState({ newattachments: '', });
+      this.setState({ newattachments: <SelectFiles ticketDataArr={ this.state.ticketDataArr }  getDataToDisplay={this.getDataToDisplay.bind(this)} />, });
     }
+  }
+
+  handleChange = event => {
+    if(event.target.value === 'Excel2') {
+      this.setState({
+        ticketData: issuanceData2
+      });
+    } else {
+      if(event.target.value === 'Excel3') {
+        this.setState({
+          ticketData: issuanceData3
+        });
+      } else {
+        this.setState({
+          ticketData: issuanceData1
+        });
+      }
+    }
+  }
+
+  getDataToDisplay(fileListArray){
+    var tempData = [];
+    Object.keys(fileListArray).map((k, index) => {
+      if( fileListArray[k]['name'] == 'Excel1' &&  fileListArray[k]['status'] == true ){
+        tempData.push.apply(tempData, issuanceData1);
+      }
+      if( fileListArray[k]['name'] == 'Excel2' &&  fileListArray[k]['status'] == true ){
+        tempData.push.apply(tempData, issuanceData2);
+      }
+      if( fileListArray[k]['name'] == 'Excel3' &&  fileListArray[k]['status'] == true ){
+        tempData.push.apply(tempData, issuanceData3);
+      }
+    });
+    this.setState({ ticketData: tempData, });
   }
 
   handleSubmit = async event => {
@@ -108,11 +151,10 @@ export default class Edit extends Component {
       textAlign: 'center',
       backgroundColor: '#eeeeee'
     };
-
     return (
       <div className='modal-header' style={ headerStyle }>
-      <h3>That is my custom header</h3>
-      <button className='btn btn-info' onClick={ onClose }>Close it!</button>
+        <h3>That is my custom header</h3>
+        <button className='btn btn-info' onClick={ onClose }>Close it!</button>
       </div>
     );
   }
@@ -127,7 +169,7 @@ export default class Edit extends Component {
 
   ErrFormatter = (cell, row) => {
     if(cell !== '') {
-      return (<LinkWithTooltip tooltip={cell} href="#" id="tooltip-1"><Button bsStyle="danger" bsSize="small">Error</Button></LinkWithTooltip>);
+      return (<LinkWithTooltip tooltip={ cell } href="#" id="tooltip-1"><Button bsStyle="danger" bsSize="small">Error</Button></LinkWithTooltip>);
     } else {
       return ('');
     }
@@ -152,32 +194,14 @@ export default class Edit extends Component {
     }
   }
 
-  handleChange = event => {
-    if(event.target.value === 'Excel2') {
-      this.setState({
-        ticketData: issuanceData2
-      });
-    } else {
-      if(event.target.value === 'Excel3') {
-        this.setState({
-          ticketData: issuanceData3
-        });
-      } else {
-        this.setState({
-          ticketData: issuanceData1
-        });
-      }
-    }
-  }
-
   createCustomToolBar = props => {
     return (
-      <div style={ { margin: '15px' } }>
-        { props.components.btnGroup }
-        <div className='col-xs-8 col-sm-4 col-md-4 col-lg-2'>
-          { props.components.searchPanel }
+        <div style={ { margin: '15px' } }>
+          { props.components.btnGroup }
+          <div className='col-xs-8 col-sm-4 col-md-4 col-lg-2'>
+            { props.components.searchPanel }
+          </div>
         </div>
-      </div>
     );
   }
 
@@ -186,13 +210,12 @@ export default class Edit extends Component {
     var attachmentList = [];
     var attachmentListData = [];
     var attachementListShow = [];
-    let uxConfig = Config.oi;
-        
+
+    let uxConfig = Config.oi;    
     let options = {
       insertModalHeader: this.createCustomModalHeader,
       toolBar: this.createCustomToolBar,
     };
-
     const selectRowProp = {
       mode: 'checkbox',
       showOnlySelected: true,
@@ -204,9 +227,7 @@ export default class Edit extends Component {
       return myClassName;
     }
 
-    Object.keys(this.state.ticketDataArr).map((k, index) => {
-      attachementListShow.push(<option value={ this.state.ticketDataArr[k]['value'] }>{ this.state.ticketDataArr[k]['name'] }</option>);
-    });
+
     if(this.props.requestStatus && ( this.props.requestStatus['cell'] == 'Open' || this.props.requestStatus['cell'] == 'Error' )) {
       Object.keys(this.state.ticketDataArrNew).map((k, index) => {
         attachmentListData.push(<Checkbox inline label={this.state.ticketDataArrNew[k]['value']} onChange={() => this.handleFileChange(this.state.ticketDataArrNew[k]['value'])}> { this.state.ticketDataArrNew[k]['name'] } </Checkbox>);
@@ -223,8 +244,7 @@ export default class Edit extends Component {
     Object.keys(uxConfig).map((k, index) => { 
       if(uxConfig[k]['isKey']){
         rows.push(<TableHeaderColumn width = {"120"} dataField={k}  isKey >{k}</TableHeaderColumn>);
-      }
-      else{
+      } else {
         if(uxConfig[k]['noneditable']) {
           rows.push(<TableHeaderColumn width = {"120"} dataField={k} editable={false} dataFormat={this.ErrFormatter}  dataAlign='center'>{k}</TableHeaderColumn>);
         } else {
@@ -235,48 +255,38 @@ export default class Edit extends Component {
 
     return(
       <Form horizontal onSubmit={this.handleSubmit}>
-      <br/>
-      <EditOICore requestId={ this.props.requestId } requestStatus={ this.props.requestStatus } />
-      <hr/>
-      <StatusOptions requestStatus={ this.props.requestStatus } setStatusOfTicket={ this.setStatusOfTicket.bind(this) }/>
-      { this.state.newattachments }
-      { attachmentList } 
-      <FormGroup controlId="attachment" style={{ 'margin-bottom': '10px' }}>
-        <Col componentClass={ControlLabel} sm={3}>Existing Attachments</Col>
-        <Col sm={6}>
-          <FormControl bsSize ="small" componentClass="select" placeholder="select" onChange={this.handleChange}>
-            { attachementListShow }
-          </FormControl>
-        </Col>
-        <Col smoffset={3}></Col>
-      </FormGroup>
-      <hr/>
-      <BootstrapTable data={ this.state.ticketData } trClassName={ trClassFormat } cellEdit={ this.state.editdata } striped={true} pagination options={ options } selectRow={ selectRowProp }  multiColumnSearch={ true } exportCSV search>{rows}</BootstrapTable>
-      <hr/>
-      <FormGroup controlId="ticketTypeButtons">
-        <Col sm={5}></Col>
-        <Col sm={1}>
-          <Button
-            bsStyle="primary"
-            bsSize="large"
-            onClick={ () => this.props.handleToUpdate('1') } 
-          >
-            Cancel
-          </Button>
-        </Col>
-        <Col sm={1}>
-          <LoaderButton
-            bsStyle="primary"
-            bsSize="large"
-            disabled={!this.validateForm()}
-            type="submit"
-            isLoading={this.state.isLoading}
-            text={this.state.text}
-            loadingText={this.state.loadingText}
-          />
+        <br/>
+        <EditOICore requestId={ this.props.requestId } requestStatus={ this.props.requestStatus } />
+        <hr/>
+        <StatusOptions requestStatus={ this.props.requestStatus } setStatusOfTicket={ this.setStatusOfTicket.bind(this) }/>
+        { this.state.newattachments }
+        <hr/>
+        <BootstrapTable data={ this.state.ticketData } trClassName={ trClassFormat } cellEdit={ this.state.editdata } striped={true} pagination options={ options } selectRow={ selectRowProp }  multiColumnSearch={ true } exportCSV search>{rows}</BootstrapTable>
+        <hr/>
+        <FormGroup controlId="ticketTypeButtons">
           <Col sm={5}></Col>
-        </Col>
-      </FormGroup>
+          <Col sm={1}>
+            <Button
+              bsStyle="primary"
+              bsSize="large"
+              onClick={ () => this.props.handleToUpdate('1') } 
+            >
+              Cancel
+            </Button>
+          </Col>
+          <Col sm={1}>
+            <LoaderButton
+              bsStyle="primary"
+              bsSize="large"
+              disabled={!this.validateForm()}
+              type="submit"
+              isLoading={this.state.isLoading}
+              text={this.state.text}
+              loadingText={this.state.loadingText}
+            />
+          </Col>
+          <Col sm={5}></Col>
+        </FormGroup>
       </Form>
     );
   }

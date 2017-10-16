@@ -258,7 +258,7 @@ export default class EditOICore extends Component {
                             </FormGroup>
                         </div>)
                     } else {
-                        if(this.state.showfields == 'Surrender') {
+                         if(this.state.showfields == 'Surrender') {
                             Fields = (<div>
                                 <FormGroup controlId="companyno" style={{ 'margin-bottom': '10px' }}>
                                     <Col componentClass={ControlLabel} sm={3}>Company No #</Col>
@@ -303,7 +303,7 @@ export default class EditOICore extends Component {
             <FormGroup controlId="ticketType" style={{ 'margin-bottom': '10px' }}>
                 <Col componentClass={ControlLabel} sm={3}>Request Type</Col>
                 <Col sm={6} smoffset={3}>
-                    <FormControl bsSize ="small" componentClass="select" placeholder="select" disabled={ this.state.reqtypefielddisabled }>
+                    <FormControl bsSize ="small" componentClass="select" placeholder="select"  onChange={this.handleChange} disabled={ this.state.reqtypefielddisabled }>
                         <option value="Original">Original Issuance</option>
                         <option value="Grants">Grants</option>
                         <option value="Vestings">Vestings</option>

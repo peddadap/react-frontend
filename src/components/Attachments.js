@@ -1,12 +1,14 @@
 import React from "react";
 import Dropzone from 'react-dropzone';
-import { FormGroup, ControlLabel, Col} from "react-bootstrap";
+import { FormGroup, ControlLabel, Col, Checkbox} from "react-bootstrap";
 
 export default class Attachments extends React.Component {
 
   constructor() {
     super()
-    this.state = { files: [] }
+    this.state = { 
+      files: [], 
+    }
   }
 
   onDrop(files) {
@@ -43,7 +45,7 @@ export default class Attachments extends React.Component {
             <aside>
               <ul>
               {
-                this.state.files.map(f => <li key={f.name}>{f.name} - {f.size} bytes</li>)
+                this.state.files.map(f => <li key={f.name}><Checkbox inline label={f.name} checked disabled>{f.name} - {f.size} bytes</Checkbox></li>)
               }
               </ul>
             </aside>
