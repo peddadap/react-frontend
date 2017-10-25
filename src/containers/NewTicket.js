@@ -8,7 +8,7 @@ import OICore from "../components/OICore";
 import Attachments from "../components/Attachments";
 import Email from "../components/Email";
 
-//import config not needed here
+//import config
 import Config from "../configurations/ux.json";
 
 //import data
@@ -44,8 +44,8 @@ export default class NewTicket extends Component {
   }
 
   render(tickets) {
-    var rows = [];
-    let uxConfig = Config.oi;
+    // var rows = [];
+    // let uxConfig = Config.oi;
 
     const selectRowProp = {
       mode: 'checkbox',

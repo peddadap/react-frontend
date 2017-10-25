@@ -1,6 +1,6 @@
 //import modules
 import React, { Component } from "react";
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import { Button } from 'react-bootstrap';
 
@@ -34,7 +34,7 @@ export default class MyTickets extends Component {
 
   async componentWillReceiveProps () {
     if( this.props.actTab && 
-        this.props.actTab == 1 && 
+        this.props.actTab === 1 && 
         this.props.requestId && 
         this.props.requestStatus 
     ) {
@@ -63,7 +63,7 @@ export default class MyTickets extends Component {
   }
 
   getbuttonforstatus = (mystyle, cell, row ) => {
-    if(cell == 'New') {
+    if(cell === 'New') {
       return (
         <Button
             bsStyle={mystyle} 
@@ -92,10 +92,10 @@ export default class MyTickets extends Component {
 
   imageFormatter = ( cell, row ) => {
     var statusButton='';
-    if( cell == 'Error' || cell == 'Recall' || cell == 'Hold' ) {
+    if( cell === 'Error' || cell === 'Recall' || cell === 'Hold' ) {
       statusButton = this.getbuttonforstatus('danger', cell, row );
     } else {
-      if( cell == 'Done' || cell == 'Open' || cell == 'In-Progress' )
+      if( cell === 'Done' || cell === 'Open' || cell === 'In-Progress' )
         statusButton = this.getbuttonforstatus('warning', cell, row );
       else
         statusButton = this.getbuttonforstatus('success', cell, row );

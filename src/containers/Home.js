@@ -23,7 +23,6 @@ export default class Home extends Component {
   constructor(props) {
     super(props);
     this.selectTab = this.selectTab.bind(this);
-    var handleToUpdate  = this.handleToUpdate.bind(this);
     this.state = {
       isLoading: true,
     };  
