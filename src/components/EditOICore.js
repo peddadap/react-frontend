@@ -3,52 +3,78 @@ import { FormGroup, FormControl, ControlLabel, Col } from "react-bootstrap";
 import jsonEditOICoreData from "../data/EditOICore.json";
 import DatePicker from "react-bootstrap-date-picker";
 
+import Original from './Original';
+import Grants from './Grants';
+import Vestings from './Vestings';
+import Surrender from './Surrender';
+import Terminations from './Terminations';
 
 export default class EditOICore extends Component {
 
-  constructor(props) {
+   constructor(props) {
     super(props);
     var value1 = new Date().toISOString();
     this.didSwitchParentObject = true;
-    this.state = {
-        value: value1,
-        displayDate: 'Issue Date',
-        shareno: 'Share #',
-        showfields: 'Original',
+
+    var datafororiginal = {
         companyno: jsonEditOICoreData[0].companyno,
         totalshares: jsonEditOICoreData[0].totalshares,
         legend: jsonEditOICoreData[0].legend,
-        parentCo: jsonEditOICoreData[0].parentCo,
-        childCo: jsonEditOICoreData[0].childCo,
-        controlNo: jsonEditOICoreData[0].controlNo,
-        controlAcct: jsonEditOICoreData[0].controlAcct,
-        surrender: jsonEditOICoreData[0].surrender,
-        requestId: 1,
-        fielddisabled: true,
-        reqtypefielddisabled: true,
+    }
+
+    var dataforgrants = {
+      parentCo: jsonEditOICoreData[0].parentCo,
+      childCo: jsonEditOICoreData[0].childCo,
+      controlNo: jsonEditOICoreData[0].controlNo,
+      totalshares: jsonEditOICoreData[0].totalshares,
+      controlAcct: jsonEditOICoreData[0].controlAcct,
+    }
+
+    var dataforsurrender = {
+      companyno: jsonEditOICoreData[0].companyno,
+      totalshares: jsonEditOICoreData[0].totalshares,
+      disposition: jsonEditOICoreData[0].disposition,
+    }
+
+    var dataforvestings = {
+      parentCo: jsonEditOICoreData[0].parentCo,
+      childCo: jsonEditOICoreData[0].childCo,
+      controlAcct: jsonEditOICoreData[0].controlAcct,
+      totalshares: jsonEditOICoreData[0].totalshares,
+    }
+
+    this.state = {
+      value: value1,
+      displayDate: 'Issue Date',
+      shareno: 'Share #',
+      showfields: 'Original',
+      requestId: 1,
+      fielddisabled: true,
+      reqtypefielddisabled: true,
+      fields: ( <Original datafororiginal={ this.datafororiginal } /> ),
     }
   }
 
   async componentWillReceiveProps () {
     if(this.props.requestId) {
-        this.setState({requestId: this.props.requestId + 1,});
+      this.setState({requestId: this.props.requestId + 1,});
     }else{
-        this.setState({requestId: 1,});
+      this.setState({requestId: 1,});
     }
 
     if(this.props.requestStatus && 
         ( this.props.requestStatus['cell'] == 'Open' || 
         this.props.requestStatus['cell'] == 'Error' )
     ) {
-        this.setState({fielddisabled: false,});
+      this.setState({fielddisabled: false,});
     } else {
-        this.setState({fielddisabled: true,});
+      this.setState({fielddisabled: true,});
     }
 
     if(this.props.requestStatus && this.props.requestStatus['cell'] == 'Error' ) {
-        this.setState({reqtypefielddisabled: false,});
+      this.setState({reqtypefielddisabled: false,});
     } else {
-        this.setState({reqtypefielddisabled: true,});
+      this.setState({reqtypefielddisabled: true,});
     }    
   }
 
@@ -59,271 +85,69 @@ export default class EditOICore extends Component {
     });
   }
 
-    componentDidMount () {
-        if (this.didSwitchParentObject) {
-            this.didSwitchParentObject= false;
-            this.refs.myTextInputtotalshares.value = this.state.totalshares;
-            this.refs.myTextInputcompanyno.value = this.state.companyno;
-            this.refs.myTextInputlegend.value = this.state.legend;
-        }
-    }
-
-    handleChange = event => {
-        if(event.target.id == 'ticketType') {
-            if(event.target.value == 'Vestings')
-                this.setState({
-                    showfields: 'Vestings',
-                })
-            else
-                if(event.target.value === 'Terminations')
-                    this.setState({
-                        showfields: 'Terminations',
-                    })
-                else
-                    if(event.target.value === 'Grants')
-                        this.setState({
-                            showfields: 'Grants',
-                        })
-                    else
-                        if(event.target.value === 'Surrender')
-                            this.setState({
-                                showfields: 'Surrender',
-                            })
-                        else 
-                            this.setState({
-                                showfields: 'Original',
-                            })
-        }
-
+  handleChange = event => {
+    if(event.target.id == 'ticketType') {
+      if(event.target.value == 'Vestings')
         this.setState({
-            [event.target.id]: event.target.value
-        });
+          fields:  ( <Vestings dataforvestings={ this.dataforvestings } /> ) ,
+        })
+      else
+        if(event.target.value === 'Terminations')
+          this.setState({
+            fields:  ( <Terminations dataforterminations={ this.dataforterminations } /> ) ,
+          })
+        else
+          if(event.target.value === 'Grants')
+            this.setState({
+              fields:  ( <Grants dataforgrants={ this.dataforgrants } /> ),
+            })
+        else
+          if(event.target.value === 'Surrender')
+            this.setState({
+              fields:  ( <Surrender dataforsurrender={ this.dataforsurrender }/> ) ,
+            })
+          else 
+            this.setState({
+              fields: ( <Original datafororiginal={ this.datafororiginal } /> ),
+            })
     }
-  
-    render(){
-        let Fields;
-        if(this.state.showfields == 'Original') {
-            Fields = (
-                <div>
-                <FormGroup controlId="companyno" style={{ 'margin-bottom': '10px' }}>
-                   <Col componentClass={ControlLabel} sm={3}>Company #</Col>
-                    <Col sm={6} smoffset={3}>
-                        <FormControl onChange={this.handleChange} type="text"  ref="myTextInputcompanyno" defaultValue={ this.state.companyno } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
-                    </Col>
-                </FormGroup>
-                <FormGroup controlId="totalshares" style={{ 'margin-bottom': '10px' }}>
-                    <Col componentClass={ControlLabel} sm={3}>Total Shares #</Col>
-                    <Col sm={6} smoffset={3}>
-                        <FormControl onChange={this.handleChange} type="text"  ref="myTextInputtotalshares" defaultValue={ this.state.totalshares } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
-                    </Col>
-                </FormGroup>
-                <FormGroup controlId="legend" style={{ 'margin-bottom': '10px' }}>
-                    <Col componentClass={ControlLabel} sm={3}>Legend</Col>
-                    <Col sm={6} smoffset={3}>
-                        <FormControl onChange={this.handleChange} type="text" maxLength="1"  ref="myTextInputlegend" defaultValue={ this.state.legend } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
-                    </Col>
-                </FormGroup>
-                <FormGroup controlId="issuancedate" style={{ 'margin-bottom': '10px' }}>
-                    <Col componentClass={ControlLabel} sm={3}>Issuance Date</Col>
-                    <Col sm={6} smoffset={3}>
-                        <DatePicker id="example-datepicker" value={this.state.value} onChange={this.handleChangeDate.bind(this)}  disabled={ this.state.fielddisabled }/>
-                    </Col>
-                </FormGroup>
-                <FormGroup controlId="bookentry" style={{ 'margin-bottom': '10px' }}>
-                    <Col componentClass={ControlLabel} sm={3}>Book Entry</Col>
-                    <Col sm={6} smoffset={3}>
-                        <FormControl bsSize ="small" componentClass="select" placeholder="select" onChange={this.handleChange} disabled={ this.state.fielddisabled }>
-                            <option value="book">B</option>
-                            <option value="physical"> </option>
-                        </FormControl>
-                    </Col>
-                </FormGroup>
-                </div>
-            )
-        } else {
-            if(this.state.showfields == 'Grants') {
-                Fields = (<div>
-                    <FormGroup controlId="parentCo" style={{ 'margin-bottom': '10px' }}> 
-                        <Col componentClass={ControlLabel} sm={3}>Parent Company No #</Col>
-                        <Col sm={6} smoffset={3}>
-                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputparentCo" defaultValue={ this.state.parentCo } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
-                        </Col>
-                    </FormGroup>
-                    <FormGroup controlId="childCo" style={{ 'margin-bottom': '10px' }}>
-                        <Col componentClass={ControlLabel} sm={3}>Child Company No #</Col>
-                        <Col sm={6} smoffset={3}>
-                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputchildCo" defaultValue={ this.state.childCo } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
-                        </Col>
-                    </FormGroup>
-                    <FormGroup controlId="controlNo" style={{ 'margin-bottom': '10px' }}>
-                        <Col componentClass={ControlLabel} sm={3}>Control No #</Col>
-                        <Col sm={6} smoffset={3}>
-                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputcontrolNo" defaultValue={ this.state.controlNo } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
-                        </Col>
-                    </FormGroup>
-                    <FormGroup controlId="totalshares" style={{ 'margin-bottom': '10px' }}>
-                        <Col componentClass={ControlLabel} sm={3}>Total Shares #</Col>
-                        <Col sm={6} smoffset={3}>
-                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputtotalshares" defaultValue={ this.state.totalshares } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
-                        </Col>
-                    </FormGroup>
-                    <FormGroup controlId="controlAcct" style={{ 'margin-bottom': '10px' }}>
-                        <Col componentClass={ControlLabel} sm={3}>Control Account No #</Col>
-                        <Col sm={6} smoffset={3}>
-                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputcontrolAcct" defaultValue={ this.state.controlAcct } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
-                        </Col>
-                    </FormGroup>
-                    <FormGroup controlId="issuancedate" style={{ 'margin-bottom': '10px' }}>
-                        <Col componentClass={ControlLabel} sm={3}>Issuance Date</Col>
-                        <Col sm={6} smoffset={3}>
-                            <DatePicker id="example-datepicker" value={this.state.value} onChange={this.handleChangeDate.bind(this)}  disabled={ this.state.fielddisabled }/>
-                        </Col>
-                    </FormGroup>
-                </div>)
-            } else {
-                if(this.state.showfields == 'Vestings') {
-                    Fields = (<div>
-                    <FormGroup controlId="parentCo" style={{ 'margin-bottom': '10px' }}> 
-                        <Col componentClass={ControlLabel} sm={3}>Parent Company No #</Col>
-                        <Col sm={6} smoffset={3}>
-                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputparentCo" defaultValue={ this.state.parentCo } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
-                        </Col>
-                    </FormGroup>
-                    <FormGroup controlId="childCo" style={{ 'margin-bottom': '10px' }}>
-                        <Col componentClass={ControlLabel} sm={3}>Child Company No #</Col>
-                        <Col sm={6} smoffset={3}>
-                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputchildCo" defaultValue={ this.state.childCo } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
-                        </Col>
-                    </FormGroup>
-                    <FormGroup controlId="controlAcct" style={{ 'margin-bottom': '10px' }}>
-                        <Col componentClass={ControlLabel} sm={3}>Control Account No #</Col>
-                        <Col sm={6} smoffset={3}>
-                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputcontrolAcct" defaultValue={ this.state.controlAcct } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
-                        </Col>
-                    </FormGroup>
-                    <FormGroup controlId="totalshares" style={{ 'margin-bottom': '10px' }}>
-                        <Col componentClass={ControlLabel} sm={3}>Total Shares #</Col>
-                        <Col sm={6} smoffset={3}>
-                            <FormControl onChange={this.handleChange} type="text"  ref="myTextInputtotalshares" defaultValue={ this.state.totalshares } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
-                        </Col>
-                    </FormGroup>
-                    <FormGroup controlId="vestingdate" style={{ 'margin-bottom': '10px' }}>
-                        <Col componentClass={ControlLabel} sm={3}>Vesting Date</Col>
-                        <Col sm={6} smoffset={3}>
-                            <DatePicker id="example-datepicker" value={this.state.value} onChange={this.handleChangeDate.bind(this)}  disabled={ this.state.fielddisabled }/>
-                        </Col>
-                    </FormGroup>                    
-                    </div>)
-                } else {
-                    if(this.state.showfields == 'Terminations') {
-                        Fields = (<div>
-                            <FormGroup controlId="parentCo" style={{ 'margin-bottom': '10px' }}> 
-                                <Col componentClass={ControlLabel} sm={3}>Parent Company No #</Col>
-                                <Col sm={6} smoffset={3}>
-                                    <FormControl onChange={this.handleChange} type="text"  ref="myTextInputparentCo" defaultValue={ this.state.parentCo } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
-                                </Col>
-                            </FormGroup>
-                            <FormGroup controlId="childCo" style={{ 'margin-bottom': '10px' }}>
-                                <Col componentClass={ControlLabel} sm={3}>Child Company No #</Col>
-                                <Col sm={6} smoffset={3}>
-                                    <FormControl onChange={this.handleChange} type="text"  ref="myTextInputchildCo" defaultValue={ this.state.childCo } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
-                                </Col>
-                            </FormGroup>
-                            <FormGroup controlId="controlNo" style={{ 'margin-bottom': '10px' }}>
-                                <Col componentClass={ControlLabel} sm={3}>Control No #</Col>
-                                <Col sm={6} smoffset={3}>
-                                    <FormControl onChange={this.handleChange} type="text"  ref="myTextInputcontrolNo" defaultValue={ this.state.controlNo } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
-                                </Col>
-                            </FormGroup>
-                            <FormGroup controlId="totalshares" style={{ 'margin-bottom': '10px' }}>
-                                <Col componentClass={ControlLabel} sm={3}>Total Shares #</Col>
-                                <Col sm={6} smoffset={3}>
-                                    <FormControl onChange={this.handleChange} type="text"  ref="myTextInputtotalshares" defaultValue={ this.state.totalshares } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
-                                </Col>
-                            </FormGroup>
-                            <FormGroup controlId="issuancedate" style={{ 'margin-bottom': '10px' }}>
-                                <Col componentClass={ControlLabel} sm={3}>Date</Col>
-                                <Col sm={6} smoffset={3}>
-                                    <DatePicker id="example-datepicker" value={this.state.value} onChange={this.handleChangeDate.bind(this)}  disabled={ this.state.fielddisabled }/>
-                                </Col>
-                            </FormGroup>
-                            <FormGroup controlId="disposition" style={{ 'margin-bottom': '10px' }}>
-                                <Col componentClass={ControlLabel} sm={3}>Disposition</Col>
-                                <Col sm={6} smoffset={3}>
-                                <FormControl bsSize ="small" componentClass="select" placeholder="select" onChange={this.handleChange} disabled={ this.state.fielddisabled }>
-                                    <option value="retire">Retire</option>
-                                    <option value="return">Return to Company Treasury</option>
-                                </FormControl>
-                                </Col>
-                            </FormGroup>
-                        </div>)
-                    } else {
-                         if(this.state.showfields == 'Surrender') {
-                            Fields = (<div>
-                                <FormGroup controlId="companyno" style={{ 'margin-bottom': '10px' }}>
-                                    <Col componentClass={ControlLabel} sm={3}>Company No #</Col>
-                                    <Col sm={6} smoffset={3}>
-                                        <FormControl onChange={this.handleChange} type="text"  ref="myTextInputcompanyno" defaultValue={ this.state.companyno } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup controlId="totalshares" style={{ 'margin-bottom': '10px' }}>
-                                    <Col componentClass={ControlLabel} sm={3}>Total Shares #</Col>
-                                    <Col sm={6} smoffset={3}>
-                                        <FormControl onChange={this.handleChange} type="text"  ref="myTextInputtotalshares" defaultValue={ this.state.totalshares } onBlur = {this.handleChange} disabled={ this.state.fielddisabled }/>
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup controlId="issuancedate" style={{ 'margin-bottom': '10px' }}>
-                                    <Col componentClass={ControlLabel} sm={3}>Date</Col>
-                                    <Col sm={6} smoffset={3}>
-                                        <DatePicker id="example-datepicker" value={this.state.value} onChange={this.handleChangeDate.bind(this)}  disabled={ this.state.fielddisabled }/>
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup controlId="disposition" style={{ 'margin-bottom': '10px' }}>
-                                    <Col componentClass={ControlLabel} sm={3}>Disposition</Col>
-                                    <Col sm={6} smoffset={3}>
-                                        <FormControl bsSize ="small" componentClass="select" placeholder="select" onChange={this.handleChange} disabled={ this.state.fielddisabled }>
-                                            <option value="retire">Retire</option>
-                                            <option value="return">Return to Company Treasury</option>
-                                        </FormControl>
-                                    </Col>
-                                </FormGroup>                        
-                        </div>)
-                        }
-                    }
-                }
-            }
-        }
-    
-    return(
-        <div>
-            <FormGroup controlId="ticketType" style={{ 'margin-bottom': '10px' }}>
-                <Col componentClass={ControlLabel} sm={3}>Request Number</Col>
-                <Col sm={6} smoffset={3}><h4>{ this.state.requestId }</h4></Col>
-            </FormGroup>
-            <FormGroup controlId="ticketType" style={{ 'margin-bottom': '10px' }}>
-                <Col componentClass={ControlLabel} sm={3}>Request Type</Col>
-                <Col sm={6} smoffset={3}>
-                    <FormControl bsSize ="small" componentClass="select" placeholder="select"  onChange={this.handleChange} disabled={ this.state.reqtypefielddisabled }>
-                        <option value="Original">Original Issuance</option>
-                        <option value="Grants">Grants</option>
-                        <option value="Vestings">Vestings</option>
-                        <option value="Terminations">RSP Termination</option>
-                        <option value="Surrender">Surrender</option>
-                    </FormControl>
-                </Col>
-            </FormGroup>
-            <FormGroup controlId="priority" style={{ 'margin-bottom': '10px' }}>
-                <Col componentClass={ControlLabel} sm={3}>Priority</Col>
-                <Col sm={6} smoffset={3}>
-                    <FormControl componentClass="select" placeholder="select" onChange={this.handleChange}  disabled={ this.state.fielddisabled }>
-                        <option value="Low">Low</option>
-                        <option value="Medium">Medium</option>
-                        <option value="High">High</option>
-                    </FormControl>
-                </Col>
-            </FormGroup>
-            { Fields }
-        </div>
-     );
+    this.setState({
+      [event.target.id]: event.target.value
+    });
   }
+  
+  render() {
+    return(
+      <div>
+        <FormGroup controlId="ticketType" style={{ 'margin-bottom': '10px' }}>
+          <Col componentClass={ControlLabel} sm={3}>Request Number</Col>
+          <Col sm={6} smoffset={3}><h4>{ this.state.requestId }</h4></Col>
+        </FormGroup>
+        <FormGroup controlId="ticketType" style={{ 'margin-bottom': '10px' }}>
+          <Col componentClass={ControlLabel} sm={3}>Request Type</Col>
+          <Col sm={6} smoffset={3}>
+            <FormControl bsSize ="small" componentClass="select" placeholder="select"  onChange={this.handleChange} disabled={ this.state.reqtypefielddisabled }>
+              <option value="Original">Original Issuance</option>
+              <option value="Grants">Grants</option>
+              <option value="Vestings">Vestings</option>
+              <option value="Terminations">RSP Termination</option>
+              <option value="Surrender">Surrender</option>
+            </FormControl>
+          </Col>
+        </FormGroup>
+        <FormGroup controlId="priority" style={{ 'margin-bottom': '10px' }}>
+          <Col componentClass={ControlLabel} sm={3}>Priority</Col>
+          <Col sm={6} smoffset={3}>
+            <FormControl componentClass="select" placeholder="select" onChange={this.handleChange}  disabled={ this.state.fielddisabled }>
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+            </FormControl>
+          </Col>
+        </FormGroup>
+        { this.state.fields }
+      </div>
+    );
+  }
+
 }
