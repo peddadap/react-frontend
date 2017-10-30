@@ -12,6 +12,7 @@ import jsonMyTicketData from "../data/myTickets.json";
 
 //import CSS
 import "../styles/MyTickets.css";
+import 'react-bootstrap-table/dist/react-bootstrap-table.min.css';
 
 //MyTickets Class
 export default class MyTickets extends Component {
@@ -144,7 +145,7 @@ export default class MyTickets extends Component {
         <TableHeaderColumn dataField='CreatedDate' headerAlign='left' dataAlign='left' dataFormat={this.dateFormatter} dataSort>Created Date</TableHeaderColumn>
         <TableHeaderColumn dataField='SubmittedDate' headerAlign='left' dataAlign='left' dataFormat={this.dateFormatter} dataSort>Submitted Date</TableHeaderColumn>
         <TableHeaderColumn dataField='UpdatedBy' headerAlign='left' dataAlign='left' dataSort>Updated By</TableHeaderColumn>
-        <TableHeaderColumn dataField='Status' headerAlign='center' dataAlign='center' dataFormat={this.imageFormatter} dataSort >Status</TableHeaderColumn>
+        <TableHeaderColumn dataField='Status' headerAlign='center' dataAlign='center' dataFormat={this.imageFormatter} dataSort>Status</TableHeaderColumn>
       </BootstrapTable>
     )
   }

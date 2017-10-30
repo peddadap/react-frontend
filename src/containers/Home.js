@@ -61,7 +61,7 @@ export default class Home extends Component {
         <Tabs activeKey={this.state.activeTab} onSelect={this.selectTab} id="Tab Container" animation={true}>
           <Tab eventKey={1}  title="My Requests">
             <MyTickets 
-              handleToUpdate={this.handleToUpdate.bind(this)} 
+              handleToUpdate={ this.handleToUpdate.bind(this) } 
               requestStatus={ this.state.requestStatus } 
               requestId={ this.state.requestId }
               actTab={ this.state.activeTab }
@@ -70,12 +70,12 @@ export default class Home extends Component {
           <Tab eventKey={2} title="Create Request">
             <NewTicket 
               move2Tab={(tab)=>{this.selectTab(tab)}} 
-              handleToUpdate={this.handleToUpdate.bind(this)}
+              handleToUpdate={ this.handleToUpdate.bind(this) }
             />
           </Tab>
           <Tab eventKey={3} title="Edit Request">
             <Edit 
-              handleToUpdate={this.handleToUpdate.bind(this)} 
+              handleToUpdate={ this.handleToUpdate.bind(this) } 
               requestStatus={ this.state.requestStatus } 
               requestId={ this.state.requestId }
             />

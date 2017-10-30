@@ -1,6 +1,7 @@
 //import modules
 import React from "react";
 import ReactDOM from "react-dom";
+import 'babel-polyfill';
 import { BrowserRouter as Router } from "react-router-dom";
 
 //Load Application Components

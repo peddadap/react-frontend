@@ -23,6 +23,7 @@ import issuanceData3 from "../data/Issuance-3.json";
 
 //import CSS
 import "../styles/Home.css";
+import 'react-bootstrap-table/dist/react-bootstrap-table.min.css';
 
 //Home Class
 export default class Edit extends Component {
@@ -44,9 +45,9 @@ export default class Edit extends Component {
       newattachments: '',
       selectedStatus: '',
     }
-    this.state.ticketDataArr.push({name: "Data-09-25-2017.xls", value: "Excel1",});
-    this.state.ticketDataArr.push({name: "Data-09-22-2017.xls", value: "Excel2",});
-    this.state.ticketDataArr.push({name: "Data-09-21-2017.xls", value: "Excel3",});
+    this.state.ticketDataArr.push({name: "Data-09-25-2017.xls", value: "Excel1.xlsx",});
+    this.state.ticketDataArr.push({name: "Data-09-22-2017.xls", value: "Excel2.xlsx",});
+    this.state.ticketDataArr.push({name: "Data-09-21-2017.xls", value: "Excel3.xlsx",});
     this.state.ticketDataArrNew = this.state.ticketDataArr;
   }
 
@@ -84,7 +85,9 @@ export default class Edit extends Component {
     } else {
       this.setState({ Submitbutton: true });
     }
-    if(this.props.requestStatus && this.props.requestStatus['cell'] == 'Error') {
+    if(this.props.requestStatus && 
+      ( this.props.requestStatus['cell'] == 'Error' || 
+      this.props.requestStatus['cell'] == 'Open' )) {
       this.setState({ newattachments: <EditAttachments getDataToDisplay={this.getDataToDisplay.bind(this)}/>, });
     } else {
       this.setState({ newattachments: <SelectFiles ticketDataArr={ this.state.ticketDataArr }  getDataToDisplay={this.getDataToDisplay.bind(this)} />, });
@@ -112,13 +115,13 @@ export default class Edit extends Component {
   getDataToDisplay(fileListArray){
     var tempData = [];
     Object.keys(fileListArray).map((k, index) => {
-      if( fileListArray[k]['name'] == 'Excel1' &&  fileListArray[k]['status'] == true ){
+      if( fileListArray[k]['name'] == 'Excel1.xlsx' &&  fileListArray[k]['status'] == true ){
         tempData.push.apply(tempData, issuanceData1);
       }
-      if( fileListArray[k]['name'] == 'Excel2' &&  fileListArray[k]['status'] == true ){
+      if( fileListArray[k]['name'] == 'Excel2.xlsx' &&  fileListArray[k]['status'] == true ){
         tempData.push.apply(tempData, issuanceData2);
       }
-      if( fileListArray[k]['name'] == 'Excel3' &&  fileListArray[k]['status'] == true ){
+      if( fileListArray[k]['name'] == 'Excel3.xlsx' &&  fileListArray[k]['status'] == true ){
         tempData.push.apply(tempData, issuanceData3);
       }
     });

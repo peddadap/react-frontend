@@ -8,15 +8,19 @@ export default class EditAttachments extends React.Component {
     super()
     this.state = { 
       filesold: [
-        {name: "Excel1", size: "20154",},
-        {name: "Excel2", size: "25154",},
-        {name: "Excel3", size: "30154",},
+        {name: "Excel1.xlsx", size: "20154", error: "File has record Errors"},
+        {name: "Excel2.xlsx", size: "25154", error: ""},
+        {name: "Excel3.xlsx", size: "30154", error: ""},
+      ],
+      filesInstructionold: [
+        {name: "Instruction.doc", size: "80154",},
       ],
       files: [], 
+      filesInstruction: [],
       filefordata:[
-        {name: "Excel1", status: false,},
-        {name: "Excel2", status: false,},
-        {name: "Excel3", status: false,},
+        {name: "Excel1.xlsx", status: false,},
+        {name: "Excel2.xlsx", status: false,},
+        {name: "Excel3.xlsx", status: false,},
       ],
     }
   }
@@ -36,6 +40,12 @@ export default class EditAttachments extends React.Component {
     });
   }
 
+  onDropInstruction(filesInstruction) {
+    this.setState({
+      filesInstruction
+    });
+  }
+
   render() {
 
     const dropzoneStyle = {
@@ -50,22 +60,51 @@ export default class EditAttachments extends React.Component {
 
     return (
       <section>
-        <FormGroup controlId="EditAttachments"  style={{ 'margin-bottom': '10px' }}>
-          <Col componentClass={ControlLabel} sm={3}>Add Attachments</Col>
+        <FormGroup controlId="instructions"  style={{ 'margin-bottom': '10px' }}>
+          <Col componentClass={ControlLabel} sm={3}>Instructions</Col>
           <Col sm={9}>
             <div className="dropzone">
-              <Dropzone onDrop={this.onDrop.bind(this)} style={dropzoneStyle} accept=".pdf, .xls, .xlsx, .docx, .doc">
+              <Dropzone onDrop={this.onDropInstruction.bind(this)} style={dropzoneStyle} accept=".pdf, .docx, .doc">
                 <p align="center">Try dropping some files here, or click to select files to upload.</p>
               </Dropzone>
             </div>
           </Col>
-          <Col componentClass={ControlLabel} sm={3}>Attached files<br/>(Select the files you wish to Submit)</Col>
+          <Col componentClass={ControlLabel} sm={3}>Attached Instruction files<br/>(Select the files you wish to Submit)</Col>
           <Col sm={9}>
             <aside>
               <ul>
               {
-                this.state.filesold.map(f => <li key={f.name}><Checkbox inline label={f.name} onChange={ (e) => this.showfile( f.name, e.target.checked ) }>{f.name} - {f.size} bytes</Checkbox></li>)
-              },
+                this.state.filesInstructionold.map(f => <li key={f.name}><Checkbox inline label={f.name} onChange={ (e) => this.showfile( f.name, e.target.checked ) }>{f.name} - {f.size} bytes</Checkbox></li>)
+              }
+              {
+                this.state.filesInstruction.map(f => <li key={f.name}><Checkbox inline label={f.name} checked disabled>{f.name} - {f.size} bytes</Checkbox></li>)
+              }
+              </ul>
+            </aside>
+          </Col>
+        </FormGroup>
+        <FormGroup controlId="EditAttachments"  style={{ 'margin-bottom': '10px' }}>
+          <Col componentClass={ControlLabel} sm={3}>Files to process</Col>
+          <Col sm={9}>
+            <div className="dropzone">
+              <Dropzone onDrop={this.onDrop.bind(this)} style={dropzoneStyle} accept=".xls, .xlsx">
+                <p align="center">Try dropping some files here, or click to select files to upload.</p>
+              </Dropzone>
+            </div>
+          </Col>
+          <Col componentClass={ControlLabel} sm={3}>Attached files to process<br/>(Select the files you wish to Submit)</Col>
+          <Col sm={9}>
+            <aside>
+              <ul>
+              {
+                this.state.filesold.map(f => {
+                  if(f.error == '') {
+                    return <li key={f.name}><Checkbox inline label={f.name} onChange={ (e) => this.showfile( f.name, e.target.checked ) }>{f.name} - {f.size} bytes</Checkbox></li>
+                  } else {
+                    return <li key={f.name} style={{ 'color': 'red' }}><Checkbox inline label={f.name} onChange={ (e) => this.showfile( f.name, e.target.checked ) }>{f.name} - {f.size} bytes, Error: {f.error}</Checkbox></li>
+                  }
+                })
+              }
               {
                 this.state.files.map(f => <li key={f.name}><Checkbox inline label={f.name} checked disabled>{f.name} - {f.size} bytes</Checkbox></li>)
               }

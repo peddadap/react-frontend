@@ -39,13 +39,9 @@ export default class Login extends Component {
     event.preventDefault();
     this.setState({ isLoading: true });
     try {
-      console.log('1');
       await this.login(this.state.email, this.state.password);
-      console.log('2');
       this.props.userHasAuthenticated(true);
-      console.log('3');
       this.props.history.push("/home");
-      console.log('4');
     } catch (e) {
       alert(e);
       this.setState({ isLoading: false });
