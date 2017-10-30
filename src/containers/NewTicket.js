@@ -6,7 +6,6 @@ import { Form, FormGroup, Col } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import OICore from "../components/OICore";
 import Attachments from "../components/Attachments";
-import Email from "../components/Email";
 
 //import config
 import Config from "../configurations/ux.json";
@@ -65,8 +64,6 @@ export default class NewTicket extends Component {
     return(
       <Form horizontal onSubmit={this.handleSubmit} ref="createRequest">
         <br/>
-        <Email/>
-        <hr/>
         <OICore/>
         <hr/>
         <Attachments/>

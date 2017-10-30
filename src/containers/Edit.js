@@ -11,6 +11,7 @@ import EditAttachments from "../components/EditAttachments";
 import StatusOptions from "../components/StatusOptions";
 import LinkWithTooltip from "../components/tooltip";
 import SelectFiles from "../components/SelectFiles";
+import Email from "../components/Email";
 
 //import config not needed here
 import Config from "../configurations/ux.json";
@@ -259,6 +260,8 @@ export default class Edit extends Component {
     return(
       <Form horizontal onSubmit={this.handleSubmit}>
         <br/>
+        <Email/>
+        <hr/>
         <EditOICore requestId={ this.props.requestId } requestStatus={ this.props.requestStatus } />
         <hr/>
         <StatusOptions requestStatus={ this.props.requestStatus } setStatusOfTicket={ this.setStatusOfTicket.bind(this) }/>
