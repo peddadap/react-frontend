@@ -8,12 +8,12 @@ export default class EditAttachments extends React.Component {
     super()
     this.state = { 
       filesold: [
-        {name: "Excel1.xlsx", size: "20154", error: "File has record Errors"},
-        {name: "Excel2.xlsx", size: "25154", error: ""},
-        {name: "Excel3.xlsx", size: "30154", error: ""},
+        {name: "Excel1.xlsx", size: "20154", location: "file:///C:\\\RequestFiles\\Excel1.xlsx", error: "File has record Errors"},
+        {name: "Excel2.xlsx", size: "25154", location: "file:///C:\\\RequestFiles\\Excel2.xlsx", error: ""},
+        {name: "Excel3.xlsx", size: "30154", location: "file:///C:\\\RequestFiles\\Excel3.xlsx", error: ""},
       ],
       filesInstructionold: [
-        {name: "Instruction.doc", size: "80154",},
+        {name: "Instruction.doc", location: "file:///C:\\\RequestFiles\\Instruction.docx", size: "80154",},
       ],
       files: [], 
       filesInstruction: [],
@@ -74,7 +74,7 @@ export default class EditAttachments extends React.Component {
             <aside>
               <ul>
               {
-                this.state.filesInstructionold.map(f => <li key={f.name}><Checkbox inline label={f.name} onChange={ (e) => this.showfile( f.name, e.target.checked ) }>{f.name} - {f.size} bytes</Checkbox></li>)
+                this.state.filesInstructionold.map(f => <li key={f.name}><Checkbox inline label={f.name} onChange={ (e) => this.showfile( f.name, e.target.checked ) }><a href={f.location} target="_blank">{f.name}</a> - {f.size} bytes</Checkbox></li>)
               }
               {
                 this.state.filesInstruction.map(f => <li key={f.name}><Checkbox inline label={f.name} checked disabled>{f.name} - {f.size} bytes</Checkbox></li>)
@@ -99,9 +99,9 @@ export default class EditAttachments extends React.Component {
               {
                 this.state.filesold.map(f => {
                   if(f.error == '') {
-                    return <li key={f.name}><Checkbox inline label={f.name} onChange={ (e) => this.showfile( f.name, e.target.checked ) }>{f.name} - {f.size} bytes</Checkbox></li>
+                    return <li key={f.name}><Checkbox inline label={f.name} onChange={ (e) => this.showfile( f.name, e.target.checked ) }><a href={f.location} target="_blank">{f.name}</a> - {f.size} bytes</Checkbox></li>
                   } else {
-                    return <li key={f.name} style={{ 'color': 'red' }}><Checkbox inline label={f.name} onChange={ (e) => this.showfile( f.name, e.target.checked ) }>{f.name} - {f.size} bytes, Error: {f.error}</Checkbox></li>
+                    return <li key={f.name} style={{ 'color': 'red' }}><Checkbox inline label={f.name} onChange={ (e) => this.showfile( f.name, e.target.checked ) }><a href={f.location} target="_blank">{f.name}</a> - {f.size} bytes, Error: {f.error}</Checkbox></li>
                   }
                 })
               }
