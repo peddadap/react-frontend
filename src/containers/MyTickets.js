@@ -1,11 +1,11 @@
 //import modules
 import React, { Component } from "react";
-// import { Link } from 'react-router-dom'
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-import { Button } from 'react-bootstrap';
+import { Button, FormGroup, Col, Form, ControlLabel, FormControl } from 'react-bootstrap';
+import DatePicker from "react-bootstrap-date-picker";
 
-//import config not needed here
-//Not required here
+//import config
+import LoaderButton from "../components/LoaderButton";
 
 //import data
 import jsonMyTicketData from "../data/myTickets.json";
@@ -20,15 +20,22 @@ export default class MyTickets extends Component {
   //Constructor
   constructor(props) {
     super(props);
+    var today = new Date().toISOString();
+    var onemonthago = new Date();
+    onemonthago.setMonth( onemonthago.getMonth() - 1);
+    var old = onemonthago.toISOString();
     this.state = {
       isLoading: true,
       tickets: [],
       cellvalue: '',
       cellvalueTo: [],
       rowid: 0,
+      currentPage: 1,
+      toDate: today,
+      fromDate: old, 
     };
     this.options = {
-      defaultSortName: 'ID',  // default sort column name
+      defaultSortName: 'id',  // default sort column name
       defaultSortOrder: 'asc'  // default sort order
     };
   }
@@ -53,7 +60,8 @@ export default class MyTickets extends Component {
   }
  
   dateFormatter( cell, row ){
-    var cdate = cell.split('T')[0];
+    var cdate = cell;
+    if( cell ) cdate = cell.split('T')[0];
     return cdate;
   }
 
@@ -82,7 +90,7 @@ export default class MyTickets extends Component {
             className="myTicketsButton" 
             onClick={ 
               () => this.props.handleToUpdate(
-                      '3', (row.ID - 1), { cell } 
+                      '3', (row.id - 1), { cell } 
                     ) 
             } 
         >
@@ -117,10 +125,24 @@ export default class MyTickets extends Component {
 
   numericSortFunc(a, b, order) {
     if (order === 'desc') {
-      return Number(b.ID) - Number(a.ID);
+      return Number(b.id) - Number(a.id);
     } else {
-      return Number(a.ID) - Number(b.ID);
+      return Number(a.id) - Number(b.id);
     }
+  }
+
+  validateForm(){ 
+    return true; 
+  }
+
+  handleSubmit = async event => {
+    event.preventDefault();
+    this.props.handleToUpdate('2');
+    return;
+  }
+
+  handleChange(date) {
+    console.log('Event data: '+date);
   }
 
   render(tickets){
@@ -132,21 +154,52 @@ export default class MyTickets extends Component {
 
     const options = {
       toolBar: this.createCustomToolBar,
-      defaultSortName: 'ID',  // default sort column name
-      defaultSortOrder: 'asc'  // default sort order
+      defaultSortName: 'id',  // default sort column name
+      defaultSortOrder: 'asc',  // default sort order
+      sizePerPageList: [ 25, 50, 100, 200, 500 ],
+      sizePerPage: 25,
     };
 
     return(
-      <BootstrapTable data={this.state.tickets } striped={true} hover={true} pagination options = {options } selectRow={ selectRow }  exportCSV search>
-        <TableHeaderColumn dataField='ID' isKey headerAlign='center' dataAlign='center' dataSort sortFunc={ this.numericSortFunc }>Request ID</TableHeaderColumn>
-        <TableHeaderColumn dataField='ParentCompany' headerAlign='left' dataAlign='left' dataSort>Company No </TableHeaderColumn>
-        <TableHeaderColumn dataField='Type' headerAlign='left' dataAlign='left' dataSort>Request Type</TableHeaderColumn>
-        <TableHeaderColumn dataField='Priority' headerAlign='left' dataAlign='left' dataSort>Priority</TableHeaderColumn>
-        <TableHeaderColumn dataField='CreatedDate' headerAlign='left' dataAlign='left' dataFormat={this.dateFormatter} dataSort>Created Date</TableHeaderColumn>
-        <TableHeaderColumn dataField='SubmittedDate' headerAlign='left' dataAlign='left' dataFormat={this.dateFormatter} dataSort>Submitted Date</TableHeaderColumn>
-        <TableHeaderColumn dataField='UpdatedBy' headerAlign='left' dataAlign='left' dataSort>Updated By</TableHeaderColumn>
-        <TableHeaderColumn dataField='Status' headerAlign='center' dataAlign='center' dataFormat={this.imageFormatter} dataSort>Status</TableHeaderColumn>
+      <div>
+      <br />
+      <Form horizontal onSubmit={this.handleSubmit} ref="fetchDataByDate" inline>
+        <FormGroup controlId="fromDate">
+          <Col componentClass={ControlLabel} sm={6}>Creation Date From: </Col>
+          <Col sm={6}><DatePicker id="fromDate"  value={ this.state.fromDate } onChange={ this.handleChange }/></Col> 
+        </FormGroup>
+        <FormGroup controlId="toDate">
+          <Col componentClass={ControlLabel} sm={6}>Creation Date To: </Col>
+          <Col sm={6}><DatePicker id="toDate" value={ this.state.toDate } onChange={ this.handleChange }/></Col>
+        </FormGroup>
+        <FormGroup controlId="fetchDataByDate">
+          <Col sm={6}></Col>
+          <Col sm={6}>
+            <ControlLabel>
+              <LoaderButton
+                bsStyle="primary"
+                disabled={!this.validateForm()}
+                type="submit"
+                isLoading={this.state.isLoading}
+                text="Search"
+                loadingText="Creating…"
+              />
+            </ControlLabel>
+          </Col>
+        </FormGroup>
+      </Form>
+      <hr /> 
+      <BootstrapTable data={ this.state.tickets } striped={true} hover={true} pagination options = {options } selectRow={ selectRow }  exportCSV search>
+        <TableHeaderColumn dataField='id' isKey headerAlign='center' dataAlign='center' dataSort sortFunc={ this.numericSortFunc }>Request ID</TableHeaderColumn>
+        <TableHeaderColumn dataField='parentCompany' headerAlign='left' dataAlign='left' dataSort>Company No </TableHeaderColumn>
+        <TableHeaderColumn dataField='type' headerAlign='left' dataAlign='left' dataSort>Request Type</TableHeaderColumn>
+        <TableHeaderColumn dataField='priority' headerAlign='left' dataAlign='left' dataSort>Priority</TableHeaderColumn>
+        <TableHeaderColumn dataField='createdDate' headerAlign='left' dataAlign='left' dataFormat={this.dateFormatter} dataSort>Created Date</TableHeaderColumn>
+        <TableHeaderColumn dataField='submittedDate' headerAlign='left' dataAlign='left' dataFormat={this.dateFormatter} dataSort>Submitted Date</TableHeaderColumn>
+        <TableHeaderColumn dataField='updatedBy' headerAlign='left' dataAlign='left' dataSort>Updated By</TableHeaderColumn>
+        <TableHeaderColumn dataField='status' headerAlign='center' dataAlign='center' dataFormat={this.imageFormatter} dataSort>Status</TableHeaderColumn>
       </BootstrapTable>
+      </div>
     )
   }
 
