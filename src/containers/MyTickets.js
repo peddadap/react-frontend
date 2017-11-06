@@ -1,7 +1,7 @@
 //import modules
 import React, { Component } from "react";
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-import { Button, FormGroup, Col, Form, ControlLabel, FormControl } from 'react-bootstrap';
+import { Button, FormGroup, Col, Form, ControlLabel, FormControl, Modal } from 'react-bootstrap';
 import DatePicker from "react-bootstrap-date-picker";
 
 //import config
@@ -20,10 +20,6 @@ export default class MyTickets extends Component {
   //Constructor
   constructor(props) {
     super(props);
-    var today = new Date().toISOString();
-    var onemonthago = new Date();
-    onemonthago.setMonth( onemonthago.getMonth() - 1);
-    var old = onemonthago.toISOString();
     this.state = {
       isLoading: true,
       tickets: [],
@@ -31,8 +27,7 @@ export default class MyTickets extends Component {
       cellvalueTo: [],
       rowid: 0,
       currentPage: 1,
-      toDate: today,
-      fromDate: old, 
+      showModal: false,
     };
     this.options = {
       defaultSortName: 'id',  // default sort column name
@@ -145,6 +140,18 @@ export default class MyTickets extends Component {
     console.log('Event data: '+date);
   }
 
+  closeModal() {
+    this.setState({ showModal: false, });
+  }
+
+  openModal() {
+    this.setState({ showModal: true, });
+  }
+
+  submitModal() {
+    this.setState({ showModal: false, });
+  }
+
   render(tickets){
 
     const selectRow = {
@@ -162,43 +169,107 @@ export default class MyTickets extends Component {
 
     return(
       <div>
-      <br />
-      <Form horizontal onSubmit={this.handleSubmit} ref="fetchDataByDate" inline>
-        <FormGroup controlId="fromDate">
-          <Col componentClass={ControlLabel} sm={6}>Creation Date From: </Col>
-          <Col sm={6}><DatePicker id="fromDate"  value={ this.state.fromDate } onChange={ this.handleChange }/></Col> 
-        </FormGroup>
-        <FormGroup controlId="toDate">
-          <Col componentClass={ControlLabel} sm={6}>Creation Date To: </Col>
-          <Col sm={6}><DatePicker id="toDate" value={ this.state.toDate } onChange={ this.handleChange }/></Col>
-        </FormGroup>
-        <FormGroup controlId="fetchDataByDate">
-          <Col sm={6}></Col>
-          <Col sm={6}>
-            <ControlLabel>
-              <LoaderButton
-                bsStyle="primary"
-                disabled={!this.validateForm()}
-                type="submit"
-                isLoading={this.state.isLoading}
-                text="Search"
-                loadingText="Creating…"
-              />
-            </ControlLabel>
-          </Col>
-        </FormGroup>
-      </Form>
-      <hr /> 
-      <BootstrapTable data={ this.state.tickets } striped={true} hover={true} pagination options = {options } selectRow={ selectRow }  exportCSV search>
-        <TableHeaderColumn dataField='id' isKey headerAlign='center' dataAlign='center' dataSort sortFunc={ this.numericSortFunc }>Request ID</TableHeaderColumn>
-        <TableHeaderColumn dataField='parentCompany' headerAlign='left' dataAlign='left' dataSort>Company No </TableHeaderColumn>
-        <TableHeaderColumn dataField='type' headerAlign='left' dataAlign='left' dataSort>Request Type</TableHeaderColumn>
-        <TableHeaderColumn dataField='priority' headerAlign='left' dataAlign='left' dataSort>Priority</TableHeaderColumn>
-        <TableHeaderColumn dataField='createdDate' headerAlign='left' dataAlign='left' dataFormat={this.dateFormatter} dataSort>Created Date</TableHeaderColumn>
-        <TableHeaderColumn dataField='submittedDate' headerAlign='left' dataAlign='left' dataFormat={this.dateFormatter} dataSort>Submitted Date</TableHeaderColumn>
-        <TableHeaderColumn dataField='updatedBy' headerAlign='left' dataAlign='left' dataSort>Updated By</TableHeaderColumn>
-        <TableHeaderColumn dataField='status' headerAlign='center' dataAlign='center' dataFormat={this.imageFormatter} dataSort>Status</TableHeaderColumn>
-      </BootstrapTable>
+        <br />
+        <div className="modal-container">
+          <Button bsStyle="primary" bsSize="small" onClick={this.openModal.bind(this)}>
+            Requests: Advanced Search
+          </Button>
+          <Modal show={this.state.showModal} onHide={this.closeModal.bind(this)} dialogClassName="searchModal">
+            <Modal.Header closeButton>
+              <Modal.Title>Search Requests</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form horizontal onSubmit={this.handleSubmit}>
+                <FormGroup controlId="ticketStatus" style={{ 'margin-bottom': '10px' }}>
+                  <Col componentClass={ControlLabel} sm={3}>Request Status</Col>
+                  <Col sm={9}>
+                    <FormControl bsSize ="small" componentClass="select" placeholder="select">
+                      <option value="">All</option>
+	          				  <option value="New">New</option>
+					            <option value="Open">Open</option>
+					            <option value="Pending">Pending</option>
+					            <option value="Error">Error</option>
+					            <option value="Recall">Recall</option>
+					            <option value="In-Progress">In-Progress</option>
+					            <option value="Hold">Hold</option>
+					            <option value="Done">Done</option>
+					            <option value="Closed">Closed</option>
+                    </FormControl>
+                  </Col>
+                </FormGroup>
+                <FormGroup controlId="ticketType" style={{ 'margin-bottom': '10px' }}>
+                  <Col componentClass={ControlLabel} sm={3}>Request Type</Col>
+                  <Col sm={9}>
+                    <FormControl bsSize ="small" componentClass="select" placeholder="select">
+                      <option value="">All</option>
+                      <option value="Original">Original Issuance</option>
+                      <option value="Grants">Grants</option>
+                      <option value="Vestings">Vestings</option>
+                      <option value="Terminations">RSP Termination</option>
+                      <option value="Surrender">Surrender</option>
+                    </FormControl>
+                  </Col>
+                </FormGroup>
+                <FormGroup controlId="priority" style={{ 'margin-bottom': '10px' }}>
+                  <Col componentClass={ControlLabel} sm={3}>Priority</Col>
+                  <Col sm={9}>
+                    <FormControl componentClass="select" placeholder="select">
+                      <option value="">All</option>
+                      <option value="Low">Low</option>
+                      <option value="Medium">Medium</option>
+                      <option value="High">High</option>
+                    </FormControl>
+                  </Col>
+                </FormGroup>
+                <FormGroup controlId="requestId" style={{ 'margin-bottom': '10px' }}>
+                  <Col componentClass={ControlLabel} sm={3}>Request Id</Col>
+                  <Col sm={9}>
+                    <FormControl onChange={ this.handleChange } type="text"  ref="myTextInputrequestId" />
+                  </Col>
+                </FormGroup>
+                <FormGroup controlId="companyno" style={{ 'margin-bottom': '10px' }}>
+                  <Col componentClass={ControlLabel} sm={3}>Company No #</Col>
+                  <Col sm={9}>
+                    <FormControl onChange={ this.handleChange } type="text"  ref="myTextInputcompanyno" />
+                  </Col>
+                </FormGroup>
+                <FormGroup controlId="updatedBy" style={{ 'margin-bottom': '10px' }}>
+                  <Col componentClass={ControlLabel} sm={3}>Updated By</Col>
+                  <Col sm={9}>
+                    <FormControl onChange={ this.handleChange } type="text"  ref="myTextInputupdatedBy" />
+                  </Col>
+                </FormGroup>              
+                <FormGroup controlId="creationDate" style={{ 'margin-bottom': '10px' }}>
+                  <Col componentClass={ControlLabel} sm={3}>Creation Date From: </Col>
+                  <Col sm={3}><DatePicker id="fromCreationDate"/></Col> 
+                  <Col componentClass={ControlLabel} sm={3}>Creation Date To: </Col>
+                  <Col sm={3}><DatePicker id="toCreationDate"/></Col>
+                </FormGroup>
+                <FormGroup controlId="submittedDate" style={{ 'margin-bottom': '10px' }}>
+                  <Col componentClass={ControlLabel} sm={3}>Submitted Date From: </Col>
+                  <Col sm={3}><DatePicker id="fromSubmittedDate"/></Col> 
+                  <Col componentClass={ControlLabel} sm={3}>Submitted Date To: </Col>
+                  <Col sm={3}><DatePicker id="toSubmittedDate"/></Col>
+                </FormGroup>
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button onClick={this.closeModal.bind(this)}>Close</Button>
+              <Button onClick={this.submitModal.bind(this)} bsStyle="primary">Submit</Button>
+            </Modal.Footer>
+          </Modal>
+        </div>
+        <hr /> 
+        <BootstrapTable data={ this.state.tickets } striped={true} hover={true} pagination options = {options } selectRow={ selectRow }  exportCSV search>
+          <TableHeaderColumn dataField='id' isKey headerAlign='center' dataAlign='center' dataSort sortFunc={ this.numericSortFunc }>Request ID</TableHeaderColumn>
+          <TableHeaderColumn dataField='parentCompany' headerAlign='left' dataAlign='left' dataSort>Company No </TableHeaderColumn>
+          <TableHeaderColumn dataField='type' headerAlign='left' dataAlign='left' dataSort>Request Type</TableHeaderColumn>
+          <TableHeaderColumn dataField='priority' headerAlign='left' dataAlign='left' dataSort>Priority</TableHeaderColumn>
+          <TableHeaderColumn dataField='createdDate' headerAlign='left' dataAlign='left' dataFormat={this.dateFormatter} dataSort>Created Date</TableHeaderColumn>
+          <TableHeaderColumn dataField='submittedDate' headerAlign='left' dataAlign='left' dataFormat={this.dateFormatter} dataSort>Submitted Date</TableHeaderColumn>
+          <TableHeaderColumn dataField='updatedBy' headerAlign='left' dataAlign='left' dataSort>Updated By</TableHeaderColumn>
+          <TableHeaderColumn dataField='status' headerAlign='center' dataAlign='center' dataFormat={this.imageFormatter} dataSort>Status</TableHeaderColumn>
+        </BootstrapTable>
       </div>
     )
   }

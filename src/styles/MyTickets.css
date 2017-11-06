@@ -4,3 +4,8 @@
   height: 20px;
   padding-top: 0px;    
 }
+
+.searchModal {
+  width: 50%;
+  height: 100%;
+}
