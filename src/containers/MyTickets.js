@@ -172,7 +172,7 @@ export default class MyTickets extends Component {
         <br />
         <div className="modal-container">
           <Button bsStyle="primary" bsSize="small" onClick={this.openModal.bind(this)}>
-            Requests: Advanced Search
+            Advanced Search
           </Button>
           <Modal show={this.state.showModal} onHide={this.closeModal.bind(this)} dialogClassName="searchModal">
             <Modal.Header closeButton>
@@ -239,17 +239,11 @@ export default class MyTickets extends Component {
                     <FormControl onChange={ this.handleChange } type="text"  ref="myTextInputupdatedBy" />
                   </Col>
                 </FormGroup>              
-                <FormGroup controlId="creationDate" style={{ 'margin-bottom': '10px' }}>
-                  <Col componentClass={ControlLabel} sm={3}>Creation Date From: </Col>
-                  <Col sm={3}><DatePicker id="fromCreationDate"/></Col> 
-                  <Col componentClass={ControlLabel} sm={3}>Creation Date To: </Col>
-                  <Col sm={3}><DatePicker id="toCreationDate"/></Col>
-                </FormGroup>
-                <FormGroup controlId="submittedDate" style={{ 'margin-bottom': '10px' }}>
-                  <Col componentClass={ControlLabel} sm={3}>Submitted Date From: </Col>
-                  <Col sm={3}><DatePicker id="fromSubmittedDate"/></Col> 
-                  <Col componentClass={ControlLabel} sm={3}>Submitted Date To: </Col>
-                  <Col sm={3}><DatePicker id="toSubmittedDate"/></Col>
+                <FormGroup controlId="Date" style={{ 'margin-bottom': '10px' }}>
+                  <Col componentClass={ControlLabel} sm={3}>Date From: </Col>
+                  <Col sm={3}><DatePicker id="fromDate"/></Col> 
+                  <Col componentClass={ControlLabel} sm={3}>Date To: </Col>
+                  <Col sm={3}><DatePicker id="toDate"/></Col>
                 </FormGroup>
               </Form>
             </Modal.Body>
