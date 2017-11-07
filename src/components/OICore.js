@@ -66,7 +66,7 @@ export default class OICore extends Component {
             <FormGroup controlId="ticketType" style={{ 'margin-bottom': '10px' }}>
                 <Col componentClass={ControlLabel} sm={3}>Request Type</Col>
                 <Col sm={6}>
-                    <FormControl bsSize ="small" componentClass="select" placeholder="select" onChange={this.handleChange}>
+                    <FormControl name="ticketType" bsSize ="small" componentClass="select" placeholder="select" onChange={this.handleChange}>
                         <option value="Original">Original Issuance</option>
                         <option value="Grants">Grants</option>
                         <option value="Vestings">Vestings</option>
@@ -79,13 +79,19 @@ export default class OICore extends Component {
             <FormGroup controlId="priority" style={{ 'margin-bottom': '10px' }}>
                 <Col componentClass={ControlLabel} sm={3}>Priority</Col>
                 <Col sm={6}>
-                    <FormControl componentClass="select" placeholder="select" onChange={this.handleChange}>
+                    <FormControl name="priority" componentClass="select" placeholder="select">
                         <option value="Low">Low</option>
                         <option value="Medium">Medium</option>
                         <option value="High">High</option>
                     </FormControl>
                 </Col>
                 <Col smoffset={3}></Col>
+            </FormGroup>
+            <FormGroup controlId="adminGroup" style={{ 'margin-bottom': '10px' }}> 
+                <Col componentClass={ControlLabel} sm={3}>Admin Group</Col>
+                <Col sm={6} smoffset={3}>
+                    <FormControl name="adminGroup" type="text" ref="myTextInputadminGroup" />
+                </Col>
             </FormGroup>
             { this.state.fields }
         </div>

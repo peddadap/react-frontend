@@ -1,8 +1,9 @@
 //import modules
 import React, { Component } from "react";
-import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import { BootstrapTable, TableHeaderColumn, SearchField } from 'react-bootstrap-table';
 import { Button, FormGroup, Col, Form, ControlLabel, FormControl, Modal } from 'react-bootstrap';
 import DatePicker from "react-bootstrap-date-picker";
+import moment from "moment";
 
 //import config
 import LoaderButton from "../components/LoaderButton";
@@ -28,6 +29,15 @@ export default class MyTickets extends Component {
       rowid: 0,
       currentPage: 1,
       showModal: false,
+      ticketStatus: "",
+      ticketType: "",
+      priority: "",
+      requestId: "",
+      companyNo: "",
+      updatedBy: "",
+      adminGroup: "",
+      fromDateAll: null,
+      toDateAll: null,
     };
     this.options = {
       defaultSortName: 'id',  // default sort column name
@@ -35,7 +45,7 @@ export default class MyTickets extends Component {
     };
   }
 
-  async componentWillReceiveProps () {
+  async componentWillReceiveProps() {
     if( this.props.actTab && 
         this.props.actTab === 1 && 
         this.props.requestId && 
@@ -44,7 +54,7 @@ export default class MyTickets extends Component {
       this.updateticketswithstate( this.props.requestId, this.props.requestStatus );
     }
   }
-  
+
   async componentDidMount() {
     try {
       this.setState({ tickets: jsonMyTicketData });
@@ -118,6 +128,10 @@ export default class MyTickets extends Component {
     );
   }
 
+  createCustomSearchField = props => {
+    return ( <SearchField placeholder='Filter the results'/> );
+  }
+
   numericSortFunc(a, b, order) {
     if (order === 'desc') {
       return Number(b.id) - Number(a.id);
@@ -130,14 +144,40 @@ export default class MyTickets extends Component {
     return true; 
   }
 
+  handleChange = event => {
+    if(event.target.id == 'ticketStatus') { this.setState({ ticketStatus: event.target.value }); }
+    if(event.target.id == 'ticketType') { this.setState({ ticketType: event.target.value }); }
+    if(event.target.id == 'priority') { this.setState({ priority: event.target.value }); }
+    if(event.target.id == 'requestId') { this.setState({ requestId: event.target.value }); }
+    if(event.target.id == 'companyNo') { this.setState({ companyNo: event.target.value }); }
+    if(event.target.id == 'updatedBy') { this.setState({ updatedBy: event.target.value }); }
+    if(event.target.id == 'adminGroup') { this.setState({ adminGroup: event.target.value }); }
+  }
+
+/*   handleChangeDateTo(value, formattedValue) {
+    console.log("To Date: "+value+" AND "+formattedValue);
+    try {
+      this.setState({ toDateAll: value });
+    } catch (e) {
+      alert(e);
+    }
+    console.log("To Date: "+this.state.toDateAll);
+  }
+
+  handleChangeDateFrom(value, formattedValue) {
+    console.log("From Date: "+value+" AND "+formattedValue);
+    try {
+      this.setState({ fromDateAll: value });
+    } catch (e) {
+      alert(e);
+    }
+    console.log("From Date: "+this.state.fromDateAll);
+  } */
+
   handleSubmit = async event => {
     event.preventDefault();
     this.props.handleToUpdate('2');
     return;
-  }
-
-  handleChange(date) {
-    console.log('Event data: '+date);
   }
 
   closeModal() {
@@ -161,11 +201,16 @@ export default class MyTickets extends Component {
 
     const options = {
       toolBar: this.createCustomToolBar,
+      searchField: this.createCustomSearchField,
       defaultSortName: 'id',  // default sort column name
       defaultSortOrder: 'asc',  // default sort order
       sizePerPageList: [ 25, 50, 100, 200, 500 ],
       sizePerPage: 25,
     };
+
+/*     const parseStateToValue = state => moment(state, 'YYYY-MM-DD');
+
+    const formatValueToState = value => value.format('YYYY-MM-DD'); */
 
     return(
       <div>
@@ -183,7 +228,7 @@ export default class MyTickets extends Component {
                 <FormGroup controlId="ticketStatus" style={{ 'margin-bottom': '10px' }}>
                   <Col componentClass={ControlLabel} sm={3}>Request Status</Col>
                   <Col sm={9}>
-                    <FormControl bsSize ="small" componentClass="select" placeholder="select">
+                    <FormControl name="ticketStatus" bsSize ="small" componentClass="select" placeholder="select" onChange={ this.handleChange }>
                       <option value="">All</option>
 	          				  <option value="New">New</option>
 					            <option value="Open">Open</option>
@@ -200,7 +245,7 @@ export default class MyTickets extends Component {
                 <FormGroup controlId="ticketType" style={{ 'margin-bottom': '10px' }}>
                   <Col componentClass={ControlLabel} sm={3}>Request Type</Col>
                   <Col sm={9}>
-                    <FormControl bsSize ="small" componentClass="select" placeholder="select">
+                    <FormControl name="ticketType" bsSize ="small" componentClass="select" placeholder="select" onChange={ this.handleChange }>
                       <option value="">All</option>
                       <option value="Original">Original Issuance</option>
                       <option value="Grants">Grants</option>
@@ -213,7 +258,7 @@ export default class MyTickets extends Component {
                 <FormGroup controlId="priority" style={{ 'margin-bottom': '10px' }}>
                   <Col componentClass={ControlLabel} sm={3}>Priority</Col>
                   <Col sm={9}>
-                    <FormControl componentClass="select" placeholder="select">
+                    <FormControl name="priority" componentClass="select" placeholder="select" onChange={ this.handleChange }>
                       <option value="">All</option>
                       <option value="Low">Low</option>
                       <option value="Medium">Medium</option>
@@ -224,26 +269,34 @@ export default class MyTickets extends Component {
                 <FormGroup controlId="requestId" style={{ 'margin-bottom': '10px' }}>
                   <Col componentClass={ControlLabel} sm={3}>Request Id</Col>
                   <Col sm={9}>
-                    <FormControl onChange={ this.handleChange } type="text"  ref="myTextInputrequestId" />
+                    <FormControl name="requestId" type="text" ref="myTextInputrequestId" onBlur={ this.handleChange }/>
                   </Col>
                 </FormGroup>
-                <FormGroup controlId="companyno" style={{ 'margin-bottom': '10px' }}>
+                <FormGroup controlId="companyNo" style={{ 'margin-bottom': '10px' }}>
                   <Col componentClass={ControlLabel} sm={3}>Company No #</Col>
                   <Col sm={9}>
-                    <FormControl onChange={ this.handleChange } type="text"  ref="myTextInputcompanyno" />
+                    <FormControl name="companyNo" type="text"  ref="myTextInputcompanyNo" onBlur={ this.handleChange }/>
                   </Col>
                 </FormGroup>
                 <FormGroup controlId="updatedBy" style={{ 'margin-bottom': '10px' }}>
                   <Col componentClass={ControlLabel} sm={3}>Updated By</Col>
                   <Col sm={9}>
-                    <FormControl onChange={ this.handleChange } type="text"  ref="myTextInputupdatedBy" />
+                    <FormControl name="updatedBy" type="text"  ref="myTextInputupdatedBy" onBlur={ this.handleChange }/>
                   </Col>
-                </FormGroup>              
+                </FormGroup>
+                <FormGroup controlId="adminGroup" style={{ 'margin-bottom': '10px' }}>
+                  <Col componentClass={ControlLabel} sm={3}>Admin Group</Col>
+                  <Col sm={9}>
+                    <FormControl name="adminGroup" type="text"  ref="myTextInputadminGroup" onBlur={ this.handleChange }/>
+                  </Col>
+                </FormGroup>          
                 <FormGroup controlId="Date" style={{ 'margin-bottom': '10px' }}>
                   <Col componentClass={ControlLabel} sm={3}>Date From: </Col>
-                  <Col sm={3}><DatePicker id="fromDate"/></Col> 
+                  {/* <Col sm={3}><DatePicker selected={ parseStateToValue(this.state.fromDateAll) } name="fromDate" id="fromDate" onChange={value => this.handleChangeDateFrom(formatValueToState(value))} /></Col>  */}
+                  <Col sm={3}><DatePicker name="fromDate" id="fromDate"/></Col>
                   <Col componentClass={ControlLabel} sm={3}>Date To: </Col>
-                  <Col sm={3}><DatePicker id="toDate"/></Col>
+                  {/* <Col sm={3}><DatePicker selected={ parseStateToValue(this.state.toDateAll) } name="toDate" id="toDate" onChange={value => this.handleChangeDateTo(formatValueToState(value))} /></Col> */}
+                  <Col sm={3}><DatePicker  name="toDate" id="toDate" /></Col>
                 </FormGroup>
               </Form>
             </Modal.Body>
@@ -254,7 +307,7 @@ export default class MyTickets extends Component {
           </Modal>
         </div>
         <hr /> 
-        <BootstrapTable data={ this.state.tickets } striped={true} hover={true} pagination options = {options } selectRow={ selectRow }  exportCSV search>
+        <BootstrapTable data={ this.state.tickets } striped={true} hover={true} pagination options={ options } selectRow={ selectRow } exportCSV search>
           <TableHeaderColumn dataField='id' isKey headerAlign='center' dataAlign='center' dataSort sortFunc={ this.numericSortFunc }>Request ID</TableHeaderColumn>
           <TableHeaderColumn dataField='parentCompany' headerAlign='left' dataAlign='left' dataSort>Company No </TableHeaderColumn>
           <TableHeaderColumn dataField='type' headerAlign='left' dataAlign='left' dataSort>Request Type</TableHeaderColumn>
@@ -262,6 +315,7 @@ export default class MyTickets extends Component {
           <TableHeaderColumn dataField='createdDate' headerAlign='left' dataAlign='left' dataFormat={this.dateFormatter} dataSort>Created Date</TableHeaderColumn>
           <TableHeaderColumn dataField='submittedDate' headerAlign='left' dataAlign='left' dataFormat={this.dateFormatter} dataSort>Submitted Date</TableHeaderColumn>
           <TableHeaderColumn dataField='updatedBy' headerAlign='left' dataAlign='left' dataSort>Updated By</TableHeaderColumn>
+          <TableHeaderColumn dataField='adminGroup' headerAlign='left' dataAlign='left' dataSort>Admin Group</TableHeaderColumn>
           <TableHeaderColumn dataField='status' headerAlign='center' dataAlign='center' dataFormat={this.imageFormatter} dataSort>Status</TableHeaderColumn>
         </BootstrapTable>
       </div>

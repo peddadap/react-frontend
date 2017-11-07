@@ -11,8 +11,8 @@ export default class Vestings extends React.Component {
       parentCo: '',
       childCo: '',
       controlAcct: '',
-      totalshares: '',
-      vestingdate: '',
+      totalShares: '',
+      vestingDate: '',
     }
   }
 
@@ -22,12 +22,12 @@ export default class Vestings extends React.Component {
         parentCo: this.props.dataforvestings.parentCo,
         childCo: this.props.dataforvestings.childCo,
         controlAcct: this.props.dataforvestings.controlAcct,
-        totalshares: this.props.dataforvestings.totalshares,
+        totalShares: this.props.dataforvestings.totalShares,
       });
       this.refs.myTextInputparentCo.value = this.state.parentCo;
       this.refs.myTextInputchildCo.value = this.state.childCo;
       this.refs.myTextInputcontrolAcct.value = this.state.controlAcct;
-      this.refs.myTextInputtotalshares.value = this.state.totalshares;
+      this.refs.myTextInputtotalShares.value = this.state.totalShares;
     }
   }
 
@@ -37,31 +37,31 @@ export default class Vestings extends React.Component {
           <FormGroup controlId="parentCo" style={{ 'margin-bottom': '10px' }}> 
             <Col componentClass={ControlLabel} sm={3}>Parent Company No #</Col>
             <Col sm={6} smoffset={3}>
-              <FormControl onChange={ this.handleChange } type="text" ref="myTextInputparentCo" defaultValue={ this.state.parentCo } onBlur={ this.handleChange } disabled={ this.state.fielddisabled }/>
+              <FormControl name="parentCo" onChange={ this.handleChange } type="text" ref="myTextInputparentCo" defaultValue={ this.state.parentCo } onBlur={ this.handleChange } disabled={ this.state.fielddisabled }/>
             </Col>
           </FormGroup>
           <FormGroup controlId="childCo" style={{ 'margin-bottom': '10px' }}>
             <Col componentClass={ControlLabel} sm={3}>Child Company No #</Col>
             <Col sm={6} smoffset={3}>
-              <FormControl onChange={ this.handleChange } type="text" ref="myTextInputchildCo" defaultValue={ this.state.childCo } onBlur={ this.handleChange } disabled={ this.state.fielddisabled }/>
+              <FormControl name="childCo" onChange={ this.handleChange } type="text" ref="myTextInputchildCo" defaultValue={ this.state.childCo } onBlur={ this.handleChange } disabled={ this.state.fielddisabled }/>
             </Col>
           </FormGroup>
           <FormGroup controlId="controlAcct" style={{ 'margin-bottom': '10px' }}>
             <Col componentClass={ControlLabel} sm={3}>Control Account No #</Col>
             <Col sm={6} smoffset={3}>
-              <FormControl onChange={ this.handleChange } type="text"  ref="myTextInputcontrolAcct" defaultValue={ this.state.controlAcct } onBlur={ this.handleChange } disabled={ this.state.fielddisabled }/>
+              <FormControl name="controlAcct" onChange={ this.handleChange } type="text"  ref="myTextInputcontrolAcct" defaultValue={ this.state.controlAcct } onBlur={ this.handleChange } disabled={ this.state.fielddisabled }/>
             </Col>
           </FormGroup>
-          <FormGroup controlId="totalshares" style={{ 'margin-bottom': '10px' }}>
+          <FormGroup controlId="totalShares" style={{ 'margin-bottom': '10px' }}>
             <Col componentClass={ControlLabel} sm={3}>Total Shares #</Col>
             <Col sm={6} smoffset={3}>
-              <FormControl onChange={ this.handleChange } type="text"  ref="myTextInputtotalshares" defaultValue={ this.state.totalshares } onBlur={ this.handleChange } disabled={ this.state.fielddisabled }/>
+              <FormControl name="totalShares" onChange={ this.handleChange } type="text"  ref="myTextInputtotalShares" defaultValue={ this.state.totalShares } onBlur={ this.handleChange } disabled={ this.state.fielddisabled }/>
             </Col>
           </FormGroup>
-          <FormGroup controlId="vestingdate" style={{ 'margin-bottom': '10px' }}>
+          <FormGroup controlId="vestingDate" style={{ 'margin-bottom': '10px' }}>
             <Col componentClass={ControlLabel} sm={3}>Vesting Date</Col>
             <Col sm={6} smoffset={3}>
-              <DatePicker id="vestingdate" value={ this.state.value } onChange={ this.handleChangeDate }  disabled={ this.state.fielddisabled }/>
+              <DatePicker name="vestingDate" id="vestingDate" value={ this.state.value } onChange={ this.handleChangeDate }  disabled={ this.state.fielddisabled }/>
             </Col>
           </FormGroup>                    
         </div>
