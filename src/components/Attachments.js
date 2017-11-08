@@ -43,7 +43,7 @@ export default class Attachments extends React.Component {
           <Col componentClass={ControlLabel} sm={3}>Files to process</Col>
           <Col sm={9}>
             <div className="dropzone">
-              <Dropzone onDrop={this.onDropToProcess.bind(this)} style={dropzoneStyle} accept=".xls, .xlsx">
+              <Dropzone name="process" onDrop={this.onDropToProcess.bind(this)} style={dropzoneStyle} accept=".xls, .xlsx">
                 <p align="center">Try dropping some files here, or click to select files to upload.</p>
               </Dropzone>
             </div>
@@ -63,7 +63,7 @@ export default class Attachments extends React.Component {
           <Col componentClass={ControlLabel} sm={3}>Instructions</Col>
           <Col sm={9}>
             <div className="dropzone">
-              <Dropzone onDrop={this.onDropInstruction.bind(this)} style={dropzoneStyle} accept=".pdf, .docx, .doc">
+              <Dropzone name="instructions" onDrop={this.onDropInstruction.bind(this)} style={dropzoneStyle} accept=".pdf, .docx, .doc">
                 <p align="center">Try dropping some files here, or click to select files to upload.</p>
               </Dropzone>
             </div>

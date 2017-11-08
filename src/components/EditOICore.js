@@ -126,7 +126,7 @@ export default class EditOICore extends Component {
         <FormGroup controlId="ticketType" style={{ 'margin-bottom': '10px' }}>
           <Col componentClass={ControlLabel} sm={3}>Request Type</Col>
           <Col sm={6} smoffset={3}>
-            <FormControl bsSize ="small" componentClass="select" placeholder="select"  onChange={this.handleChange} disabled={ this.state.reqtypefielddisabled }>
+            <FormControl name="ticketType" bsSize ="small" componentClass="select" placeholder="select" onChange={this.handleChange} disabled={ this.state.reqtypefielddisabled }>
               <option value="Original">Original Issuance</option>
               <option value="Grants">Grants</option>
               <option value="Vestings">Vestings</option>
@@ -138,13 +138,19 @@ export default class EditOICore extends Component {
         <FormGroup controlId="priority" style={{ 'margin-bottom': '10px' }}>
           <Col componentClass={ControlLabel} sm={3}>Priority</Col>
           <Col sm={6} smoffset={3}>
-            <FormControl componentClass="select" placeholder="select" onChange={this.handleChange}  disabled={ this.state.fielddisabled }>
+            <FormControl name="priority" componentClass="select" placeholder="select" onChange={this.handleChange} disabled={ this.state.fielddisabled }>
               <option value="Low">Low</option>
               <option value="Medium">Medium</option>
               <option value="High">High</option>
             </FormControl>
           </Col>
         </FormGroup>
+        <FormGroup controlId="adminGroup" style={{ 'margin-bottom': '10px' }}> 
+                <Col componentClass={ControlLabel} sm={3}>Admin Group</Col>
+                <Col sm={6} smoffset={3}>
+                    <FormControl name="adminGroup" type="text" ref="myTextInputadminGroup"  defaultValue={ jsonEditOICoreData[0].adminGroup } onChange={this.handleChange} disabled={ this.state.fielddisabled }/>
+                </Col>
+            </FormGroup>
         { this.state.fields }
       </div>
     );

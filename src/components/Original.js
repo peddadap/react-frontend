@@ -60,8 +60,8 @@ export default class Original extends React.Component {
           <Col componentClass={ControlLabel} sm={3}>Book Entry</Col>
           <Col sm={6} smoffset={3}>
             <FormControl name="bookEntry" bsSize ="small" componentClass="select" placeholder="select" onChange={this.handleChange} disabled={ this.state.fielddisabled }>
-              <option value="book">B</option>
-              <option value="physical"> </option>
+              <option value="B">Book</option>
+              <option value="P">Physical</option>
             </FormControl>
           </Col>
         </FormGroup>
