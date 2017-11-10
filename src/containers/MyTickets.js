@@ -36,8 +36,8 @@ export default class MyTickets extends Component {
       companyNo: "",
       updatedBy: "",
       adminGroup: "",
-      fromDateAll: null,
-      toDateAll: null,
+      fromDateAll: new Date().toISOString(),
+      toDateAll: new Date().toISOString(),
     };
     this.options = {
       defaultSortName: 'id',  // default sort column name
@@ -154,25 +154,21 @@ export default class MyTickets extends Component {
     if(event.target.id == 'adminGroup') { this.setState({ adminGroup: event.target.value }); }
   }
 
-/*   handleChangeDateTo(value, formattedValue) {
-    console.log("To Date: "+value+" AND "+formattedValue);
-    try {
-      this.setState({ toDateAll: value });
-    } catch (e) {
-      alert(e);
-    }
-    console.log("To Date: "+this.state.toDateAll);
+  handleChangeDateTo = (date,fdate) => {
+    console.log("To Date: "+date+" AND "+fdate);
+    console.log("1");
+    this.setState({ toDateAll: moment(fdate) });
+    console.log("2");
+    console.log("To Date: "+moment(this.state.toDateAll).toString());
   }
 
-  handleChangeDateFrom(value, formattedValue) {
-    console.log("From Date: "+value+" AND "+formattedValue);
-    try {
-      this.setState({ fromDateAll: value });
-    } catch (e) {
-      alert(e);
-    }
-    console.log("From Date: "+this.state.fromDateAll);
-  } */
+  handleChangeDateFrom = (date,fdate) => {
+    console.log("From Date: "+date+" AND "+fdate);
+    console.log("3");
+    this.setState({ fromDateAll: moment(fdate) });
+    console.log("4");
+    console.log("From Date: "+moment(this.state.fromDateAll).toString());
+  }
 
   handleSubmit = async event => {
     event.preventDefault();
@@ -207,10 +203,6 @@ export default class MyTickets extends Component {
       sizePerPageList: [ 25, 50, 100, 200, 500 ],
       sizePerPage: 25,
     };
-
-/*     const parseStateToValue = state => moment(state, 'YYYY-MM-DD');
-
-    const formatValueToState = value => value.format('YYYY-MM-DD'); */
 
     return(
       <div>
@@ -292,11 +284,9 @@ export default class MyTickets extends Component {
                 </FormGroup>          
                 <FormGroup controlId="Date" style={{ 'margin-bottom': '10px' }}>
                   <Col componentClass={ControlLabel} sm={3}>Date From: </Col>
-                  {/* <Col sm={3}><DatePicker selected={ parseStateToValue(this.state.fromDateAll) } name="fromDate" id="fromDate" onChange={value => this.handleChangeDateFrom(formatValueToState(value))} /></Col>  */}
-                  <Col sm={3}><DatePicker name="fromDate" id="fromDate"/></Col>
+                  <Col sm={3}><DatePicker id="fromDate" name="fromDate" /></Col>
                   <Col componentClass={ControlLabel} sm={3}>Date To: </Col>
-                  {/* <Col sm={3}><DatePicker selected={ parseStateToValue(this.state.toDateAll) } name="toDate" id="toDate" onChange={value => this.handleChangeDateTo(formatValueToState(value))} /></Col> */}
-                  <Col sm={3}><DatePicker  name="toDate" id="toDate" /></Col>
+                  <Col sm={3}><DatePicker id="toDate" name="toDate" /></Col> 
                 </FormGroup>
               </Form>
             </Modal.Body>

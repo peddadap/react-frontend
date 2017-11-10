@@ -13,6 +13,11 @@ export default class Vestings extends React.Component {
       controlAcct: '',
       totalShares: '',
       vestingDate: '',
+      parentCoStatus: '',
+      childCoStatus: '',
+      controlAcctStatus: '',
+      totalSharesStatus: '',
+      vestingDateStatus: '',
     }
   }
 
@@ -31,37 +36,58 @@ export default class Vestings extends React.Component {
     }
   }
 
+  validateData = event => {
+    if( event.target.id == 'parentCo' ||  
+        event.target.id == 'childCo' || 
+        event.target.id == 'totalShares' || 
+        event.target.id == 'controlAcct' || 
+        event.target.id == 'vestingDate' 
+    ) {
+      var tmp = event.target.id+'Status';
+      if( event.target.value == '' ) {
+        this.setState({[tmp]: 'error'});
+      }else{
+        this.setState({[tmp]: 'success'});
+      }
+    }  
+  }
+
   render() {
     return (
         <div>
-          <FormGroup controlId="parentCo" style={{ 'margin-bottom': '10px' }}> 
+          <FormGroup controlId="parentCo" style={{ 'margin-bottom': '10px' }} validationState={ this.state.parentCoStatus }> 
             <Col componentClass={ControlLabel} sm={3}>Parent Company No #</Col>
             <Col sm={6} smoffset={3}>
-              <FormControl name="parentCo" onChange={ this.handleChange } type="text" ref="myTextInputparentCo" defaultValue={ this.state.parentCo } onBlur={ this.handleChange } disabled={ this.state.fielddisabled }/>
+              <FormControl name="parentCo" onChange={ this.handleChange } type="text" ref="myTextInputparentCo" defaultValue={ this.state.parentCo } onBlur={ this.validateData } disabled={ this.state.fielddisabled }/>
+              <FormControl.Feedback />
             </Col>
           </FormGroup>
-          <FormGroup controlId="childCo" style={{ 'margin-bottom': '10px' }}>
+          <FormGroup controlId="childCo" style={{ 'margin-bottom': '10px' }} validationState={ this.state.childCoStatus }>
             <Col componentClass={ControlLabel} sm={3}>Child Company No #</Col>
             <Col sm={6} smoffset={3}>
-              <FormControl name="childCo" onChange={ this.handleChange } type="text" ref="myTextInputchildCo" defaultValue={ this.state.childCo } onBlur={ this.handleChange } disabled={ this.state.fielddisabled }/>
+              <FormControl name="childCo" onChange={ this.handleChange } type="text" ref="myTextInputchildCo" defaultValue={ this.state.childCo } onBlur={ this.validateData } disabled={ this.state.fielddisabled }/>
+              <FormControl.Feedback />
             </Col>
           </FormGroup>
-          <FormGroup controlId="controlAcct" style={{ 'margin-bottom': '10px' }}>
+          <FormGroup controlId="controlAcct" style={{ 'margin-bottom': '10px' }} validationState={ this.state.controlAcctStatus }>
             <Col componentClass={ControlLabel} sm={3}>Control Account No #</Col>
             <Col sm={6} smoffset={3}>
-              <FormControl name="controlAcct" onChange={ this.handleChange } type="text"  ref="myTextInputcontrolAcct" defaultValue={ this.state.controlAcct } onBlur={ this.handleChange } disabled={ this.state.fielddisabled }/>
+              <FormControl name="controlAcct" onChange={ this.handleChange } type="text"  ref="myTextInputcontrolAcct" defaultValue={ this.state.controlAcct } onBlur={ this.validateData } disabled={ this.state.fielddisabled }/>
+              <FormControl.Feedback />
             </Col>
           </FormGroup>
-          <FormGroup controlId="totalShares" style={{ 'margin-bottom': '10px' }}>
+          <FormGroup controlId="totalShares" style={{ 'margin-bottom': '10px' }} validationState={ this.state.totalSharesStatus }>
             <Col componentClass={ControlLabel} sm={3}>Total Shares #</Col>
             <Col sm={6} smoffset={3}>
-              <FormControl name="totalShares" onChange={ this.handleChange } type="text"  ref="myTextInputtotalShares" defaultValue={ this.state.totalShares } onBlur={ this.handleChange } disabled={ this.state.fielddisabled }/>
+              <FormControl name="totalShares" onChange={ this.handleChange } type="text"  ref="myTextInputtotalShares" defaultValue={ this.state.totalShares } onBlur={ this.validateData } disabled={ this.state.fielddisabled }/>
+              <FormControl.Feedback />
             </Col>
           </FormGroup>
-          <FormGroup controlId="vestingDate" style={{ 'margin-bottom': '10px' }}>
+          <FormGroup controlId="vestingDate" style={{ 'margin-bottom': '10px' }} validationState={ this.state.vestingDateStatus }>
             <Col componentClass={ControlLabel} sm={3}>Vesting Date</Col>
             <Col sm={6} smoffset={3}>
-              <DatePicker name="vestingDate" id="vestingDate" value={ this.state.value } onChange={ this.handleChangeDate }  disabled={ this.state.fielddisabled }/>
+              <DatePicker name="vestingDate" id="vestingDate" value={ this.state.value } onChange={ this.handleChangeDate }  disabled={ this.state.fielddisabled } onBlur={ this.validateData }/>
+              <FormControl.Feedback />
             </Col>
           </FormGroup>                    
         </div>

@@ -132,6 +132,8 @@ export default class EditOICore extends Component {
               <option value="Vestings">Vestings</option>
               <option value="Terminations">RSP Termination</option>
               <option value="Surrender">Surrender</option>
+              <option value="DRCash">DR Cash</option>
+              <option value="ProxyFiling">Proxy Filing</option>
             </FormControl>
           </Col>
         </FormGroup>

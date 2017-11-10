@@ -17,6 +17,7 @@ export default class OICore extends Component {
         value: value1,
         displayDate: 'Issue Date',
         shareno: 'Share #',
+        admingroupstatus: '',
         fields: ( <Original /> ),
      }
   }
@@ -26,6 +27,16 @@ export default class OICore extends Component {
       value: value, // ISO String, ex: "2016-11-19T12:00:00.000Z" 
       formattedValue: formattedValue, // Formatted String, ex: "11/19/2016" 
     });
+  }
+
+  validateData = event => {
+    if( event.target.id == 'adminGroup' ) {
+        if( event.target.value == '' ) {
+            this.setState({admingroupstatus: 'error'});
+        }else{
+            this.setState({admingroupstatus: 'success'});
+        }
+    }  
   }
 
   handleChange = event => {
@@ -72,6 +83,8 @@ export default class OICore extends Component {
                         <option value="Vestings">Vestings</option>
                         <option value="Terminations">RSP Termination</option>
                         <option value="Surrender">Surrender</option>
+                        <option value="DRCash">DR Cash</option>
+                        <option value="ProxyFiling">Proxy Filing</option>
                     </FormControl>
                 </Col>
                 <Col smoffset={3}></Col>
@@ -87,10 +100,11 @@ export default class OICore extends Component {
                 </Col>
                 <Col smoffset={3}></Col>
             </FormGroup>
-            <FormGroup controlId="adminGroup" style={{ 'margin-bottom': '10px' }}> 
+            <FormGroup controlId="adminGroup" style={{ 'margin-bottom': '10px' }} validationState={ this.state.admingroupstatus }> 
                 <Col componentClass={ControlLabel} sm={3}>Admin Group</Col>
                 <Col sm={6} smoffset={3}>
-                    <FormControl name="adminGroup" type="text" ref="myTextInputadminGroup" />
+                    <FormControl name="adminGroup" type="text" ref="myTextInputadminGroup"  onBlur={ this.validateData }/>
+                    <FormControl.Feedback />
                 </Col>
             </FormGroup>
             { this.state.fields }
