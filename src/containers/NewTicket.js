@@ -62,7 +62,7 @@ export default class NewTicket extends Component {
     };
 
     return(
-      <Form horizontal onSubmit={this.handleSubmit} ref="createRequest" method="POST" id="createRequestID">
+      <Form horizontal onSubmit={this.handleSubmit} ref="createRequest" method="POST" id="createRequestID" encType="multipart/form-data">
         <br/>
         <OICore/>
         <hr/>

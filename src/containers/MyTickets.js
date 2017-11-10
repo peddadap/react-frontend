@@ -21,6 +21,8 @@ export default class MyTickets extends Component {
   //Constructor
   constructor(props) {
     super(props);
+    var fromDateVal = new Date();
+    fromDateVal.setMonth(fromDateVal.getMonth() - 1);
     this.state = {
       isLoading: true,
       tickets: [],
@@ -36,7 +38,7 @@ export default class MyTickets extends Component {
       companyNo: "",
       updatedBy: "",
       adminGroup: "",
-      fromDateAll: new Date().toISOString(),
+      fromDateAll: fromDateVal.toISOString(),
       toDateAll: new Date().toISOString(),
     };
     this.options = {
@@ -155,19 +157,11 @@ export default class MyTickets extends Component {
   }
 
   handleChangeDateTo = (date,fdate) => {
-    console.log("To Date: "+date+" AND "+fdate);
-    console.log("1");
-    this.setState({ toDateAll: moment(fdate) });
-    console.log("2");
-    console.log("To Date: "+moment(this.state.toDateAll).toString());
+    this.setState({ toDateAll: date });
   }
 
   handleChangeDateFrom = (date,fdate) => {
-    console.log("From Date: "+date+" AND "+fdate);
-    console.log("3");
-    this.setState({ fromDateAll: moment(fdate) });
-    console.log("4");
-    console.log("From Date: "+moment(this.state.fromDateAll).toString());
+    this.setState({ fromDateAll: date });
   }
 
   handleSubmit = async event => {
@@ -284,9 +278,9 @@ export default class MyTickets extends Component {
                 </FormGroup>          
                 <FormGroup controlId="Date" style={{ 'margin-bottom': '10px' }}>
                   <Col componentClass={ControlLabel} sm={3}>Date From: </Col>
-                  <Col sm={3}><DatePicker id="fromDate" name="fromDate" /></Col>
+                  <Col sm={3}><DatePicker id="fromDate" name="fromDate" onChange={ this.handleChangeDateFrom } value={ this.state.fromDateAll } /></Col>
                   <Col componentClass={ControlLabel} sm={3}>Date To: </Col>
-                  <Col sm={3}><DatePicker id="toDate" name="toDate" /></Col> 
+                  <Col sm={3}><DatePicker id="toDate" name="toDate"  onChange={ this.handleChangeDateTo } value={ this.state.toDateAll } /></Col> 
                 </FormGroup>
               </Form>
             </Modal.Body>
