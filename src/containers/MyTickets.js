@@ -3,10 +3,9 @@ import React, { Component } from "react";
 import { BootstrapTable, TableHeaderColumn, SearchField } from 'react-bootstrap-table';
 import { Button, FormGroup, Col, Form, ControlLabel, FormControl, Modal } from 'react-bootstrap';
 import DatePicker from "react-bootstrap-date-picker";
-import moment from "moment";
 
 //import config
-import LoaderButton from "../components/LoaderButton";
+//Not required here
 
 //import data
 import jsonMyTicketData from "../data/myTickets.json";
@@ -97,7 +96,7 @@ export default class MyTickets extends Component {
             className="myTicketsButton" 
             onClick={ 
               () => this.props.handleToUpdate(
-                      '3', (row.id - 1), { cell } 
+                      3, (row.id - 1), { cell } 
                     ) 
             } 
         >
@@ -147,13 +146,13 @@ export default class MyTickets extends Component {
   }
 
   handleChange = event => {
-    if(event.target.id == 'ticketStatus') { this.setState({ ticketStatus: event.target.value }); }
-    if(event.target.id == 'ticketType') { this.setState({ ticketType: event.target.value }); }
-    if(event.target.id == 'priority') { this.setState({ priority: event.target.value }); }
-    if(event.target.id == 'requestId') { this.setState({ requestId: event.target.value }); }
-    if(event.target.id == 'companyNo') { this.setState({ companyNo: event.target.value }); }
-    if(event.target.id == 'updatedBy') { this.setState({ updatedBy: event.target.value }); }
-    if(event.target.id == 'adminGroup') { this.setState({ adminGroup: event.target.value }); }
+    if(event.target.id === 'ticketStatus') { this.setState({ ticketStatus: event.target.value }); }
+    if(event.target.id === 'ticketType') { this.setState({ ticketType: event.target.value }); }
+    if(event.target.id === 'priority') { this.setState({ priority: event.target.value }); }
+    if(event.target.id === 'requestId') { this.setState({ requestId: event.target.value }); }
+    if(event.target.id === 'companyNo') { this.setState({ companyNo: event.target.value }); }
+    if(event.target.id === 'updatedBy') { this.setState({ updatedBy: event.target.value }); }
+    if(event.target.id === 'adminGroup') { this.setState({ adminGroup: event.target.value }); }
   }
 
   handleChangeDateTo = (date,fdate) => {
@@ -166,7 +165,7 @@ export default class MyTickets extends Component {
 
   handleSubmit = async event => {
     event.preventDefault();
-    this.props.handleToUpdate('2');
+    this.props.handleToUpdate(2);
     return;
   }
 

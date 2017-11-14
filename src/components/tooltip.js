@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Button } from "react-bootstrap";
 import { OverlayTrigger, Tooltip} from "react-bootstrap";
 
 export default class LinkWithTooltip extends Component {

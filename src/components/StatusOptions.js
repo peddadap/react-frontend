@@ -16,14 +16,14 @@ export default class StatusOptions extends Component {
       var status = this.props.requestStatus['cell'];
       if(status !== '' && status !== 'undefined' && status !== undefined ) {
         var statoption = [];
-        var statusdefault;
         if( configStatusOptions[status] ) {
           Object.keys( configStatusOptions[status] ).map((k, index) => {
-            if( index == 0 ) {
+            if( index === 0 ) {
               statoption.push(<option value={ configStatusOptions[status][k] } ></option>);
             } else {
               statoption.push(<option value={ configStatusOptions[status][k] }>{ configStatusOptions[status][k] }</option>);
             }
+            return true;
           });
           this.setState({ statusOptions: statoption, });
         } else {

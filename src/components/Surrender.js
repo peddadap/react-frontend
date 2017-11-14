@@ -1,5 +1,4 @@
 import React from "react";
-import Dropzone from 'react-dropzone';
 import { FormGroup, ControlLabel, Col, FormControl } from "react-bootstrap";
 import DatePicker from "react-bootstrap-date-picker";
 
@@ -32,16 +31,16 @@ export default class Surender extends React.Component {
   }
 
   validateData = event => {
-    if( event.target.id == 'companyNo' ||  
-        event.target.id == 'totalShares' || 
-        event.target.id == 'issuanceDate' 
+    if( event.target.id === 'companyNo' ||  
+        event.target.id === 'totalShares' || 
+        event.target.id === 'issuanceDate' 
     ) {
       var tmp = event.target.id+'Status';
-      if( event.target.value == '' ) {
+      if( event.target.value === '' ) {
         this.setState({[tmp]: 'error'});
       }else{
         this.setState({[tmp]: 'success'});
-        if(event.target.id != 'issuanceDate' && isNaN(event.target.value)) {
+        if(event.target.id !== 'issuanceDate' && isNaN(event.target.value)) {
           this.setState({[tmp]: 'error'});
         }
       }

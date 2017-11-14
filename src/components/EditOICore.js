@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { FormGroup, FormControl, ControlLabel, Col } from "react-bootstrap";
 import jsonEditOICoreData from "../data/EditOICore.json";
-import DatePicker from "react-bootstrap-date-picker";
 
 import Original from './Original';
 import Grants from './Grants';
@@ -63,15 +62,15 @@ export default class EditOICore extends Component {
     }
 
     if(this.props.requestStatus && 
-        ( this.props.requestStatus['cell'] == 'Open' || 
-        this.props.requestStatus['cell'] == 'Error' )
+        ( this.props.requestStatus['cell'] === 'Open' || 
+        this.props.requestStatus['cell'] === 'Error' )
     ) {
       this.setState({fielddisabled: false,});
     } else {
       this.setState({fielddisabled: true,});
     }
 
-    if(this.props.requestStatus && this.props.requestStatus['cell'] == 'Error' ) {
+    if(this.props.requestStatus && this.props.requestStatus['cell'] === 'Error' ) {
       this.setState({reqtypefielddisabled: false,});
     } else {
       this.setState({reqtypefielddisabled: true,});
@@ -86,8 +85,8 @@ export default class EditOICore extends Component {
   }
 
   handleChange = event => {
-    if(event.target.id == 'ticketType') {
-      if(event.target.value == 'Vestings')
+    if(event.target.id === 'ticketType') {
+      if(event.target.value === 'Vestings')
         this.setState({
           fields:  ( <Vestings dataforvestings={ this.dataforvestings } /> ) ,
         })

@@ -8,7 +8,7 @@ import OICore from "../components/OICore";
 import Attachments from "../components/Attachments";
 
 //import config
-import Config from "../configurations/ux.json";
+//Not required here
 
 //import data
 //Not required here
@@ -38,7 +38,7 @@ export default class NewTicket extends Component {
 
   handleSubmit = async event => {
     event.preventDefault();
-    this.props.handleToUpdate('1');
+    this.props.handleToUpdate(1);
     return;
   }
 
@@ -46,20 +46,20 @@ export default class NewTicket extends Component {
     // var rows = [];
     // let uxConfig = Config.oi;
 
-    const selectRowProp = {
-      mode: 'checkbox',
-      showOnlySelected: true,
-    };
+    // const selectRowProp = {
+    //   mode: 'checkbox',
+    //   showOnlySelected: true,
+    // };
 
-    let options = {
-      insertModalHeader: this.createCustomModalHeader,
-    };
+    // let options = {
+    //   insertModalHeader: this.createCustomModalHeader,
+    // };
 
-    const  cellEditProp = {
-      mode: 'click',
-      blurToSave: true,
-      afterSaveCell: this.onAfterSaveCell
-    };
+    // const  cellEditProp = {
+    //   mode: 'click',
+    //   blurToSave: true,
+    //   afterSaveCell: this.onAfterSaveCell
+    // };
 
     return(
       <Form horizontal onSubmit={this.handleSubmit} ref="createRequest" method="POST" id="createRequestID" encType="multipart/form-data">

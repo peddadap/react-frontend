@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { FormGroup, FormControl, ControlLabel, Col } from "react-bootstrap";
-import configStatusOptions from "../configurations/ticketStatusConfig";
 
 export default class StatusOptions extends Component {
 
@@ -24,6 +23,7 @@ export default class StatusOptions extends Component {
     var attachementListShow=[];
     Object.keys(this.props.ticketDataArr).map((k, index) => {
       attachementListShow.push(<option value={ this.props.ticketDataArr[k]['value'] }>{ this.props.ticketDataArr[k]['name'] }</option>);
+      return true;
     });
     return(
       <FormGroup controlId="attachment" style={{ 'margin-bottom': '10px' }}>

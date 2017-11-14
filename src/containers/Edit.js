@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import { Button, Form } from "react-bootstrap";
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-import { FormGroup, FormControl, ControlLabel, Col, OverlayTrigger, ButtonToolbar, Tooltip, Checkbox } from "react-bootstrap";
+import { FormGroup, ControlLabel, Col, Tooltip, Checkbox } from "react-bootstrap";
 
 //Load Application Components
 import LoaderButton from "../components/LoaderButton";
@@ -32,7 +32,6 @@ export default class Edit extends Component {
   //Constructor
   constructor(props) {
     super(props);
-    var getDataToDisplay  = this.getDataToDisplay.bind(this);
     this.state = {
       isLoading: true,
       ticketData: issuanceData1,
@@ -49,7 +48,9 @@ export default class Edit extends Component {
     this.state.ticketDataArr.push({name: "Data-09-25-2017.xls", value: "Excel1.xlsx",});
     this.state.ticketDataArr.push({name: "Data-09-22-2017.xls", value: "Excel2.xlsx",});
     this.state.ticketDataArr.push({name: "Data-09-21-2017.xls", value: "Excel3.xlsx",});
-    this.state.ticketDataArrNew = this.state.ticketDataArr;
+    this.setState({
+      ticketDataArrNew: this.state.ticketDataArr,
+    });
   }
 
   async componentWillReceiveProps () {
@@ -61,34 +62,35 @@ export default class Edit extends Component {
       if(status !== '' && status !== 'undefined' && status !== undefined ) {
         if( configStatusOptions[status] ) {
           Object.keys( configStatusOptions[status] ).map((k, index) => {
-            if( index == 0 ) {
+            if( index === 0 ) {
               this.setStatusOfTicket(configStatusOptions[status][k]);
             }
+            return true;
           });
         }
       }
     }
     if( this.props.requestStatus && 
-        ( this.props.requestStatus['cell'] == 'Open' || 
-          this.props.requestStatus['cell'] == 'Error' )
+        ( this.props.requestStatus['cell'] === 'Open' || 
+          this.props.requestStatus['cell'] === 'Error' )
     ) {
       this.setState({ editdata: {mode: 'click', blurToSave: true, afterSaveCell: this.onAfterSaveCell} });
     } else {
       this.setState({ editdata: {} });
     }
     if(this.props.requestStatus && 
-        ( this.props.requestStatus['cell'] == 'New' || 
-          this.props.requestStatus['cell'] == 'Pending' ||
-          this.props.requestStatus['cell'] == 'Closed' ||
-          this.props.requestStatus['cell'] == 'Recall' )
+        ( this.props.requestStatus['cell'] === 'New' || 
+          this.props.requestStatus['cell'] === 'Pending' ||
+          this.props.requestStatus['cell'] === 'Closed' ||
+          this.props.requestStatus['cell'] === 'Recall' )
     ) {
       this.setState({ Submitbutton: false });
     } else {
       this.setState({ Submitbutton: true });
     }
     if(this.props.requestStatus && 
-      ( this.props.requestStatus['cell'] == 'Error' || 
-      this.props.requestStatus['cell'] == 'Open' )) {
+      ( this.props.requestStatus['cell'] === 'Error' || 
+      this.props.requestStatus['cell'] === 'Open' )) {
       this.setState({ newattachments: <EditAttachments getDataToDisplay={this.getDataToDisplay.bind(this)}/>, });
     } else {
       this.setState({ newattachments: <SelectFiles ticketDataArr={ this.state.ticketDataArr }  getDataToDisplay={this.getDataToDisplay.bind(this)} />, });
@@ -116,15 +118,16 @@ export default class Edit extends Component {
   getDataToDisplay(fileListArray){
     var tempData = [];
     Object.keys(fileListArray).map((k, index) => {
-      if( fileListArray[k]['name'] == 'Excel1.xlsx' &&  fileListArray[k]['status'] == true ){
+      if( fileListArray[k]['name'] === 'Excel1.xlsx' &&  fileListArray[k]['status'] === true ){
         tempData.push.apply(tempData, issuanceData1);
       }
-      if( fileListArray[k]['name'] == 'Excel2.xlsx' &&  fileListArray[k]['status'] == true ){
+      if( fileListArray[k]['name'] === 'Excel2.xlsx' &&  fileListArray[k]['status'] === true ){
         tempData.push.apply(tempData, issuanceData2);
       }
-      if( fileListArray[k]['name'] == 'Excel3.xlsx' &&  fileListArray[k]['status'] == true ){
+      if( fileListArray[k]['name'] === 'Excel3.xlsx' &&  fileListArray[k]['status'] === true ){
         tempData.push.apply(tempData, issuanceData3);
       }
+      return true;
     });
     this.setState({ ticketData: tempData, });
   }
@@ -184,9 +187,9 @@ export default class Edit extends Component {
   }
 
   handleFileChange(idname) {
-    var index = this.state.ticketDataArr.findIndex(x => x.value == idname);
-    if(index == -1) {
-      var indexnew = this.state.ticketDataArrNew.findIndex(x => x.value == idname);
+    var index = this.state.ticketDataArr.findIndex(x => x.value === idname);
+    if(index === -1) {
+      var indexnew = this.state.ticketDataArrNew.findIndex(x => x.value === idname);
       var datanew = this.state.ticketDataArrNew[indexnew];
       var tempArr = this.state.ticketDataArr;
       tempArr.push(datanew);
@@ -213,7 +216,6 @@ export default class Edit extends Component {
     var rows = [];
     var attachmentList = [];
     var attachmentListData = [];
-    var attachementListShow = [];
 
     let uxConfig = Config.oi;    
     let options = {
@@ -232,9 +234,10 @@ export default class Edit extends Component {
     }
 
 
-    if(this.props.requestStatus && ( this.props.requestStatus['cell'] == 'Open' || this.props.requestStatus['cell'] == 'Error' )) {
+    if(this.props.requestStatus && ( this.props.requestStatus['cell'] === 'Open' || this.props.requestStatus['cell'] === 'Error' )) {
       Object.keys(this.state.ticketDataArrNew).map((k, index) => {
         attachmentListData.push(<Checkbox inline label={this.state.ticketDataArrNew[k]['value']} onChange={() => this.handleFileChange(this.state.ticketDataArrNew[k]['value'])}> { this.state.ticketDataArrNew[k]['name'] } </Checkbox>);
+        return true;
       });
       attachmentList.push(
         <FormGroup controlId = {"ticketTypeedit"} style={{ 'margin-bottom': '10px' }}>
@@ -255,6 +258,7 @@ export default class Edit extends Component {
           rows.push(<TableHeaderColumn width = {"120"} dataField={k}>{k}</TableHeaderColumn>);
         }
       }
+      return true;
     });
 
     return(
@@ -275,7 +279,7 @@ export default class Edit extends Component {
             <Button
               bsStyle="primary"
               bsSize="large"
-              onClick={ () => this.props.handleToUpdate('1') } 
+              onClick={ () => this.props.handleToUpdate(1) } 
             >
               Cancel
             </Button>

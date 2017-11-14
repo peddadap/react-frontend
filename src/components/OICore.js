@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { FormGroup, FormControl, ControlLabel, Col} from "react-bootstrap";
-import DatePicker from "react-bootstrap-date-picker";
 
 import Original from './Original';
 import Grants from './Grants';
@@ -30,8 +29,8 @@ export default class OICore extends Component {
   }
 
   validateData = event => {
-    if( event.target.id == 'adminGroup' ) {
-        if( event.target.value == '' ) {
+    if( event.target.id === 'adminGroup' ) {
+        if( event.target.value === '' ) {
             this.setState({admingroupstatus: 'error'});
         }else{
             this.setState({admingroupstatus: 'success'});
@@ -40,23 +39,23 @@ export default class OICore extends Component {
   }
 
   handleChange = event => {
-    if(event.target.id == 'ticketType' ) {
-        if(event.target.value == 'Vestings')
+    if(event.target.id === 'ticketType' ) {
+        if(event.target.value === 'Vestings')
             this.setState({
                 fields:  ( <Vestings /> ) ,
             })
         else
-            if(event.target.value == 'Terminations')
+            if(event.target.value === 'Terminations')
                 this.setState({
                     fields:  ( <Terminations /> ) ,
                 })
             else
-                if(event.target.value == 'Grants')
+                if(event.target.value === 'Grants')
                     this.setState({
                         fields:  ( <Grants /> ),
                     })
                 else
-                    if(event.target.value == 'Surrender')
+                    if(event.target.value === 'Surrender')
                         this.setState({
                             fields:  ( <Surrender /> ) ,
                         })
